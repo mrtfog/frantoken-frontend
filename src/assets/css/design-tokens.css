@@ -1,0 +1,172 @@
+:root {
+  --source-dark: #030710; /* E01 */
+  --source-cycle-dark: #05070b; /* E02 */
+  --source-light: #f2faff; /* E03 */
+  --source-ice: #cce9ff; /* E01 */
+  --source-ice-bright: #e5f4ff; /* E04, E09 */
+  --source-blue: #7fc8ff; /* E02 */
+  --source-cycle-text: #e8edf5; /* E02 */
+  --source-outline: #2f4b68; /* E09 */
+  --source-nav-border: #262c36; /* E10 */
+  --source-input-border: rgb(224 239 254 / 16%); /* E14 */
+
+  --font-editorial: "Twklausanne", Tahoma, sans-serif; /* E05 */
+  --font-ui: "Aeonik", Tahoma, sans-serif; /* E06: source file is Aeonik Mono */
+  --weight-heading: 300;
+  --weight-ui: 400;
+  --font-size-body: 16px;
+  --line-height-body: 24px;
+  --font-size-control: 14px;
+  --line-height-control: 14px;
+  --font-size-hero-desktop: 64px;
+  --line-height-hero-desktop: 70.4px;
+  --font-size-hero-mobile: 40px;
+  --line-height-hero-mobile: 48px;
+  --tracking-hero: -0.03em;
+  --font-size-cycle-desktop: 56px;
+  --line-height-cycle-desktop: 61.6px;
+  --font-size-cycle-tablet: 32px;
+  --line-height-cycle-tablet: 35.2px;
+  --font-size-cycle-mobile: 28px;
+  --line-height-cycle-mobile: 30.8px;
+  --tracking-cycle: -0.015em;
+  --font-size-stage-desktop: 48px;
+  --line-height-stage-desktop: 50.4px;
+  --font-size-stage-tablet: 40px;
+  --line-height-stage-tablet: 42px;
+  --font-size-stage-mobile: 24px;
+  --line-height-stage-mobile: 25.2px;
+  --tracking-stage: -0.02em;
+  --font-size-lead-desktop: 24px;
+  --line-height-lead-desktop: 34.8px;
+
+  --container-content-max: 1416px; /* E10 */
+  --container-nav-max: 1456px;
+  --container-hero-max: 800px;
+  --copy-lead-max: 416px;
+  --gutter-tablet: 24px;
+  --gutter-mobile: 16px;
+  --gutter-cycle-mobile: 24px;
+  --gap-frameworks-desktop: 24px;
+  --gap-footer-desktop: 40px;
+  --space-frameworks-top-desktop: 200px;
+  --space-frameworks-bottom-desktop: 100px;
+  --radius-control: 6px;
+  --radius-customer-card: 16px;
+  --border-control-width: 1px;
+  --control-height: 48px;
+  --control-padding-block: 12px;
+  --control-padding-inline-desktop: 24px;
+  --control-padding-inline-mobile: 16px;
+  --input-height: 44px;
+  --input-padding-block: 8px;
+  --input-padding-inline: 18px;
+  --textarea-min-height: 100px; /* source measured height; min policy is adaptation */
+  --chip-padding-block: 10.08px;
+  --chip-padding-inline: 16px;
+  --chip-gap: 8px;
+  --header-sticky-top-desktop: 8px;
+  --shadow-control: none;
+  --duration-control: 300ms; /* E18; declared, not every JS animation */
+  --easing-control: ease;
+  --duration-nav-height: 500ms; /* E19; declared tablet/mobile height transition */
+
+  /* Semantic aliases for dark sections. */
+  --surface-page: var(--source-dark);
+  --surface-cycle: var(--source-cycle-dark);
+  --surface-contrast: var(--source-light);
+  --text-primary: var(--source-ice);
+  --text-heading: var(--source-ice-bright);
+  --text-accent: var(--source-blue);
+  --text-cycle: var(--source-cycle-text);
+  --text-on-light: var(--source-dark);
+  --border-subtle: var(--source-nav-border);
+  --border-action: var(--source-outline);
+  --border-input: var(--source-input-border);
+  --action-fill: var(--source-ice-bright);
+  --action-text: var(--source-dark);
+  --action-outline-text: var(--source-ice);
+  --action-inverse-fill: var(--source-dark);
+  --action-inverse-text: var(--source-ice);
+}
+
+/* B. PROPOSED SCOPING: values extracted above; alias behavior is a new API. */
+[data-surface="light"] {
+  --surface-page: var(--source-light);
+  --text-primary: var(--source-dark);
+  --text-heading: var(--source-dark);
+  --action-fill: var(--source-dark);
+  --action-text: var(--source-ice);
+}
+
+/* C. INFERRED / PROPOSED values and responsive mapping.
+ * NOT a transcription of source CSS. Tested samples: 390, 768, 1440.
+ * Source media thresholds exist, but per-component boundary attribution is incomplete.
+ */
+:root {
+  --proposed-font-editorial-fallback: Arial, Helvetica, sans-serif;
+  --proposed-font-ui-fallback:
+    ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --proposed-gutter-desktop: 3%; /* inferred from 42.75 / 1425 */
+  --proposed-focus-width: 3px; /* width observed once; global adoption proposed */
+  --proposed-focus-offset: 3px;
+  --proposed-icon-control-size: 16px;
+  --proposed-target-min: 44px;
+  --proposed-space-unit: 4px; /* branding estimate, not proven global scale */
+  --proposed-focus-color: var(--source-blue);
+
+  --page-gutter: var(--gutter-mobile);
+  --hero-size: var(--font-size-hero-mobile);
+  --hero-leading: var(--line-height-hero-mobile);
+  --cycle-size: var(--font-size-cycle-mobile);
+  --cycle-leading: var(--line-height-cycle-mobile);
+  --stage-size: var(--font-size-stage-mobile);
+  --stage-leading: var(--line-height-stage-mobile);
+  --control-padding-inline: var(--control-padding-inline-mobile);
+}
+
+@media (min-width: 480px) {
+  :root {
+    --page-gutter: var(--gutter-tablet);
+    --cycle-size: var(--font-size-cycle-tablet);
+    --cycle-leading: var(--line-height-cycle-tablet);
+    --stage-size: var(--font-size-stage-tablet);
+    --stage-leading: var(--line-height-stage-tablet);
+    --control-padding-inline: var(--control-padding-inline-desktop);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --hero-size: var(--font-size-hero-desktop);
+    --hero-leading: var(--line-height-hero-desktop);
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --page-gutter: var(--proposed-gutter-desktop);
+    --cycle-size: var(--font-size-cycle-desktop);
+    --cycle-leading: var(--line-height-cycle-desktop);
+    --stage-size: var(--font-size-stage-desktop);
+    --stage-leading: var(--line-height-stage-desktop);
+  }
+}
+
+/* Opt-in replacement typography; metrics will change and need visual review. */
+[data-fonts="fallback"] {
+  --font-editorial: var(--proposed-font-editorial-fallback);
+  --font-ui: var(--proposed-font-ui-fallback);
+}
+
+[data-surface="light"] {
+  --proposed-focus-color: var(--source-dark);
+}
+
+/* Proposed accessibility policy. Components must also disable JS-driven motion. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-control: 0ms;
+    --duration-nav-height: 0ms;
+  }
+}
