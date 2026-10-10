@@ -6,6 +6,7 @@ Este índice orienta el trabajo sobre la web propia. [Business Logic](business/B
 
 | Necesidad | Fuente de autoridad | Consultar también |
 |---|---|---|
+| Arquitectura de código, nombres y límites entre capas | [Code Architecture](architecture/CODE-ARCHITECTURE.md) | [Skill de arquitectura](../.agents/skills/frantoken-code-architecture/SKILL.md) |
 | Modelo, actores, flujo de fondos y C1–C4 | [Business Logic](business/BUSINESS-LOGIC.md) | [Decisiones del negocio](business/DECISIONS.md) |
 | Relación con el otro proyecto Solidity | [Contexto importado](context/solidity-import/README.md) | [Reconciliación backend](DECISIONS-BACKEND.md), [Project](PROJECT.md) |
 | Rutas, navegación y recorridos | [Information Architecture](spec/INFORMATION-ARCHITECTURE.md) | [Page Blueprints](spec/PAGE-BLUEPRINTS.md) |
