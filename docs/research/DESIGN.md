@@ -26,7 +26,7 @@ Se esperó `document.fonts.ready` y se recorrió la homepage en incrementos de 8
 - **Observado:** contenido o cambio visto en scraping, captura o interacción ejecutada.
 - **Inferido:** recomendación, adaptación para la marca propia o aproximación sin valor fuente verificado.
 
-`EVIDENCE.md` contiene la tabla trazable. `evidence/home-1440.png`, `home-768.png` y `home-390.png` están en el ZIP adjunto. Las referencias de selector son del sitio fuente, no nombres obligatorios de la implementación.
+[EVIDENCE.md](EVIDENCE.md) contiene la tabla trazable. `evidence/home-1440.png`, `home-768.png` y `home-390.png` están en el ZIP adjunto. Las referencias de selector son del sitio fuente, no nombres obligatorios de la implementación.
 
 ## 2. Principios visuales concretos
 
@@ -39,7 +39,7 @@ Se esperó `document.fonts.ready` y se recorrió la homepage en incrementos de 8
 
 ## 3. Tokens de diseño
 
-El archivo `design-tokens.css` contiene valores fuente, aliases semánticos y un bloque aparte de propuestas. Los nombres semánticos son una adaptación; los valores etiquetados como medidos sí proceden del sitio. No se inventa una escala universal de espaciado a partir del `baseUnit: 4` estimado por branding.
+El archivo [design-tokens.css](../../src/assets/css/design-tokens.css) contiene valores fuente, aliases semánticos y un bloque aparte de propuestas. Los nombres semánticos son una adaptación; los valores etiquetados como medidos sí proceden del sitio. No se inventa una escala universal de espaciado a partir del `baseUnit: 4` estimado por branding.
 
 ### Colores verificados
 
@@ -235,11 +235,11 @@ Se inspeccionaron etiquetas/roles de controles muestreados, un recorrido Tab par
 | Foco de Products con outline 3 px | Aplicarlo de forma consistente y verificarlo en superficies claras |
 | Movimiento reducido solo parcialmente detectado | Proveer alternativa estática completa |
 
-Los contrastes calculados de pares de color están en `EVIDENCE.md`. Son valores sRGB de colores sólidos; no prueban legibilidad del hero sobre toda imagen, ni estados hover/focus, ni conformidad global. El borde translúcido del input requiere composición sobre el fondo antes de calcularse.
+Los contrastes calculados de pares de color están en [EVIDENCE.md](EVIDENCE.md). Son valores sRGB de colores sólidos; no prueban legibilidad del hero sobre toda imagen, ni estados hover/focus, ni conformidad global. El borde translúcido del input requiere composición sobre el fondo antes de calcularse.
 
 ## 8. Assets e identidad
 
-Las URL originales, función, proporción y tratamiento se encuentran en el inventario A01–A08 de `EVIDENCE.md`. Las proporciones naturales corresponden al recurso efectivamente cargado, pueden reflejar `srcset` y no garantizan el tamaño del original sin sufijo.
+Las URL originales, función, proporción y tratamiento se encuentran en el inventario A01–A08 de [EVIDENCE.md](EVIDENCE.md). Las proporciones naturales corresponden al recurso efectivamente cargado, pueden reflejar `srcset` y no garantizan el tamaño del original sin sufijo.
 
 **Sustituir:** marca LangChain/LangSmith, iconos y nombres de productos, diagramas de producto, personajes/collage de campaña, logotipos de clientes, red de puntos del cierre, gran logo delineado, claims, métricas, testimonios y enlaces de negocio. Conservar únicamente reglas de composición y jerarquía. No distribuir fuentes propietarias ni asumir licencia por tener una URL pública.
 
@@ -255,7 +255,7 @@ Modelos mínimos: `NavGroup { id, label, items }`, `LifecycleStageData { id, tit
 
 ### Contrato de estilos
 
-Importar `design-tokens.css` una vez. Mapear utilidades de Tailwind a los aliases semánticos: `bg-[var(--surface-page)]`, `text-[var(--text-primary)]`, `rounded-[var(--radius-control)]`, `max-w-[var(--container-content-max)]`. No usar el `lg` predeterminado para suponer que equivale al desktop de 992 px; configurar el breakpoint del proyecto o escribir media queries explícitas. No se prescribe una API dependiente de una versión de Tailwind no indicada.
+Importar [design-tokens.css](../../src/assets/css/design-tokens.css) una vez. Mapear utilidades de Tailwind a los aliases semánticos: `bg-[var(--surface-page)]`, `text-[var(--text-primary)]`, `rounded-[var(--radius-control)]`, `max-w-[var(--container-content-max)]`. No usar el `lg` predeterminado para suponer que equivale al desktop de 992 px; configurar el breakpoint del proyecto o escribir media queries explícitas. No se prescribe una API dependiente de una versión de Tailwind no indicada.
 
 Aplicar `data-surface="light"` a capítulos claros para cambiar aliases de texto/superficie; los botones inversos deben tener variante explícita. Mantener `--font-editorial` separado de `--font-ui`. El CSS de tokens declara nombres de las fuentes, pero no incluye `@font-face` ni importa archivos propietarios. Hasta disponer de licencia, activar el fallback propuesto de forma consciente.
 

@@ -37,11 +37,11 @@ Fecha: 2026-10-05 America/Buenos_Aires / 2026-10-06 UTC. Valores en CSS px salvo
 | E29 | Newsletter | Email required; labels=[]; placeholder Your email | https://www.langchain.com/ | #wf-form-footer_form #EMAIL | DOM | medido |
 | E30 | Movimiento reducido | Regla reduce con .aadl_wrapper scroll-behavior:auto; cobertura JS no comprobada | https://www.langchain.com/ | style @media(prefers-reduced-motion:reduce) | Lectura textual de CSS | medido |
 | E31 | Breakpoints | max991/767/479/540; min768/992/1280/1440/1920 y condiciones de altura820/900 | https://www.langchain.com/ | stylesheet y estilos inline; sin asignación exhaustiva a componente | Extracción textual @media | medido |
-| E32 | Política de responsive propia | Desktop desde992; tamaños intermedios desde480/768; gutter desktop3% | https://www.langchain.com/ | design-tokens.css bloque C | Interpolación entre muestras y rangos detectados | inferido |
+| E32 | Política de responsive propia | Desktop desde992; tamaños intermedios desde480/768; gutter desktop3% | https://www.langchain.com/ | [design-tokens.css](../../src/assets/css/design-tokens.css) bloque C | Interpolación entre muestras y rangos detectados | inferido |
 | E33 | Fuentes / imágenes | Fonts loaded en3 viewports;93/101 imágenes completas en comprobación posterior | https://www.langchain.com/ | document.fonts; document.images | API DOM tras scroll | medido |
 | E34 | Hero variable | Distinta sublínea/arte entre capturas; mecanismo y duración no confirmados | https://www.langchain.com/ | evidence/home-1440.png, home-768.png, home-390.png | Comparación visual | observado |
 | E35 | UX | Campaña→capacidades→frameworks→clientes→métricas→CTA; prueba y demo reiterados | https://www.langchain.com/ | capturas completas y enlaces scrape | Inspección de estructura | observado |
-| E36 | Accesibilidad propuesta | Button nativo, label newsletter, focus3px/offset3, target44px, alternativa estática | https://www.langchain.com/ | DESIGN.md §7; tokens bloque C | Adaptación de implementación | inferido |
+| E36 | Accesibilidad propuesta | Button nativo, label newsletter, focus3px/offset3, target44px, alternativa estática | https://www.langchain.com/ | [DESIGN.md](DESIGN.md) §7; tokens bloque C | Adaptación de implementación | inferido |
 
 ## Capturas
 
