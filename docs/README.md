@@ -1,12 +1,13 @@
 # Harness de diseño y contenido de FranToken
 
-Este índice orienta el trabajo sobre la web propia. [Business Logic](business/BUSINESS-LOGIC.md) describe el modelo de FranToken aportado para el proyecto y sus [decisiones pendientes](business/DECISIONS.md). Los documentos de `spec/` son propuestas anteriores basadas en inmuebles; deben adaptarse a franquicias antes de implementarse. Los de `research/` registran referencias externas y sus límites. La aplicación actual todavía muestra la plantilla inicial de Next.js. Ninguna propuesta equivale a una oferta aprobada o a una página implementada.
+Este índice orienta el trabajo sobre la web propia. [Business Logic](business/BUSINESS-LOGIC.md) describe el modelo de FranToken aportado para el proyecto y sus [decisiones pendientes](business/DECISIONS.md). Los documentos de `spec/` son propuestas anteriores basadas en inmuebles; deben adaptarse a franquicias antes de implementarse. Los de `research/` registran referencias externas y sus límites. La home actual es una implementación en prueba; no convierte propuestas en ofertas aprobadas.
 
 ## Mapa de fuentes
 
 | Necesidad | Fuente de autoridad | Consultar también |
 |---|---|---|
 | Arquitectura de código, nombres y límites entre capas | [Code Architecture](architecture/CODE-ARCHITECTURE.md) | [Skill de arquitectura](../.agents/skills/frantoken-code-architecture/SKILL.md) |
+| Componentes compartidos, iconos, variantes y skeletons | [UI Contract](design/UI-CONTRACT.md) | [Code Architecture](architecture/CODE-ARCHITECTURE.md) |
 | Modelo, actores, flujo de fondos y C1–C4 | [Business Logic](business/BUSINESS-LOGIC.md) | [Decisiones del negocio](business/DECISIONS.md) |
 | Relación con el otro proyecto Solidity | [Contexto importado](context/solidity-import/README.md) | [Reconciliación backend](DECISIONS-BACKEND.md), [Project](PROJECT.md) |
 | Rutas, navegación y recorridos | [Information Architecture](spec/INFORMATION-ARCHITECTURE.md) | [Page Blueprints](spec/PAGE-BLUEPRINTS.md) |

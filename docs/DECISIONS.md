@@ -22,4 +22,14 @@ Este registro sigue los bloqueos de publicación enumerados en [Information Arch
 
 Las funciones opcionales de mercado, escenarios y comparación quedan condicionadas por las decisiones aplicables de producto, datos y metodología en WEB-02, WEB-06 y WEB-07; su activación se especifica en [Information Architecture](spec/INFORMATION-ARCHITECTURE.md) y [Page Blueprints](spec/PAGE-BLUEPRINTS.md), sujetos a WEB-15.
 
+## Propuesta implementada en la homepage
+
+La homepage de esta iteración usa una identidad visual editorial propia, textos conceptuales sobre el modelo declarado y navegación por secciones. Es una **propuesta de diseño y contenido**, no una confirmación de WEB-01, WEB-02, WEB-14 o WEB-15. No presenta proyectos, precios, rentabilidades, disponibilidad, registro ni captación. Antes de publicar una oferta o afirmar operaciones reales, siguen pendientes las aprobaciones y fuentes indicadas arriba y en [las decisiones del negocio](business/DECISIONS.md).
+
+La refactorización de la homepage aplica el [UI Contract](design/UI-CONTRACT.md): reutiliza las piezas comunes, distribuye los estilos con Tailwind, limita los componentes cliente a animaciones e interacción y mantiene un skeleton de ruta. Es un cambio de implementación; no confirma datos ni condiciones de negocio pendientes.
+
+## Prototipo de marketplace
+
+La ruta `/marketplace` muestra seis **proyectos ficticios** y valores de token **ilustrativos**, a pedido del usuario para evaluar únicamente la presentación de tarjetas. Búsqueda, filtro por sector y ordenamiento operan sobre datos locales de demostración. Las tarjetas no enlazan a fichas, no permiten registrar interés, reservar ni comprar; no existe una ruta de detalle por token. La pantalla identifica los datos como inventados y no confirma emisiones, operadores, derechos, precios, estados de captación ni disponibilidad. WEB-04, WEB-05 y WEB-15 continúan pendientes para cualquier catálogo real.
+
 Para cada confirmación futura, registrar aquí la decisión concreta, su alcance, responsable, fecha, enlace a la fuente y documentos `spec/` afectados. Si una decisión cambia, conservar el enlace a la versión anterior y señalar qué contenido necesita revisión.
