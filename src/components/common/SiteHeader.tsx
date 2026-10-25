@@ -21,10 +21,10 @@ export function SiteHeader() {
 
   return (
     <header className="relative z-20 border-b border-[#f3f2e9]/20 bg-[#09262a] text-[#f3f2e9]">
-      <div className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between gap-6 px-5">
+      <div className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between gap-4 px-5 xl:gap-6">
         <SiteBrand />
         <nav
-          className="hidden items-center gap-7 text-[13px] font-bold lg:flex"
+          className="hidden items-center gap-4 text-[13px] font-bold lg:flex xl:gap-7"
           aria-label="Navegación principal"
         >
           {siteNavigation.map((link) => (

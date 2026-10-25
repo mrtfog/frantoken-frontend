@@ -5,7 +5,3 @@ export function normalizeSearch(value: string) {
     .toLocaleLowerCase("es")
     .trim();
 }
-
-export function formatExampleAmount(value: number) {
-  return new Intl.NumberFormat("es-AR").format(value);
-}
