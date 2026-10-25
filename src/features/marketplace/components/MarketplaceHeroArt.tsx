@@ -33,10 +33,10 @@ export function MarketplaceHeroArt() {
         </span>
         <div className="absolute top-[22%] -right-[17%] h-[54%] w-[95%] rounded-full border-[18px] border-[#235447]/25" />
         <span className="z-10 font-serif text-[52px] leading-none italic tracking-[-0.1em] text-[#123932] sm:text-[72px]">
-          m.
+          01.
         </span>
         <span className="z-10 border-t border-[#123932]/25 pt-3 text-[9px] font-bold tracking-[0.15em] text-[#123932]">
-          UNA IDEA DE FRANQUICIA
+          MARCA REAL / IDEA DEMO
         </span>
       </motion.div>
       <motion.div
@@ -50,10 +50,10 @@ export function MarketplaceHeroArt() {
         </span>
         <div className="absolute top-[30%] -left-[28%] h-[60%] w-[110%] rounded-full bg-[#e88971]/55" />
         <span className="z-10 font-serif text-[50px] leading-none italic tracking-[-0.1em] text-[#4c2b29] sm:text-[70px]">
-          cn.
+          02.
         </span>
         <span className="z-10 border-t border-[#4c2b29]/25 pt-3 text-[9px] font-bold tracking-[0.15em] text-[#4c2b29]">
-          OTRA FORMA DE MIRAR
+          DATOS ILUSTRATIVOS
         </span>
       </motion.div>
       <motion.span

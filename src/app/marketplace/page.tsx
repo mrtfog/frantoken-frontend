@@ -4,7 +4,7 @@ import { Marketplace } from "@/features/marketplace/components/Marketplace";
 export const metadata: Metadata = {
   title: "Marketplace demo | FranToken",
   description:
-    "Explorá un catálogo de demostración con proyectos ficticios de franquicias y tokens ilustrativos. No hay ofertas activas.",
+    "Explorá fichas de demostración de marcas con franquicias públicas. Proyectos y datos financieros simulados; no hay ofertas activas ni alianzas confirmadas.",
   robots: { index: false, follow: false },
 };
 

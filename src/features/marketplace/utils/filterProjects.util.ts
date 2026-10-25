@@ -17,14 +17,12 @@ export function filterProjects(
     const matchesQuery =
       !normalizedQuery ||
       normalizeSearch(
-        `${project.name} ${project.descriptor} ${project.sector} ${project.city} ${project.format}`,
+        `${project.name} ${project.descriptor} ${project.sector} ${project.format}`,
       ).includes(normalizedQuery);
     return matchesSector && matchesQuery;
   });
 
   if (sort === "name")
     return filtered.sort((a, b) => a.name.localeCompare(b.name, "es"));
-  if (sort === "amount")
-    return filtered.sort((a, b) => a.exampleAmount - b.exampleAmount);
   return filtered;
 }
