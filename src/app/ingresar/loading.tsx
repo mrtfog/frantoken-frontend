@@ -1,5 +1,15 @@
-import { AuthSkeleton } from "@/features/auth/components/AuthSkeleton";
+import { AnnouncementBanner } from "@/components/common/AnnouncementBanner";
+import { SiteFooter } from "@/components/common/SiteFooter";
+import { SiteHeader } from "@/components/common/SiteHeader";
+import { AccountSkeleton } from "@/features/account/components/AccountSkeleton";
 
 export default function Loading() {
-  return <AuthSkeleton />;
+  return (
+    <>
+      <AnnouncementBanner demo />
+      <SiteHeader />
+      <AccountSkeleton />
+      <SiteFooter />
+    </>
+  );
 }
