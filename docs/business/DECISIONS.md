@@ -20,3 +20,7 @@ Este registro adapta los pendientes de la [sección 1.6 del manual recibido](sou
 | BUS-14 | Indicadores, reporting, auditoría, intervención y sustitución de operadora | Pendiente | — |
 
 Antes de habilitar una oferta, reconciliar las decisiones relevantes con C1–C4, el instrumento del vehículo, fuentes operativas y revisión competente. Una decisión comercial no demuestra por sí sola validez legal, exactitud financiera ni disponibilidad técnica.
+
+## Datos de la solicitud demo
+
+El formulario `/abrir-franquicia` **propone** campos para evaluar una franquicia: marca, sector, ubicación, costo total, moneda, ingresos y margen histórico de tres años, fuente de esos datos, responsable operativo, mes estimado de apertura y descripción. Es una captura local de demostración; no define criterios de admisión, métricas verificadas ni apertura efectiva. Para convertirlo en proceso real permanecen pendientes, entre otras, BUS-01, BUS-02, BUS-07, BUS-08 y BUS-14. No se modificó el estado de ninguna decisión.
