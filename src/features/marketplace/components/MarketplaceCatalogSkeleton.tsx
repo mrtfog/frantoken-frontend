@@ -1,13 +1,6 @@
 import { Skeleton } from "@/components/ui";
 
-const cardSlots = [
-  "first",
-  "second",
-  "third",
-  "fourth",
-  "fifth",
-  "sixth",
-] as const;
+const cardSlots = ["first", "second", "third", "fourth"] as const;
 
 export function MarketplaceCatalogSkeleton() {
   return (
@@ -27,13 +20,13 @@ export function MarketplaceCatalogSkeleton() {
           <Skeleton className="h-12 w-64" />
           <Skeleton className="h-12 w-44" />
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {cardSlots.map((slot) => (
             <div
               key={slot}
               className="overflow-hidden rounded-2xl border border-[#173d34]/10 bg-[#faf9f3]"
             >
-              <Skeleton className="h-[232px] rounded-none" />
+              <Skeleton className="h-52 rounded-none" />
               <div className="space-y-4 p-6">
                 <Skeleton className="h-4 w-2/3" />
                 <Skeleton className="h-16 w-full" />
@@ -42,7 +35,7 @@ export function MarketplaceCatalogSkeleton() {
             </div>
           ))}
         </div>
-        <output className="sr-only">Cargando proyectos ficticios</output>
+        <output className="sr-only">Cargando fichas de demostración</output>
       </div>
     </section>
   );

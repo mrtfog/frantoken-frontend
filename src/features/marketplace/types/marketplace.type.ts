@@ -1,24 +1,19 @@
 export type DemoProject = {
   id: string;
   name: string;
-  descriptor: string;
-  sector: "Gastronomía" | "Bienestar" | "Servicios" | "Educación";
-  city: string;
+  sector: "Comida rápida" | "Cafetería" | "Restaurantes";
   format: string;
-  stage: string;
-  exampleAmount: number;
-  palette: "lime" | "peach" | "lavender" | "mint" | "blue" | "sand";
-  mark: string;
+  descriptor: string;
+  company: string;
+  franchise: string;
+  officialUrl: string;
+  logoUrl?: string;
+  palette: "lime" | "peach" | "lavender" | "mint";
+  annualizedRoiScenario: readonly number[];
 };
 
 export type SectorFilter = DemoProject["sector"] | "Todos";
-export type SortOrder = "featured" | "name" | "amount";
-export type ArtPaletteClasses = {
-  surface: string;
-  ink: string;
-  shape: string;
-  outline: string;
-};
+export type SortOrder = "featured" | "name";
 
 export type MarketplaceCatalogProps = {
   visibleProjects: readonly DemoProject[];

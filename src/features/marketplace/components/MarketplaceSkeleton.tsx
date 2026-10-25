@@ -22,6 +22,13 @@ export function MarketplaceSkeleton() {
           </div>
         </section>
         <MarketplaceCatalogSkeleton />
+        <div className="bg-[#092f2a] px-5 py-16">
+          <div className="mx-auto grid max-w-[1380px] gap-3 md:grid-cols-4">
+            {["one", "two", "three", "four"].map((slot) => (
+              <Skeleton key={slot} className="h-32 bg-[#f3f2e9]/15" />
+            ))}
+          </div>
+        </div>
         <output className="sr-only">
           Cargando marketplace de demostración
         </output>
