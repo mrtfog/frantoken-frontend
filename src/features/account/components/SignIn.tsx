@@ -52,15 +52,16 @@ export function SignIn() {
               Una vista clara de cada paso.
             </h1>
             <p className="mt-8 max-w-sm text-sm leading-7 text-[#c2d6ca]">
-              Probá el panel de cuenta, el historial ilustrativo de tokens y la
-              apertura de franquicias con datos de demostración.
+              Comprá tokens con pago simulado y consultá tus ingresos en la red
+              local. La wallet acredita el control de cada operación.
             </p>
             <div className="mt-14 flex items-start gap-3 border-t border-white/20 pt-6 text-xs leading-5 text-[#c2d6ca]">
               <ShieldCheck
                 className="h-5 w-5 shrink-0 text-[#d5f36a]"
                 aria-hidden="true"
               />{" "}
-              No se realizan compras ni se envían datos a un servidor.
+              Sin dinero real. El acceso demo es local; las operaciones de
+              wallet se verifican en el servidor.
             </div>
           </div>
           <form

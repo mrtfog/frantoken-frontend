@@ -1,5 +1,9 @@
 # Recorrido frontend del MVP académico
 
+## Estado de implementación
+
+El recorrido se implementó en `feat/academic-mvp` desde `develop`, por instrucción posterior del usuario. Las rutas `/api/mvp` coordinan pagos simulados con firma y la página `/administracion` controla estado, habilitación demo y reparto mensual. La cuenta consulta contratos en lugar de los arrays de tenencias históricas. Ver [ejecución](ACADEMIC-MVP-RUNBOOK.md) y [pruebas y límites](../testing/ACADEMIC-MVP.md). El resto del documento conserva los requisitos que guiaron la implementación.
+
 Fecha: 2026-11-01. Especificación de integración derivada del [alcance confirmado](../business/MVP-ACADEMICO.md), **pendiente de implementación**. No altera rutas, componentes, contratos de API ni dependencias en esta entrega.
 
 ## Pantallas y acciones esperadas

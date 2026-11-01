@@ -1,5 +1,13 @@
 # Registro de decisiones web pendientes
 
+## WEB-MVP-02 — Implementación local autorizada
+
+- Estado: implementada en `feat/academic-mvp` desde `develop`, 2026-11-01.
+- Evidencia: instrucción posterior del usuario de implementar frontend y blockchain en ramas nuevas desde develop; no solicita cambios en el backend separado.
+- Decisión técnica: `/api/mvp` como coordinador local de compra simulada con firma de wallet, sin integrar bancos ni compartir claves de usuario. `/administracion` exige la wallet del owner para las acciones privilegiadas. El saldo y los movimientos se consultan en cadena.
+- El acceso por email conserva la navegación demo; no es credencial de autorización económica. La firma acredita el control de wallet para cada acción. El build mantiene chequeo de tipos por la API de TypeScript 5, mediante la opción documentada `experimental.useTypeScriptCli: false`.
+- Detalle y límites: [guía](architecture/ACADEMIC-MVP-RUNBOOK.md) y [evidencia](testing/ACADEMIC-MVP.md).
+
 ## WEB-MVP-01 — Alcance académico confirmado
 
 - Estado: **APROBADO para documentación y alcance del MVP; implementación pendiente**.

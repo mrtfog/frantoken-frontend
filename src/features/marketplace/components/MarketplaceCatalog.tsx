@@ -72,16 +72,16 @@ function ProjectCard({
           </div>
           <div className="pl-4">
             <dt className="text-[10px] font-bold text-[#668276] uppercase">
-              Oferta de tokens
+              Precio académico
             </dt>
-            <dd className="mt-1 font-bold">No disponible</dd>
+            <dd className="mt-1 font-bold">USD 10 · pago simulado</dd>
           </div>
         </dl>
         <Link
           href={`/marketplace/${project.id}`}
           className="mt-6 inline-flex min-h-11 items-center justify-between border-t border-[#173d34]/15 pt-3 text-[12px] font-black text-[#11382e] hover:text-[#457333] focus-visible:rounded-sm"
         >
-          Ver ficha de ejemplo{" "}
+          Ver franquicia y disponibilidad{" "}
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>

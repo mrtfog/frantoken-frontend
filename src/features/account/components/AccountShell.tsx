@@ -68,8 +68,8 @@ export function AccountShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <p className="mt-6 hidden text-xs leading-5 text-[#597367] lg:block">
-            Datos ficticios para probar el recorrido. No hay compra, emisión ni
-            solicitud real.
+            Compras con pago simulado y tokens en Hardhat local. Los ingresos se
+            cobran con un activo de prueba.
           </p>
         </aside>
         <motion.div

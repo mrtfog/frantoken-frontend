@@ -1,5 +1,9 @@
 # Harness de diseño y contenido de FranToken
 
+## MVP implementado
+
+La implementación se ejecuta con la [guía local](architecture/ACADEMIC-MVP-RUNBOOK.md). Consultar [verificación y límites](testing/ACADEMIC-MVP.md). Las especificaciones de alcance y criterios permanecen como referencia; las menciones a implementación pendiente de la entrega documental anterior conservan su contexto histórico.
+
 ## Prioridad actual: MVP académico
 
 Consultar primero el [alcance aprobado](business/MVP-ACADEMICO.md) y el [recorrido de frontend](architecture/MVP-ACADEMICO.md). Definen compra con pago simulado, emisión C4 y cobro mensual en Hardhat local como objetivo pendiente de implementación. Prevalecen para la demo sobre los bloqueos de operación real y las especificaciones inmobiliarias anteriores. No se cambia UI, servicios ni contratos en esta actualización.

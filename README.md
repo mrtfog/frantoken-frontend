@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Ejecutar la implementación del MVP
+
+Ver [guía de ejecución local](docs/architecture/ACADEMIC-MVP-RUNBOOK.md) y [evidencia de pruebas](docs/testing/ACADEMIC-MVP.md). La rama `feat/academic-mvp` se creó desde `develop`; compra, emisión, reparto mensual y reclamo usan Hardhat local y mUSDC de prueba. El coordinador se ejecuta en el servidor Next, sin modificar el backend separado. La guía incluye despliegue, variables de entorno, wallets, administración y recuperación de compras.
+
 ## Alcance vigente: MVP académico
 
 El usuario confirmó el [MVP académico](docs/business/MVP-ACADEMICO.md): compra a USD 10 con pago simulado y emisión C4; inicio de operación manual; distribuciones mensuales de importe manual, a prorrata al ejecutar; reclamo por inversor; transferencias deshabilitadas; Hardhat local y token de pago de prueba. Gas separado e identificado como de prueba. **Especificación aprobada, implementación pendiente.** Esta actualización modifica solo documentación.

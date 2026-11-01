@@ -10,7 +10,7 @@ import Link from "next/link";
 import { AnnouncementBanner } from "@/components/common/AnnouncementBanner";
 import { SiteFooter } from "@/components/common/SiteFooter";
 import { SiteHeader } from "@/components/common/SiteHeader";
-import { ButtonLink } from "@/components/ui";
+import { AcademicInvestmentContainer } from "@/features/investment/components/AcademicInvestment.container";
 import { franchiseRiskFactors } from "../constants/projectDetail.constants";
 import type { DemoProject } from "../types/marketplace.type";
 import { AnnualizedRoiChart } from "./AnnualizedRoiChart";
@@ -47,42 +47,12 @@ export function ProjectDetail({ project }: { project: DemoProject }) {
                 </h1>
                 <p className="mt-6 max-w-[640px] text-[17px] leading-relaxed text-[#c2d9c9]">
                   {project.descriptor} La empresa y su programa de franquicias
-                  son reales; esta unidad tokenizada no existe como oferta
-                  publicada.
+                  son referencias editoriales. Esta ficha permite operar tokens
+                  de prueba del MVP local, sin oferta comercial ni vínculo con
+                  la marca.
                 </p>
               </div>
-              <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm">
-                <p className="text-[10px] font-black tracking-[0.16em] text-[#d5f36a] uppercase">
-                  Estado de la oferta
-                </p>
-                <p className="mt-3 font-serif text-[32px] leading-tight">
-                  No disponible
-                </p>
-                <p className="mt-4 text-[12px] leading-relaxed text-[#c2d9c9]">
-                  Precio, derechos, emisor, documentos y disponibilidad no están
-                  definidos.
-                </p>
-                <ButtonLink
-                  href={`/registro?proyecto=${project.id}`}
-                  className="mt-6 w-full"
-                  variant="primary"
-                >
-                  Comprar token · demo{" "}
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </ButtonLink>
-                <p className="mt-3 text-[10px] leading-relaxed text-[#b5cabe]">
-                  El enlace abre un registro simulado. No procesa pagos, reserva
-                  ni compra tokens.
-                </p>
-                <div className="mt-6 flex gap-4 border-t border-white/20 pt-5 text-[12px] font-bold">
-                  <Link href="/ingresar" className="hover:text-[#d5f36a]">
-                    Iniciar sesión
-                  </Link>
-                  <Link href="/registro" className="hover:text-[#d5f36a]">
-                    Registrarse
-                  </Link>
-                </div>
-              </div>
+              <AcademicInvestmentContainer projectId={project.id} />
             </div>
           </div>
         </section>
@@ -118,9 +88,9 @@ export function ProjectDetail({ project }: { project: DemoProject }) {
             <div className="rounded-xl border border-[#173d34]/15 bg-white p-5">
               <Info className="h-5 w-5 text-[#5e8069]" aria-hidden="true" />
               <p className="mt-5 text-[10px] font-black tracking-wider text-[#62816f] uppercase">
-                Token y derechos
+                Token académico
               </p>
-              <p className="mt-2 font-serif text-[24px]">Por definir</p>
+              <p className="mt-2 font-serif text-[24px]">USD 10 por token</p>
               <p className="mt-2 text-[11px] text-[#597469]">
                 Una franquicia no implica propiedad de la marca.
               </p>
