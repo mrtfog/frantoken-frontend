@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Alcance vigente: MVP académico
+
+El usuario confirmó el [MVP académico](docs/business/MVP-ACADEMICO.md): compra a USD 10 con pago simulado y emisión C4; inicio de operación manual; distribuciones mensuales de importe manual, a prorrata al ejecutar; reclamo por inversor; transferencias deshabilitadas; Hardhat local y token de pago de prueba. Gas separado e identificado como de prueba. **Especificación aprobada, implementación pendiente.** Esta actualización modifica solo documentación.
+
+El modelo completo y los antecedentes técnicos siguientes se conservan como referencia; campaña, bancos, liquidación y cascada contable completa no son condiciones de entrega del MVP.
+
 Project design and content documentation: [docs/README.md](docs/README.md).
 
 Modelo vigente de FranToken: [lógica de negocio](docs/business/BUSINESS-LOGIC.md), [ciclos de vida](docs/business/LIFECYCLES.md) y [estado técnico](docs/business/IMPLEMENTATION-STATUS.md). Precio fijo de suscripción: **USD 10 por token más fees blockchain**.

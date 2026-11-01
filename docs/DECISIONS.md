@@ -1,5 +1,15 @@
 # Registro de decisiones web pendientes
 
+## WEB-MVP-01 — Alcance académico confirmado
+
+- Estado: **APROBADO para documentación y alcance del MVP; implementación pendiente**.
+- Responsable de la definición: usuario del proyecto. Fecha: 2026-11-01.
+- Evidencia: confirmación explícita transcrita en [MVP académico](business/MVP-ACADEMICO.md#fuente-autoridad-y-límites).
+- Decisión: recorrido catálogo → compra simulada a USD 10 → emisión C4 → operación manual → distribución mensual manual → reclamo, sin transferencias, en Hardhat local y con activo de pago de prueba.
+- Aplicación web: [recorrido y criterios de frontend](architecture/MVP-ACADEMICO.md).
+
+WEB-04, WEB-05, WEB-06 y WEB-10 tienen las definiciones anteriores aprobadas para la demostración. Sus datos y aprobaciones para oferta real siguen pendientes. Las descripciones de prototipos que siguen son antecedentes de implementación, no restricciones que reabran esta confirmación ni afirmaciones de compra ya funcional.
+
 Este registro sigue los bloqueos de publicación enumerados en [Information Architecture](spec/INFORMATION-ARCHITECTURE.md#información-del-negocio-pendiente--bloqueo-de-publicación). Esos bloqueos fueron redactados para una web de inmuebles; el [modelo de negocio vigente](business/BUSINESS-LOGIC.md) exige adaptarlos a franquicias. Los IDs `WEB-*` son distintos de los `BUS-*` de [decisiones de negocio](business/DECISIONS.md). No concede aprobaciones. Una decisión se marca **confirmada** solo con responsable, fecha y enlace a evidencia o aprobación; las condiciones sensibles requieren la revisión competente definida por el negocio.
 
 | ID | Decisión a confirmar | Estado | Responsable / evidencia |
