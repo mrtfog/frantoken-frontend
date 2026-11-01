@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { demoSessionRepository } from "../repositories/session.repository";
+import { sessionRepository } from "../repositories/activeSession.repository";
 import { signIn } from "../services/session.service";
 import type { DemoSession, SignInInput } from "../types/session.type";
 
@@ -21,13 +21,13 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let active = true;
-    demoSessionRepository.getSession().then((value) => {
+    sessionRepository.getSession().then((value) => {
       if (active) {
         setSession(value);
         setReady(true);
       }
     });
-    const unsubscribe = demoSessionRepository.subscribe((value) => {
+    const unsubscribe = sessionRepository.subscribe((value) => {
       if (active) setSession(value);
     });
     return () => {
@@ -42,16 +42,16 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         session,
         ready,
         async signIn(input) {
-          setSession(await signIn(input, demoSessionRepository));
+          setSession(await signIn(input, sessionRepository));
         },
         async signOut() {
-          await demoSessionRepository.signOut();
+          await sessionRepository.signOut();
           setSession(null);
         },
         async updateDisplayName(name) {
           if (!session) return;
           setSession(
-            await demoSessionRepository.updateDisplayName(session, name),
+            await sessionRepository.updateDisplayName(session, name),
           );
         },
       }}

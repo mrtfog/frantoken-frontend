@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Skeleton } from "@/components/ui";
 import { useSession } from "@/core/hooks/SessionProvider";
 import { franchiseDefaults } from "../constants/franchiseForm.constants";
-import { demoAccountRepository } from "../repositories/account.repository";
+import { accountRepository } from "../repositories/activeAccount.repository";
 import { submitFranchise } from "../services/account.service";
 import type {
   FranchiseApplication,
@@ -50,7 +50,7 @@ export function FranchiseFormContainer() {
   useEffect(() => {
     if (!session) return;
     let active = true;
-    demoAccountRepository.getDraft(session.userId).then((draft) => {
+    accountRepository.getDraft(session.userId).then((draft) => {
       if (active) {
         if (draft && typeof draft === "object" && !Array.isArray(draft))
           reset({ ...franchiseDefaults, ...draft });
@@ -92,18 +92,18 @@ export function FranchiseFormContainer() {
             return;
           }
         }
-        await demoAccountRepository.saveDraft(session.userId, getValues());
+        await accountRepository.saveDraft(session.userId, getValues());
         setStep((current) => Math.min(2, current + 1));
       }}
       onSaveDraft={async () => {
-        await demoAccountRepository.saveDraft(session.userId, getValues());
+        await accountRepository.saveDraft(session.userId, getValues());
         setNotice("Borrador guardado en este navegador.");
       }}
       onSubmit={handleSubmit(async (value) => {
         setNotice("");
         try {
           setApplication(
-            await submitFranchise(session.userId, value, demoAccountRepository),
+            await submitFranchise(session.userId, value, accountRepository),
           );
         } catch (error) {
           setNotice(
