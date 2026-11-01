@@ -1,5 +1,7 @@
 # Reconciliación de decisiones técnicas del contexto Solidity
 
+> Actualización 2026-11-01: la tabla siguiente conserva la comparación histórica del material importado. La [revisión actual de los tres repositorios](business/IMPLEMENTATION-STATUS.md) incorpora C3/C4 y las correcciones del PDF. El [modelo vigente](business/BUSINESS-LOGIC.md) fija USD 10 por token más fees; [decisiones de negocio](business/DECISIONS.md) reconcilia Argentina, fideicomiso financiero, DTE y parámetros pendientes. Las frases «no comprobado desde este repositorio» de la comparación original describen su alcance histórico.
+
 El [registro recibido del 04-10-2026](context/solidity-import/DECISIONS-BACKEND.md) contiene D01–D12 sobre otro checkout. El [manual v2 del 10-10-2026](business/source/FranToken-manual-consulta-v2.md#16-decisiones-pendientes) aporta definiciones del modelo y amplía la lista a D13–D14. La fuente canónica de pendientes de FranToken en este harness es [BUS-01–BUS-14](business/DECISIONS.md); los IDs `Dxx` de esta tabla solo permiten rastrear el documento importado. No se ha comprobado el código Solidity ni las pruebas de ese checkout desde este repositorio.
 
 | ID importado → vigente | Aclarado por el manual v2 | Falta decidir o verificar | Estado |
