@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getDemoProjects } from "../services/getDemoProjects.service";
+import { getProjects } from "../services/getProjects.service";
 import type {
   DemoProject,
   SectorFilter,
@@ -19,7 +19,7 @@ export function MarketplaceCatalogContainer() {
 
   useEffect(() => {
     let active = true;
-    getDemoProjects().then((result) => {
+    getProjects().then((result) => {
       if (active) setProjects(result);
     });
     return () => {
