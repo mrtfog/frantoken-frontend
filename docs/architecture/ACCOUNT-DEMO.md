@@ -1,5 +1,7 @@
 # Cuenta y franquicias: prototipo local
 
+> Vigencia para el próximo MVP (2026-11-01): el [alcance aprobado](../business/MVP-ACADEMICO.md) y el [recorrido frontend](MVP-ACADEMICO.md) sustituyen la cuenta dummy como objetivo de entrega. Esta nota conserva la descripción histórica del prototipo local y sus alternativas; no selecciona Supabase ni acredita integración nueva. Los pendientes para valor real no bloquean el pago simulado y el cobro con activo de prueba aprobados.
+
 Estado: propuesta técnica de demostración. No hay Supabase ni backend conectados.
 
 ## Contratos que se reemplazan al integrar

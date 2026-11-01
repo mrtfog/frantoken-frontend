@@ -1,5 +1,9 @@
 # Harness de diseño y contenido de FranToken
 
+## Prioridad actual: MVP académico
+
+Consultar primero el [alcance aprobado](business/MVP-ACADEMICO.md) y el [recorrido de frontend](architecture/MVP-ACADEMICO.md). Definen compra con pago simulado, emisión C4 y cobro mensual en Hardhat local como objetivo pendiente de implementación. Prevalecen para la demo sobre los bloqueos de operación real y las especificaciones inmobiliarias anteriores. No se cambia UI, servicios ni contratos en esta actualización.
+
 Este índice orienta el trabajo sobre la web propia. [Business Logic](business/BUSINESS-LOGIC.md) describe el modelo de FranToken aportado para el proyecto y sus [decisiones pendientes](business/DECISIONS.md). Los documentos de `spec/` son propuestas anteriores basadas en inmuebles; deben adaptarse a franquicias antes de implementarse. Los de `research/` registran referencias externas y sus límites. La home actual es una implementación en prueba; no convierte propuestas en ofertas aprobadas.
 
 Actualización de negocio del 2026-11-01: [DTE de proyecto y token](business/LIFECYCLES.md), [implementación y brechas](business/IMPLEMENTATION-STATUS.md) y [fuentes originales con precedencia](business/source/README.md). Precio fijo: **USD 10 por token + fees de transacción blockchain**.
