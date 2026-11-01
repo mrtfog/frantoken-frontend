@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 Project design and content documentation: [docs/README.md](docs/README.md).
 
+Modelo vigente de FranToken: [lógica de negocio](docs/business/BUSINESS-LOGIC.md), [ciclos de vida](docs/business/LIFECYCLES.md) y [estado técnico](docs/business/IMPLEMENTATION-STATUS.md). Precio fijo de suscripción: **USD 10 por token más fees blockchain**.
+
 ## Getting Started
 
 First, run the development server:
