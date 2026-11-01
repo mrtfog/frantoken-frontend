@@ -1,60 +1,81 @@
 # Lógica de negocio de FranToken
 
-## Estado y procedencia
+Actualizado: 2026-11-01. Fuente canónica del modelo declarado en este repositorio. Ver [fuentes y precedencia](source/README.md), [ciclos de vida](LIFECYCLES.md), [estado frente al modelo](IMPLEMENTATION-STATUS.md) y [decisiones](DECISIONS.md).
 
-Esta es la fuente canónica **del modelo de negocio declarado para el proyecto**, a partir del [manual de consulta v2](source/FranToken-manual-consulta-v2.md#11-lógica-vigente-aportada-por-el-usuario), actualizado el 10-10-2026. El archivo de [instrucciones para un proyecto de ChatGPT](source/FranToken-instrucciones-proyecto-v2.md) queda archivado como material recibido: sus reglas de respuesta no rigen a los agentes de este repositorio. El manual contiene además propuestas técnicas, ejemplos académicos y referencias legales históricas; esas partes no son decisiones comerciales aprobadas.
+## Autoridad y alcance
 
-El modelo declarado guía análisis y diseño. No acredita que FranToken SAS esté registrada, que exista un fideicomiso constituido, que haya contratos firmados, franquicias adquiridas, emisiones realizadas, autorización de oferta, operaciones en marcha o viabilidad jurídica verificada. Antes de publicar una oportunidad o habilitar captación se necesitan los datos, documentos, aprobaciones y servicios propios del caso. Las decisiones aún abiertas se registran en [Decisiones del negocio](DECISIONS.md).
+La actualización integra la presentación académica final de octubre de 2026, el informe «Estado vs. modelo de negocio» del 29-10-2026, los dos DTE aportados y la instrucción del usuario: **precio fijo de USD 10 por token más fees de la transacción en blockchain**. Esta instrucción sustituye el «valor estimativo» y los gastos adicionales genéricos de §6.4 de la presentación. El PDF corrige el alcance de C3 y C4 descrito en §§7.1 y 12 de esa presentación.
 
-## Secuencia declarada
+Se distingue modelo declarado, estado técnico observado y decisiones pendientes. El material no acredita constitución efectiva del vehículo, firma de contratos, ofertas habilitadas, operaciones reales, auditoría ni autorización regulatoria. Los manuales y ADR anteriores conservan valor histórico; sus ejemplos y propuestas no sustituyen estas reglas vigentes.
 
-| Orden conceptual | Regla del modelo | Evidencia o definición necesaria para operarlo |
+## Propuesta y actores
+
+FranToken organiza financiación colectiva para adquirir derechos de explotación y poner en marcha unidades de franquicia. Cada proyecto identifica marca, unidad, ubicación, presupuesto, operadora, vehículo, emisión y documentación. Comprar un token representa los derechos económicos definidos en C4; no atribuye automáticamente propiedad sobre marca o local, voto, garantía de capital, rentabilidad ni liquidez.
+
+| Actor | Responsabilidad | Separación necesaria |
 |---|---|---|
-| 1. Evaluar franquicia | FranToken analiza la viabilidad comercial y económica de una franquicia de cualquier sector o marca admisible. | Alcance de la franquicia, presupuesto, costos, mercado y capacidad de operación. |
-| 2. Constituir vehículo | Se constituye un fideicomiso para financiar y comprar el proyecto. | Tipo, jurisdicción, fiduciario, sujetos, facultades, patrimonio y cuentas. |
-| 3. Captar y representar derechos | La venta de tokens se plantea desde el vehículo; los aportes ingresan a su patrimonio. | Emisor/representante, C4, derechos, elegibilidad, condiciones de cierre, cobro y conciliación. |
-| 4. Comprar franquicia | La compra se financia con fondos del fideicomiso. | C1, alcance de derechos y activos adquiridos, autorizaciones y comprobantes. |
-| 5. Contratar operación | Una operadora especializada administra la unidad bajo C2. Puede evaluarse antes de captar como control de viabilidad. | Identidad, facultades, capacidad, costos, responsabilidad y reglas de sustitución. |
-| 6. Explotar y remunerar | La unidad atiende clientes y paga obligaciones de operación, regalías y servicios, incluidos los de FranToken SAS bajo C3. | Reportes verificados, caja, reglas de honorarios, pagos y conciliación. |
-| 7. Distribuir y cerrar | El inversor recibe lo que corresponda según C4 y fondos disponibles, si las condiciones se cumplen. | Base, prelación, reservas, período, titularidad, impuestos y reglas de salida o liquidación. |
+| FranToken SAS | Estructuración, plataforma, tecnología, monitoreo y reporting; remuneración bajo C3. | No se presume fiduciario, custodio, emisor en nombre propio ni operadora. |
+| Vehículo / fideicomiso | Recibir aportes y aplicar fondos al proyecto. | Patrimonio y cuentas identificados por proyecto; no son ingresos propios de la plataforma. |
+| Fiduciario | Administrar el patrimonio conforme al instrumento y sus facultades. | No equivale a la gestión diaria de la franquicia. |
+| Franquiciante | Otorgar derechos de franquicia y exigir los pagos y estándares de C1. | Sus regalías son distintas de las distribuciones al inversor. |
+| Operadora | Personal, compras, ventas, proveedores, estándares y reportes bajo C2. | No es titular del patrimonio por su función operativa. |
+| Inversor | Aportar y adquirir los derechos establecidos en C4. | Registrarse o vincular una wallet no compra ni reserva tokens. |
+| Cliente final | Comprar productos o servicios de la unidad. | Su pago es ingreso comercial, no aporte de inversión. |
+| Tercero / verificador externo | Gestionar cobro y conciliación; atestar pagos para emitir mediante C4. | Identidad, facultades, custodia, finalidad del pago y responsabilidades deben definirse. |
 
-Es una secuencia conceptual, no una autorización para captar antes de tener las condiciones exigibles. Los acuerdos deben estar definidos antes de las acciones que habilitan. Obra, equipamiento y apertura dependen de cada proyecto. Comprar una franquicia no implica comprar la marca, el franquiciante o un inmueble.
+La presentación usa fideicomiso u otro vehículo aplicable y especifica **fideicomiso financiero** en §5.2. Se conserva este último como estructura declarada, con Argentina como jurisdicción de referencia del análisis académico. Tipo definitivo, instrumento, fiduciario, emisor, sujetos, encuadre y habilitaciones de una emisión concreta siguen pendientes; esta documentación no los valida jurídicamente.
 
-## Actores y relaciones contractuales
+## Relaciones C1–C4
 
-| Actor | Función en el modelo declarado | Límite que debe conservarse |
+| ID | Partes | Contenido del modelo |
 |---|---|---|
-| FranToken SAS | Estructuración, tecnología, plataforma, blockchain, reporting, monitoreo y automatización; remuneración por gestión y por ganancia. | No asumir que es fiduciario, emisor en nombre propio, custodio u operadora. |
-| Fideicomiso y fiduciario | Vehículo de financiación y compra; el fiduciario y representantes concretos actúan según sus facultades. | El vehículo no identifica por sí solo a quien firma, emite, cobra o responde. |
-| Franquiciante | Otorga los derechos de franquicia y cobra las obligaciones previstas en C1. | No se vende automáticamente la marca ni se presume consentimiento para tokenizar. |
-| Operadora | Administra la unidad, personal, compras, ventas y reportes bajo C2. | Es distinta del fiduciario y del prestador de servicios C3. |
-| Inversor | Aporta y adquiere el instrumento y los derechos definidos en C4. | El token no crea por sí solo propiedad, voto, liquidez ni rentabilidad garantizada. |
-| Cliente de la unidad | Compra bienes o servicios de la franquicia y genera ingresos operativos. | Es distinto del inversor; sus pagos no ingresan necesariamente íntegros al fideicomiso. |
+| C1 | Franquiciante ↔ fideicomiso/vehículo | Marca, know-how, territorio, canon, regalías, publicidad, estándares, plazo y terminación. |
+| C2 | Vehículo ↔ operadora | Administración, reportes, indicadores, honorarios, controles, auditoría, responsabilidad y reemplazo. |
+| C3 | Vehículo ↔ FranToken SAS | Estructuración, tecnología, plataforma, reporting, monitoreo y remuneración contractual por servicios/gestión y, si se pacta, resultado. |
+| C4 | Vehículo/emisor ↔ inversor | Aporte, instrumento, derechos económicos, información, distribución, plazo, riesgos, transferencia y salida. |
 
-| ID | Relación de negocio declarada | Objeto a documentar |
-|---|---|---|
-| C1 | Franquiciante ↔ vehículo del proyecto | Uso de marca, know-how, territorio, plazo, regalías, estándares y terminación. |
-| C2 | Vehículo ↔ operadora | Administración, personal, compras, ventas, indicadores, honorarios y controles. |
-| C3 | Vehículo ↔ FranToken SAS | Servicios, comisión de gestión y remuneración vinculada a ganancia. |
-| C4 | Vehículo/emisor ↔ inversor | Aporte, instrumento, derechos económicos, información, riesgos, plazo y salida. |
+Son relaciones jurídicas y funcionales con prototipos Solidity asociados. El código no reemplaza documentos, firmantes, representación, controles externos ni el instrumento constitutivo del vehículo. El [estado técnico](IMPLEMENTATION-STATUS.md) distingue qué parte de cada relación está automatizada.
 
-C1–C4 nombran **relaciones contractuales**, aunque el material recibido las llame “smartcontracts”. No se infiere que existan cuatro programas ejecutables ni que el código sustituya contratos jurídicos, registro de titularidad o controles físicos. Hay que identificar firmantes, representación, vigencia y evidencia de cada acuerdo; el instrumento del fideicomiso y otros documentos necesarios quedan fuera de estos cuatro rótulos.
+## Precio, aporte y fees
 
-## Dinero, derechos y conceptos que no se mezclan
+- **Precio unitario fijo de suscripción: USD 10.** Para `N` tokens, el principal es `N × USD 10`; el total a desembolsar agrega los fees de la transacción blockchain informados por separado.
+- Los fees de red son variables y no integran el precio unitario, el capital aportado ni el rendimiento del inversor. Registrar activo de pago del fee, estimación, importe efectivo y responsable. No asumir paridad USD/USDC ni una cotización de gas.
+- Esta definición no autoriza sumar al inversor gastos de emisión, estructuración, plataforma o intermediación por defecto. Los costos presupuestados del proyecto y la remuneración C3 son conceptos separados.
+- El precio no determina porcentaje de propiedad, resultados o voto, ni precio de reventa, rescate o valor de mercado. Fraccionamiento y unidades/decimales de cada emisión deben especificarse antes de operar.
+- C4 verifica el principal exacto, excluyendo gas. En el ejemplo local con moneda USD y escala de centavos, son 1.000 centavos por token. C4 parametriza el precio: la documentación por sí sola no lo impone a todos los despliegues.
+- El prototipo C3 calcula una comisión sobre compras, con ejemplo de **0,5 % del principal**: USD 0,05 para plataforma y USD 9,95 netos para vehículo por token. Es un parámetro histórico del prototipo, no una tasa comercial definitiva ni un fee adicional al comprador. No confundirlo con comisiones por gestión o resultado, pendientes de definición e implementación.
 
-- Los aportes de inversores se canalizan al patrimonio del vehículo. No son ingresos propios de FranToken SAS ni rendimiento generado por la unidad.
-- El proyecto desembolsa para adquirir derechos de franquicia y poner la unidad en funcionamiento según el presupuesto aprobado. La explotación genera ventas y cobros; de esa caja se atienden las obligaciones aplicables.
-- Las regalías al franquiciante (C1), los honorarios de la operadora (C2), los dos componentes de remuneración de FranToken SAS (C3) y las distribuciones al inversor (C4) son conceptos diferentes. La remuneración C3 se financia desde la explotación según el modelo aportado; falta precisar obligado contractual, pagador material, base, tasa, periodicidad, prelación, tributos y tratamiento de pérdidas o falta de caja. No suponer una comisión adicional cobrada directamente al inversor.
-- Una remesa de la unidad al vehículo y la distribución posterior no son dos ganancias. Si un honorario se pagó antes de la remesa, no se vuelve a descontar. Separar resultado contable, ganancia definida contractualmente y caja distribuible.
-- Porcentaje del costo financiado, porcentaje de unidades de una emisión, derecho sobre resultados, propiedad y voto tienen denominadores y consecuencias diferentes. El precio del token, su valor nominal y cualquier precio secundario también son magnitudes distintas.
-- La fórmula de distribuciones, las prioridades, reservas, retenciones, moneda, periodicidad y mecanismo de salida siguen pendientes. El ejemplo de USD 500.000, cualquier porcentaje ilustrativo y la mención de McDonald's en el manual no son datos de una oferta real ni material publicable.
+Para importes operativos: enteros en unidades mínimas o decimal exacto, moneda y escala explícitas, redondeo definido y serialización decimal como texto. Los getters demo que convierten a `number` no son una base válida para liquidación monetaria exacta.
 
-## Consecuencia para la web y el software
+## Secuencia y flujo de fondos
 
-La web debe explicar **proyectos de franquicia y sus emisiones u ofertas**, mostrar quién opera y qué derechos se adquieren, y separar información del franquiciante, la operadora, FranToken SAS y el vehículo. Una ficha pública necesita estado, condiciones, costos, riesgos, documentos, fuente y fecha antes de una acción de registro o inversión. Crear una cuenta no compra ni reserva un token. La disponibilidad y el estado de captación deben venir del servicio autorizado, no de texto editorial.
+1. **Originar y evaluar:** documentar marca y unidad; analizar canon, obra, equipamiento, inventario, permisos, alquileres, preapertura, capital de trabajo, contingencias y escenarios. Un caso no viable se descarta.
+2. **Estructurar:** definir vehículo y contratos. El DTE exige C1–C4 firmados y fideicomiso constituido antes de publicar la oportunidad. La aceptación individual de C4 debe acreditarse para cada inversor antes de emitir; no se presume por la publicación.
+3. **Suscribir:** recibir y conciliar aportes externos, verificar elegibilidad y límites, y emitir una sola vez por compra mediante C4. El pago externo y la emisión no son atómicos.
+4. **Cerrar campaña:** al fin del período, objetivo alcanzado → financiado; objetivo no alcanzado → cancelado y devolución de aportes. Meta, mínimo, máximo, plazo, excedentes, devolución y responsables requieren términos concretos. Registrar un token no implementa estas reglas.
+5. **Poner en marcha:** con C1 vigente, aplicar fondos al canon y obras según presupuesto y comprobantes; incluir equipamiento, permisos y preapertura. Con local habilitado, activar C2 y comenzar operación.
+6. **Operar y conciliar:** la operadora registra ventas y costos; se concilian medios de pago, bancos, facturas, tributos, remesas, honorarios y desvíos. Blockchain no verifica por sí sola ventas, obras ni balances.
+7. **Distribuir:** al cierre del período, aplicar prelación y reservas. Solo con caja distribuible positiva y sin obligación senior vencida se habilita el reparto a inversores. Sin esas condiciones, bloquear distribución y constituir reservas según corresponda. Acreditar pagos y actualizar el registro de titulares sin reasignar derechos previamente devengados.
+8. **Liquidar:** por vencimiento C4 o terminación C1, notificar inversores, cancelar obligaciones, distribuir remanente y extinguir el vehículo conforme a los documentos. La quema al cancelar o cerrar es un supuesto del DTE, no un procedimiento económico implementado.
 
-La [arquitectura de información](../spec/INFORMATION-ARCHITECTURE.md), el [modelo de contenidos](../spec/CONTENT-MODEL.md), los [blueprints](../spec/PAGE-BLUEPRINTS.md) y la [matriz de adaptación](../spec/ADAPTATION-MATRIX.md) fueron redactados para **inmuebles**, tomando Lofty como referencia. Sus rutas `/propiedades`, entidades `Property` y `Offer`, atributos de vivienda, gestor inmobiliario y copy de compra inmobiliaria **no describen el producto declarado de FranToken**. Conservar esos archivos como propuestas históricas de estructura y UX; no implementarlos ni publicarlos como dominio vigente. La adaptación de rutas, entidades, navegación, filtros, fichas y CTA a franquicias es trabajo pendiente registrado en [Decisiones web](../DECISIONS.md). El sistema visual y sus mediciones siguen siendo referencias de diseño, sujetas a identidad y licencias propias.
+La cascada declarada es: **operación → regalías C1 → honorarios C2 y C3 → reservas → inversores C4**. Faltan bases, tasas, orden detallado dentro de cada nivel, responsables, impuestos, periodicidad y reglas de pérdidas. EBITDA, utilidad contable y caja distribuible no son equivalentes. Una remesa de la unidad al vehículo y su distribución no son dos ganancias; un honorario ya pagado no se vuelve a descontar.
 
-Los procesos operativos son distintos: viabilidad, vehículo, captación, compra, operación, honorarios y distribución pueden tener estados relacionados sin convertirse en un único estado global. La [matriz del manual](source/FranToken-manual-consulta-v2.md#63-matriz-de-estados-y-excepciones) es una propuesta para especificarlos, no código ni transición habilitada. Pagos, emisión, transferencias y distribuciones requieren reglas aprobadas, autorización por actor, conciliación, idempotencia y evidencia antes de implementarse.
+## Estados y derechos
 
-El [material Solidity importado](../context/solidity-import/README.md) describe otro checkout y una ADR en estado propuesta. Aclara riesgos técnicos de emisión, elegibilidad, distribución y permisos, pero sus contratos y pruebas no están en este repositorio. Las preguntas del antiguo registro D01–D12 se contrastan con el manual v2 en [Decisiones backend](../DECISIONS-BACKEND.md); ninguna decisión de operación real quedó completamente cerrada por esa comparación.
+Proyecto y token son objetos diferentes. El proyecto recorre originación, evaluación, estructuración, suscripción, financiación, puesta en marcha, operación, distribución y liquidación; también puede ser descartado o cancelado. El token vigente puede estar en lock-up, transferible o congelado. Un token congelado conserva derechos económicos; sus restricciones de reclamo se describen en el estado técnico.
+
+Las transferencias ordinarias del modelo requieren KYC vigente de ambas partes, wallets no congeladas, país permitido, límites de tenencia e inversores y lock-up finalizado; aplican a `transfer` y `transferFrom`. Transferibilidad no garantiza intercambio contra pago ni liquidez. Una transferencia posterior no reasigna distribuciones ya devengadas. La duración del lock-up, los umbrales y el corte de titulares requieren definición por emisión. Ver [transiciones y excepciones](LIFECYCLES.md).
+
+## Información, riesgos y aceptación
+
+Cada oportunidad debe identificar derechos, vehículo, operadora, uso de fondos, documentos y versiones, condiciones de cierre, precio, fees, estado, fuentes y fecha. Mostrar riesgos comerciales, financieros, operativos, tecnológicos, jurídicos, cambiarios, fiscales y de liquidez. No convertir ejemplos de USD 500.000, marcas mencionadas o escenarios de ROI en una oferta real o promesa de retorno.
+
+Una acción sensible debe conservar actor autorizado, proyecto/emisión, regla y versión, evidencia, fecha, referencia idempotente y resultado. Distinguir aporte recibido, conciliación, derecho constituido, emisión confirmada, distribución acreditada y reclamo pagado. Una discrepancia requiere incidencia y conciliación; nunca ajuste silencioso de saldos.
+
+## Aplicación al frontend
+
+La web explica proyectos de franquicia y sus emisiones: quién opera, vehículo, derechos, riesgos, documentos, precio fijo y fees separados. La disponibilidad de suscripción y los estados del DTE deben proceder del servicio autorizado; la UI no los decide por texto editorial, registro de usuario o datos demo.
+
+Las propuestas de [arquitectura de información](../spec/INFORMATION-ARCHITECTURE.md), [contenido](../spec/CONTENT-MODEL.md), [blueprints](../spec/PAGE-BLUEPRINTS.md) y [adaptación](../spec/ADAPTATION-MATRIX.md) redactadas para inmuebles conservan valor histórico de UX. Sus entidades inmobiliarias no son el modelo vigente; su adaptación a franquicias se sigue en [decisiones web](../DECISIONS.md). Las referencias visuales no suministran cifras, identidades ni condiciones de inversión de FranToken.
+
+El [manual v2 recibido](source/FranToken-manual-consulta-v2.md) y las [instrucciones históricas de ChatGPT](source/FranToken-instrucciones-proyecto-v2.md) se conservan como fuentes anteriores; estas últimas no gobiernan los agentes. El [contexto Solidity importado](../context/solidity-import/README.md) sigue archivado: el estado técnico actual está en [IMPLEMENTATION-STATUS.md](IMPLEMENTATION-STATUS.md), basado en la inspección del checkout real, sin trasladar contratos ni resultados de pruebas al frontend.
