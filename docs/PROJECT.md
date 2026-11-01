@@ -6,6 +6,8 @@ La rama `feat/academic-mvp` parte del `develop` local e incorpora las definicion
 
 ## Objetivo actual: MVP académico confirmado
 
+## Objetivo actual: MVP académico confirmado
+
 El alcance de entrega vigente es el [MVP académico aprobado](business/MVP-ACADEMICO.md): comprar tokens a USD 10 con pago simulado y emisión C4, iniciar operación por administrador, distribuir mensualmente un importe manual a prorrata y reclamar ingresos con token de prueba en Hardhat local. Sin transferencias entre inversores, sin bancos ni automatización completa del negocio. La aprobación no modifica el código ni cierra pendientes de una operación real.
 
 Los antecedentes siguientes describen el modelo completo y el contexto técnico anterior. Las referencias a fórmula, periodicidad o red pendientes se refieren a valor real; para la demostración rigen las definiciones aprobadas enlazadas arriba.

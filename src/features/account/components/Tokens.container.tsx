@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui";
 import { useSession } from "@/core/hooks/SessionProvider";
-import { demoAccountRepository } from "../repositories/account.repository";
+import { accountRepository } from "../repositories/activeAccount.repository";
 import type { TokenHolding } from "../types/account.type";
 import { Tokens } from "./Tokens";
 
@@ -13,7 +13,7 @@ export function TokensContainer() {
   useEffect(() => {
     if (!session) return;
     let active = true;
-    demoAccountRepository.getHoldings(session.userId).then((data) => {
+    accountRepository.getHoldings(session.userId).then((data) => {
       if (active) setHoldings(data);
     });
     return () => {

@@ -7,6 +7,13 @@ Fecha: 2026-11-01. Estado: **APROBADO; recorrido implementado en las ramas `feat
 La fuente es la confirmación explícita del usuario en la conversación de revisión de negocio: «Confirmo las definiciones, pero aún no implementes nada, quiero que actualices la documentación de frontend y blockchain con estas definiciones». Confirma las seis definiciones propuestas en la tabla siguiente y autoriza esta actualización documental y su publicación en ramas. Esa instrucción limitaba la tarea anterior a documentación. La instrucción posterior del usuario del 2026-11-01, «Procedé a implemntar los cambios necesarios en Frontend y Blockchain. Todos los cambios deben partir desde develop a una rama nueva», autoriza la implementación actual y sus verificaciones locales, sin dinero real.
 
 Esta decisión tiene precedencia para el alcance académico sobre los requisitos del modelo completo en [BUSINESS-LOGIC.md](BUSINESS-LOGIC.md), los [DTE](LIFECYCLES.md), los manuales y las propuestas anteriores. Conserva esos antecedentes y sus pendientes para una operación real; no los convierte en requisitos de entrega del MVP. El repositorio backend separado no se modifica: el MVP usa un coordinador de pago simulado en rutas de servidor de Next.js, con firma de wallet y contratos como registro de resultados. No requiere banco ni un servicio externo.
+Fecha: 2026-11-01. Estado: **APROBADO por el usuario para el MVP académico; implementación pendiente**. Esta especificación es común al frontend y blockchain. Para el estado del código, consultar [implementación y brechas](IMPLEMENTATION-STATUS.md).
+
+## Fuente, autoridad y límites
+
+La fuente es la confirmación explícita del usuario en la conversación de revisión de negocio: «Confirmo las definiciones, pero aún no implementes nada, quiero que actualices la documentación de frontend y blockchain con estas definiciones». Confirma las seis definiciones propuestas en la tabla siguiente y autoriza esta actualización documental y su publicación en ramas. No autoriza implementar, desplegar ni mover fondos.
+
+Esta decisión tiene precedencia para el alcance académico sobre los requisitos del modelo completo en [BUSINESS-LOGIC.md](BUSINESS-LOGIC.md), los [DTE](LIFECYCLES.md), los manuales y las propuestas anteriores. Conserva esos antecedentes y sus pendientes para una operación real; no los convierte en requisitos de entrega del MVP. El backend no se modifica en esta tarea: las necesidades de integración aquí descritas son trabajo futuro.
 
 ## Definiciones aprobadas
 
@@ -40,7 +47,7 @@ Cada franquicia identifica su proyecto, red y contrato de token/emisión. Las pa
 | Distribución | Registrada para una franquicia/período → pendiente de confirmación on-chain → disponible. Solo es disponible después del fondeo y la asignación confirmados. |
 | Reclamo | Disponible → transacción pendiente → cobrado tras confirmación. Un intento fallido conserva el derecho reclamable. |
 
-Estos estados se representan en contratos y en los resultados de integración del MVP; los detalles de prueba y ejecución figuran en la documentación de cada repositorio. Un error o una respuesta perdida de RPC no prueban un resultado económico: consultar la operación antes de repetirla.
+Estos son estados objetivo de integración, no estados ya implementados. Un error o una respuesta perdida de RPC no prueban un resultado económico: consultar la operación antes de repetirla.
 
 ## Compras e ingresos
 
@@ -69,7 +76,7 @@ Estos estados se representan en contratos y en los resultados de integración de
 | Acceso de usuario a acciones administrativas o a compras ajenas | Se rechaza; separar usuario y administrador y autorizar por objeto. |
 | Pausar durante una incidencia | La interfaz informa qué acciones se bloquean; no se confunden pausas del token y C4 ni se borran derechos existentes. |
 
-Los criterios anteriores guían las pruebas del recorrido implementado; los resultados y límites de la verificación se registran en el estado técnico de cada repositorio. Una identificación única de compra y otra por franquicia/período de distribución son suficientes para el MVP; no se exige un ledger contable ni un indexador completo. Las tenencias pueden consultarse directamente en los contratos y las referencias de compras/transacciones persistirse en backend.
+Las pruebas anteriores son criterios para la implementación futura; esta actualización documental no declara que pasen hoy. Una identificación única de compra y otra por franquicia/período de distribución son suficientes para el MVP; no se exige un ledger contable ni un indexador completo. Las tenencias pueden consultarse directamente en los contratos y las referencias de compras/transacciones persistirse en backend.
 
 ## Fuera de alcance de esta versión
 
@@ -79,7 +86,7 @@ Los criterios anteriores guían las pruebas del recorrido implementado; los resu
 - Sustitución de operadora, permisos institucionales complejos, mercado secundario, reventa y liquidez.
 - Red pública de prueba o producción, indexación completa y automatización temporal con cron/oráculos como requisito de la presentación.
 
-C1–C3 se conservan como contexto y componentes de demostración. No se exige automatizar el circuito jurídico/operativo completo para comprar y cobrar. **La dependencia técnica actual de C4 respecto de C3 activo sigue existiendo:** la preparación de la demo debe satisfacerla con firmas de prueba. El token académico extiende el token existente para bloquear transferencias, controlar estados y asegurar un reparto por mes; los contratos C1–C4 existentes mantienen sus verificaciones. Se conserva la suite del token general.
+C1–C3 se conservan como contexto y componentes de demostración. No se exige automatizar el circuito jurídico/operativo completo para comprar y cobrar. **La dependencia técnica actual de C4 respecto de C3 activo sigue existiendo:** la preparación de la demo debe satisfacerla con firmas de prueba. No se eliminan verificaciones ni se alteran contratos en esta actualización.
 
 ## Aprobado frente a pendiente
 

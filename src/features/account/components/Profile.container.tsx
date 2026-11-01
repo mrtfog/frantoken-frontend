@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui";
 import { useSession } from "@/core/hooks/SessionProvider";
-import { demoAccountRepository } from "../repositories/account.repository";
+import { accountRepository } from "../repositories/activeAccount.repository";
 import { saveProfile } from "../services/account.service";
 import type { UserProfile } from "../types/account.type";
 import { Profile } from "./Profile";
@@ -15,7 +15,7 @@ export function ProfileContainer() {
   useEffect(() => {
     if (!session) return;
     let active = true;
-    demoAccountRepository.getProfile(session.userId).then((value) => {
+    accountRepository.getProfile(session.userId).then((value) => {
       if (active)
         setProfile(
           value ?? {
@@ -45,7 +45,7 @@ export function ProfileContainer() {
       profile={profile}
       saved={saved}
       onSave={async (value) => {
-        await saveProfile(session.userId, value, demoAccountRepository);
+        await saveProfile(session.userId, value, accountRepository);
         await updateDisplayName(value.fullName);
         setProfile(value);
         setSaved(true);

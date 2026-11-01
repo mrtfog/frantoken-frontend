@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui";
 import { useSession } from "@/core/hooks/SessionProvider";
-import { demoAccountRepository } from "../repositories/account.repository";
+import { accountRepository } from "../repositories/activeAccount.repository";
 import type { FranchiseApplication, TokenHolding } from "../types/account.type";
 import { AccountOverview } from "./AccountOverview";
 
@@ -17,8 +17,8 @@ export function AccountOverviewContainer() {
     if (!session) return;
     let active = true;
     Promise.all([
-      demoAccountRepository.getHoldings(session.userId),
-      demoAccountRepository.getApplications(session.userId),
+      accountRepository.getHoldings(session.userId),
+      accountRepository.getApplications(session.userId),
     ]).then(([holdings, applications]) => {
       if (active) setData({ holdings, applications });
     });
