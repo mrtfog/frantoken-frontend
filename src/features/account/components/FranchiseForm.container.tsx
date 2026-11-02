@@ -15,21 +15,7 @@ import { FranchiseForm } from "./FranchiseForm";
 
 const stepFields: (keyof FranchiseFormValues)[][] = [
   ["franchiseName", "sector", "city", "country"],
-  [
-    "totalCost",
-    "currency",
-    "year1",
-    "revenue1",
-    "margin1",
-    "year2",
-    "revenue2",
-    "margin2",
-    "year3",
-    "revenue3",
-    "margin3",
-    "performanceSource",
-  ],
-  ["operatorName", "estimatedOpening", "description"],
+  ["totalCost", "currency", "operatorName", "estimatedOpening", "description"],
 ];
 
 export function FranchiseFormContainer() {
@@ -50,13 +36,23 @@ export function FranchiseFormContainer() {
   useEffect(() => {
     if (!session) return;
     let active = true;
-    accountRepository.getDraft(session.userId).then((draft) => {
-      if (active) {
-        if (draft && typeof draft === "object" && !Array.isArray(draft))
-          reset({ ...franchiseDefaults, ...draft });
-        setLoaded(true);
-      }
-    });
+    accountRepository
+      .getDraft(session.userId)
+      .then((draft) => {
+        if (active) {
+          if (draft && typeof draft === "object" && !Array.isArray(draft))
+            reset({ ...franchiseDefaults, ...draft });
+          setLoaded(true);
+        }
+      })
+      .catch((e) => {
+        if (active) {
+          setNotice(
+            e instanceof Error ? e.message : "No se pudo cargar el borrador.",
+          );
+          setLoaded(true);
+        }
+      });
     return () => {
       active = false;
     };
@@ -85,19 +81,23 @@ export function FranchiseFormContainer() {
       onNext={async () => {
         setNotice("");
         if (!(await trigger(stepFields[step]))) return;
-        if (step === 1) {
-          const { year1, year2, year3 } = getValues();
-          if (!(year1 < year2 && year2 < year3)) {
-            setNotice("Los años deben estar en orden ascendente.");
-            return;
-          }
+        try {
+          await accountRepository.saveDraft(session.userId, getValues());
+        } catch (e) {
+          setNotice(
+            e instanceof Error ? e.message : "No se pudo guardar el borrador.",
+          );
+          return;
         }
-        await accountRepository.saveDraft(session.userId, getValues());
-        setStep((current) => Math.min(2, current + 1));
+        setStep((current) => Math.min(1, current + 1));
       }}
       onSaveDraft={async () => {
-        await accountRepository.saveDraft(session.userId, getValues());
-        setNotice("Borrador guardado en este navegador.");
+        try {
+          await accountRepository.saveDraft(session.userId, getValues());
+          setNotice("Borrador guardado en tu cuenta.");
+        } catch (e) {
+          setNotice(e instanceof Error ? e.message : "No se pudo guardar.");
+        }
       }}
       onSubmit={handleSubmit(async (value) => {
         setNotice("");

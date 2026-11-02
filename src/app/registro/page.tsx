@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AuthDemo } from "@/features/auth/components/AuthDemo";
+import { SignIn } from "@/features/account/components/SignIn";
 
 export const metadata: Metadata = {
   title: "Registrarse · Demo | FranToken",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function RegisterPage() {
-  return <AuthDemo mode="register" />;
+  return <SignIn mode="register" />;
 }

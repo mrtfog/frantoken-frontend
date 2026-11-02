@@ -74,7 +74,9 @@ function ProjectCard({
             <dt className="text-[10px] font-bold text-[#668276] uppercase">
               Precio académico
             </dt>
-            <dd className="mt-1 font-bold">USD 10 · pago simulado</dd>
+            <dd className="mt-1 font-bold">
+              USD {project.price?.display ?? "10"} · {project.status ?? "demo"}
+            </dd>
           </div>
         </dl>
         <Link

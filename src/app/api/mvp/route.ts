@@ -1,6 +1,8 @@
-import { handleAcademicRequest } from "@/features/investment/services/academicApi.service";
-
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const GET = handleAcademicRequest;
-export const POST = handleAcademicRequest;
+// Express es el único coordinador de escrituras del MVP integrado.
+export function GET() {
+  return Response.json(
+    { error: { message: "El MVP usa /api/account/investment en Express." } },
+    { status: 410 },
+  );
+}
+export const POST = GET;

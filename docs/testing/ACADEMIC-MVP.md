@@ -1,20 +1,29 @@
-# Verificación del MVP académico
+# Verificación del MVP integrado
 
-Fecha: 2026-11-01. Alcance: ramas `feat/academic-mvp`, creadas desde `develop` local de frontend y blockchain. La actualización remota no pudo verificarse por DNS de GitHub.
+Fecha: 2026-11-02. Frontend/blockchain conservan `feat/academic-mvp`. Backend `feat/mvp-integracion-completa`, nueva desde `develop` fd67b09. Alcance académico, sin activos reales.
 
-| Comprobación | Resultado y alcance |
+| Comprobación ejecutada | Resultado |
 |---|---|
-| Suite blockchain `npm test` | **57 pasan**: suite general previa y seis casos nuevos de MVP (emisión/roles, requisitos, transferencias, períodos/fondos, prorrata/compra posterior/cobro y cierre). |
-| `node scripts/test-academic-integration.cjs` | **Ocho escenarios pasan** con cliente wallet, handler Next y contratos reales desplegados en Hardhat en memoria: compra/términos, recuperación, autorización, operación/distribución, reclamo, firmas/origen y cierre. |
-| `node node_modules/typescript/bin/tsc --noEmit` | Pasa con chequeo estricto de tipos. |
-| `node scripts/check-architecture.mjs` | Pasa; revisados límites de feature, contenedor/presentación, servicios/repositorios, tipos y componentes reutilizados. |
-| Biome sobre archivos modificados | Pasa. No se reformatearon archivos ajenos. |
-| `node node_modules/next/dist/bin/next build --webpack` | Pasa, incluido chequeo de tipos y generación de páginas; `/api/mvp` dinámica y `/administracion` incluida. |
-| Nodo TCP y navegador con extensión | **No ejecutado**: el entorno rechaza escuchar en 127.0.0.1:8545 con EPERM. Sin revisión visual móvil/escritorio/teclado ni firma por extensión real. |
-| Operación externa o dinero real | No ejecutada; fuera del alcance académico. |
+| Blockchain `npm test` | **58 pasan**: suite general, seis casos del token académico y uno de fábrica. Incluye prorrata entre dos titulares, emisión posterior sin ingresos anteriores, cobro único, cierre, permisos y transferencias bloqueadas. |
+| Backend `npm run test:mvp` | **14 escenarios pasan** con clientes frontend, Express/JWT, Sequelize/SQL real y contratos reales en Hardhat. Incluye creación/publicación de solicitud nueva, compra/reparto/cobro en sus contratos, referencias duplicadas simultáneas, respuesta perdida, escala seis decimales y migración repetida preservando filas. |
+| Backend `npm run build` | Pasa TypeScript estricto y compila servicios/controladores/modelos. |
+| Frontend `node node_modules/typescript/bin/tsc --noEmit` | Pasa. |
+| Frontend `node scripts/check-architecture.mjs` | Pasa; nombres, capas, tipos, controles reutilizados y skeletons. |
+| Biome sobre los archivos JS/TS/JSON modificados | Pasa. No se modifican primitivas de UI compartidas ni se reformatean fuentes ajenas al alcance. |
+| Frontend `node node_modules/next/dist/bin/next build --webpack` | Pasa, incluido TypeScript y páginas; detalle de proyecto dinámico y Mis solicitudes incluidos. |
+| Frontend `node scripts/test-academic-integration.cjs` | Entrada al mismo runner integrado del backend; exige los tres checkouts hermanos/dependencias y Node 24. |
+| Servidor MySQL/PostgreSQL / migración de datos existentes real | **No ejecutado**: la persistencia se comprobó con SQLite real; Docker/socket no disponible. No se tocó la base del usuario. |
+| Navegador con extensión / transporte TCP | **No ejecutado**: sandbox restringe sockets. Falta prueba visual y firma mediante extensión real. |
+| Fondos externos / proveedor bancario | No ejecutado; fuera de alcance. |
 
-La prueba integrada reemplaza el transporte HTTP/JSON-RPC por un puente en memoria hacia la EVM de Hardhat; mantiene validación, firmas, roles, bytecode y lógica real de los contratos. El mock de wallet usa firmas de las cuentas locales mediante eth_sign, sin claves persistidas. No es un test del proveedor bancario ni del render visual.
+## Runner y cobertura
 
-Se usa ethers 6.17.0, la versión ya presente en el repositorio blockchain. Se conservaron los dos documentos del lockfile pnpm y se agregaron sus entradas con los hashes de integridad del lockfile blockchain. La instalación pnpm no pudo reejecutarse en este entorno por restricciones de escritura/red/verificación del gestor; se usó el paquete instalado en blockchain mediante un enlace local no versionado para validar tipos, build e integración. Debe verificarse `pnpm install --frozen-lockfile` en un entorno con acceso al registro antes de considerar verificada la instalación desde cero.
+El runner usa `node:sqlite` de Node 24 mediante un adaptador exclusivo del test al dialecto SQLite de Sequelize. No simula modelos ni transacciones SQL. Invoca clientes reales de sesión/perfil/solicitud/inversión/admin, Express con parsers, JWT, permisos y validadores, y EVM Hardhat con bytecode real. Sustituye únicamente transporte de sockets por puentes en memoria y driver sqlite3 por node:sqlite. El watchdog falla si el flujo no termina; una promesa sin resolver no puede producir un falso éxito.
 
-Los ejemplos son datos académicos: no acreditan acuerdos con las marcas, identidad real, cobro en USD, paridad de mUSDC, funcionamiento de una franquicia o rentabilidad. La guía de ejecución detalla cuentas de prueba y responsables del gas.
+Los 14 escenarios verifican: registro/sesión/403; requisitos de documentación; persistencia y fecha inválida; solicitud sin historial con ID del servidor; vínculo firmado sin aprobación automática; aprobación admin en registry; términos y compra/precio; recuperación sin doble emisión; estado y mes/importe único; claim firmado sin doble pago; publicación idempotente y catálogo sin datos personales; compra/reparto/cobro de nueva franquicia y referencia simultánea; migración repetida; revocación al editar identidad y eliminación de sesión inválida.
+
+El test no certifica MySQL/PostgreSQL: enum, ALTER e índices deben comprobarse en el dialecto usado antes de aplicar la migración a una base compartida. Tampoco mide render, accesibilidad visual o funcionamiento de una extensión. La cadena/base de prueba se crean aisladas; no se leen claves ni datos reales.
+
+Se conservan la versión ethers y las dependencias/lockfiles existentes. En este entorno ethers del frontend se resuelve mediante un enlace local no versionado al paquete instalado en blockchain. No se verificó instalación limpia desde el registro: `pnpm install --frozen-lockfile` debe comprobarse en un entorno con acceso antes de afirmar reproducibilidad de instalación. La configuración `experimental.useTypeScriptCli:false` ya presente evita la limitación de subprocess del sandbox y conserva la comprobación TypeScript del build.
+
+La guía de ejecución identifica cuentas de prueba y responsables del gas. mUSDC no acredita paridad USD ni retorno; no se probó cumplimiento jurídico ni operación de producción.

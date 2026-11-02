@@ -45,23 +45,8 @@ export const operationSchema = z.discriminatedUnion("action", [
       amount: z.string().regex(/^(0|[1-9]\d{0,11})(\.\d{1,6})?$/),
     })
     .strict(),
-  z
-    .object({
-      action: z.literal("enroll"),
-      address: z.string().regex(/^0x[\da-fA-F]{40}$/),
-    })
-    .strict(),
 ]);
 export type AcademicOperation = z.infer<typeof operationSchema>;
-export const signedOperationSchema = z
-  .object({
-    operation: operationSchema,
-    deploymentId: z.uuid(),
-    deadline: z.number().int().positive(),
-    signature: z.string().regex(/^0x[\da-fA-F]{130}$/),
-  })
-  .strict();
-export type SignedOperation = z.infer<typeof signedOperationSchema>;
 export const activitySchema = z.object({
   kind: z.string(),
   reference: z.string(),
@@ -92,11 +77,15 @@ export const snapshotSchema = z.object({
   admin: manifestSchema.shape.admin,
   wallet: manifestSchema.shape.admin.nullable(),
   verified: z.boolean(),
+  isAdmin: z.boolean().default(false),
   projects: z.array(projectSchema),
 });
 export type AcademicSnapshot = z.infer<typeof snapshotSchema>;
 export const operationResultSchema = z.object({
-  txHash: z.string().regex(/^0x[\da-fA-F]{64}$/),
+  txHash: z
+    .string()
+    .regex(/^0x[\da-fA-F]{64}$/)
+    .nullable(),
   gasFeeEth: z.string().regex(/^\d+(\.\d+)?$/),
   recovered: z.boolean().optional(),
 });
@@ -118,11 +107,12 @@ export type AcademicPanelProps = {
   loading: boolean;
   units: string;
   signedIn: boolean;
+  pendingByProject: Record<string, string>;
   onUnits(value: string): void;
   onConnect(): void;
   onRefresh(): void;
   onAccept(project: AcademicProject): void;
-  onBuy(project: AcademicProject): void;
+  onBuy(project: AcademicProject, units?: string): void;
   onClaim(project: AcademicProject): void;
   onOperation(operation: AcademicOperation): void;
 };

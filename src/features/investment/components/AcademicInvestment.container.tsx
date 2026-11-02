@@ -7,6 +7,7 @@ import {
   claimAcademicRevenue,
   connectAcademicWallet,
   fetchAcademicSnapshot,
+  readPendingPurchase,
 } from "../repositories/academicWallet.repository";
 import {
   buyAcademicTokens,
@@ -33,11 +34,28 @@ export function AcademicInvestmentContainer({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [pendingByProject, setPendingByProject] = useState<
+    Record<string, string>
+  >({});
+  useEffect(() => {
+    setPendingByProject(
+      snapshot
+        ? Object.fromEntries(
+            snapshot.projects.flatMap((project) => {
+              const pending = readPendingPurchase(snapshot, project.id);
+              return pending ? [[project.id, pending.units]] : [];
+            }),
+          )
+        : {},
+    );
+  }, [snapshot]);
   const [units, setUnits] = useState("1");
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      setSnapshot(await fetchAcademicSnapshot(wallet));
+      const data = await fetchAcademicSnapshot(wallet);
+      setSnapshot(data);
+      setWallet(data.wallet);
       setError("");
     } catch (e) {
       setSnapshot(null);
@@ -48,11 +66,18 @@ export function AcademicInvestmentContainer({
   }, [wallet]);
   useEffect(() => {
     let active = true;
+    if (!session) {
+      setSnapshot(null);
+      setWallet(null);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetchAcademicSnapshot(wallet)
       .then((data) => {
         if (active) {
           setSnapshot(data);
+          setWallet(data.wallet);
           setError("");
         }
       })
@@ -68,7 +93,7 @@ export function AcademicInvestmentContainer({
     return () => {
       active = false;
     };
-  }, [wallet]);
+  }, [wallet, session]);
   useEffect(() => {
     const injected = (
       window as Window & {
@@ -97,7 +122,7 @@ export function AcademicInvestmentContainer({
     try {
       const result = await action();
       setNotice(
-        `${result.recovered ? "Compra recuperada" : "Operación confirmada"}. Gas: ${result.gasFeeEth} ETH de prueba. Tx: ${result.txHash}`,
+        `${result.recovered ? "Compra recuperada" : "Operación confirmada"}. Gas: ${result.gasFeeEth} ETH de prueba. Tx: ${result.txHash ?? "Sin nueva transacción (estado existente)"}`,
       );
       await refresh();
     } catch (e) {
@@ -108,6 +133,7 @@ export function AcademicInvestmentContainer({
           : "La operación no se confirmó. Consultá el historial antes de reintentar.",
       );
     } finally {
+      setSnapshot((current) => (current ? { ...current } : null));
       setBusy(false);
     }
   }
@@ -123,6 +149,7 @@ export function AcademicInvestmentContainer({
       loading={loading}
       units={units}
       signedIn={Boolean(session)}
+      pendingByProject={pendingByProject}
       onUnits={setUnits}
       onRefresh={() => void refresh()}
       onConnect={() => {
@@ -136,9 +163,11 @@ export function AcademicInvestmentContainer({
       onAccept={(project) => {
         if (wallet) void run(() => acceptAcademicTerms(project, wallet));
       }}
-      onBuy={(project) => {
+      onBuy={(project, pendingUnits) => {
         if (snapshot && session)
-          void run(() => buyAcademicTokens(snapshot, project.id, units));
+          void run(() =>
+            buyAcademicTokens(snapshot, project.id, pendingUnits ?? units),
+          );
       }}
       onClaim={(project) => {
         if (wallet) void run(() => claimAcademicRevenue(project, wallet));

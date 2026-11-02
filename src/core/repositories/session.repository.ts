@@ -1,9 +1,14 @@
-import type { DemoSession, SignInInput } from "../types/session.type";
+import type {
+  DemoSession,
+  RegisterInput,
+  SignInInput,
+} from "../types/session.type";
 
 const KEY = "frantoken:demo-session:v1";
 
 export interface SessionRepository {
   getSession(): Promise<DemoSession | null>;
+  register(input: RegisterInput): Promise<DemoSession>;
   signIn(input: SignInInput): Promise<DemoSession>;
   signOut(): Promise<void>;
   updateDisplayName(session: DemoSession, name: string): Promise<DemoSession>;
@@ -35,6 +40,9 @@ function readSession(): DemoSession | null {
 export const demoSessionRepository: SessionRepository = {
   async getSession() {
     return readSession();
+  },
+  async register(input) {
+    return this.signIn(input);
   },
   async signIn(input) {
     await new Promise((resolve) => setTimeout(resolve, 350));

@@ -82,7 +82,9 @@ export function ProjectDetail({ project }: { project: DemoProject }) {
               </p>
               <p className="mt-2 font-serif text-[24px]">Sin datos</p>
               <p className="mt-2 text-[11px] text-[#597469]">
-                El gráfico de abajo muestra solo una serie didáctica.
+                {project.annualizedRoiScenario.length
+                  ? "El gráfico de abajo muestra solo una serie didáctica."
+                  : "Este proyecto no tiene historial ni proyección de retorno."}
               </p>
             </div>
             <div className="rounded-xl border border-[#173d34]/15 bg-white p-5">
@@ -98,14 +100,16 @@ export function ProjectDetail({ project }: { project: DemoProject }) {
           </div>
         </section>
 
-        <section
-          className="px-5 pb-16 sm:px-8 lg:px-12"
-          aria-label="Rendimiento ilustrativo"
-        >
-          <div className="mx-auto max-w-[1380px]">
-            <AnnualizedRoiChart project={project} />
-          </div>
-        </section>
+        {project.annualizedRoiScenario.length > 0 && (
+          <section
+            className="px-5 pb-16 sm:px-8 lg:px-12"
+            aria-label="Rendimiento ilustrativo"
+          >
+            <div className="mx-auto max-w-[1380px]">
+              <AnnualizedRoiChart project={project} />
+            </div>
+          </section>
+        )}
 
         <section
           className="bg-[#e7ebe0] px-5 py-16 sm:px-8 lg:px-12"
@@ -138,15 +142,17 @@ export function ProjectDetail({ project }: { project: DemoProject }) {
                   {project.franchise}
                 </p>
               </article>
-              <a
-                className="md:col-span-2 inline-flex items-center gap-2 text-[12px] font-bold underline underline-offset-4"
-                href={project.officialUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Consultar fuente oficial de {project.name}{" "}
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </a>
+              {project.officialUrl && (
+                <a
+                  className="md:col-span-2 inline-flex items-center gap-2 text-[12px] font-bold underline underline-offset-4"
+                  href={project.officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Consultar fuente oficial de {project.name}{" "}
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              )}
             </div>
           </div>
         </section>

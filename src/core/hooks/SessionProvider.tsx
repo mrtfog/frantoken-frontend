@@ -3,11 +3,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { sessionRepository } from "../repositories/activeSession.repository";
 import { signIn } from "../services/session.service";
-import type { DemoSession, SignInInput } from "../types/session.type";
+import type {
+  DemoSession,
+  RegisterInput,
+  SignInInput,
+} from "../types/session.type";
 
 type SessionContextValue = {
   session: DemoSession | null;
   ready: boolean;
+  register(input: RegisterInput): Promise<void>;
   signIn(input: SignInInput): Promise<void>;
   signOut(): Promise<void>;
   updateDisplayName(name: string): Promise<void>;
@@ -21,18 +26,29 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let active = true;
-    sessionRepository.getSession().then((value) => {
-      if (active) {
-        setSession(value);
-        setReady(true);
-      }
-    });
+    sessionRepository
+      .getSession()
+      .then((value) => {
+        if (active) {
+          setSession(value);
+          setReady(true);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setSession(null);
+          setReady(true);
+        }
+      });
+    const reset = () => setSession(null);
+    window.addEventListener("frantoken:unauthorized", reset);
     const unsubscribe = sessionRepository.subscribe((value) => {
       if (active) setSession(value);
     });
     return () => {
       active = false;
       unsubscribe();
+      window.removeEventListener("frantoken:unauthorized", reset);
     };
   }, []);
 
@@ -41,6 +57,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       value={{
         session,
         ready,
+        async register(input) {
+          setSession(await sessionRepository.register(input));
+        },
         async signIn(input) {
           setSession(await signIn(input, sessionRepository));
         },
@@ -50,9 +69,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         },
         async updateDisplayName(name) {
           if (!session) return;
-          setSession(
-            await sessionRepository.updateDisplayName(session, name),
-          );
+          setSession(await sessionRepository.updateDisplayName(session, name));
         },
       }}
     >

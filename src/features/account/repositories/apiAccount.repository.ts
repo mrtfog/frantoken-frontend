@@ -1,4 +1,4 @@
-import { apiFetch } from "@/core/config/api";
+import { apiFetch } from "@/core/config/api.config";
 import type {
   FranchiseApplication,
   TokenHolding,
@@ -28,15 +28,19 @@ function toApplicationInput(application: FranchiseApplication) {
     operatorName: application.operatorName,
     estimatedOpening: application.estimatedOpening,
     performanceSource: application.performanceSource,
-    year1: p1.year,
-    revenue1: p1.revenue,
-    margin1: p1.marginPercent,
-    year2: p2.year,
-    revenue2: p2.revenue,
-    margin2: p2.marginPercent,
-    year3: p3.year,
-    revenue3: p3.revenue,
-    margin3: p3.marginPercent,
+    ...(p1 && p2 && p3
+      ? {
+          year1: p1.year,
+          revenue1: p1.revenue,
+          margin1: p1.marginPercent,
+          year2: p2.year,
+          revenue2: p2.revenue,
+          margin2: p2.marginPercent,
+          year3: p3.year,
+          revenue3: p3.revenue,
+          margin3: p3.marginPercent,
+        }
+      : {}),
   };
 }
 
@@ -66,10 +70,14 @@ export const apiAccountRepository: AccountRepository = {
   },
 
   async saveApplication(_userId, application) {
-    await apiFetch<ApplicationResponse>("/api/account/applications", {
-      method: "POST",
-      body: toApplicationInput(application),
-    });
+    const { application: saved } = await apiFetch<ApplicationResponse>(
+      "/api/account/applications",
+      {
+        method: "POST",
+        body: toApplicationInput(application),
+      },
+    );
+    return saved;
   },
 
   async getDraft(_userId) {

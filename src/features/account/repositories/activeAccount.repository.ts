@@ -1,4 +1,4 @@
-import { apiEnabled } from "@/core/config/api";
+import { apiEnabled } from "@/core/config/api.config";
 import { demoAccountRepository } from "./account.repository";
 import { apiAccountRepository } from "./apiAccount.repository";
 

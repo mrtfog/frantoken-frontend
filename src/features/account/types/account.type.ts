@@ -1,5 +1,12 @@
 export type UserProfile = {
   fullName: string;
+  dni: string;
+  cuil: string;
+  birthDate: string;
+  province: string;
+  city: string;
+  address: string;
+  postalCode: string;
   phone: string;
   country: string;
   investorUpdates: boolean;
@@ -29,7 +36,9 @@ export type TokenHolding = {
 export type FranchiseApplication = {
   id: string;
   createdAt: string;
-  status: "Borrador demo enviado";
+  status: string;
+  reviewNote?: string | null;
+  projectId?: string | null;
   franchiseName: string;
   sector: string;
   city: string;

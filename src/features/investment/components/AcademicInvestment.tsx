@@ -13,15 +13,13 @@ export function AcademicInvestment(props: AcademicPanelProps) {
   const { mode, snapshot, wallet, busy, loading, units, signedIn } = props;
   const [period, setPeriod] = useState("");
   const [amount, setAmount] = useState("");
-  const [enrollAddress, setEnrollAddress] = useState("");
+
   const projects =
     snapshot?.projects.filter(
       (p) => !props.projectId || p.id === props.projectId,
     ) || [];
   const Heading = mode === "portfolio" ? "h1" : "h2";
-  const admin = Boolean(
-    wallet && snapshot && wallet.toLowerCase() === snapshot.admin.toLowerCase(),
-  );
+  const admin = snapshot?.isAdmin ?? false;
   return (
     <MotionConfig reducedMotion="user">
       <motion.section
@@ -52,8 +50,17 @@ export function AcademicInvestment(props: AcademicPanelProps) {
           con pago simulado; ingresos variables en mUSDC de prueba. Sin dinero
           real, rentabilidad garantizada ni transferencias.
         </p>
+        {!signedIn && (
+          <ButtonLink className="mt-4" href="/ingresar">
+            Ingresar para continuar
+          </ButtonLink>
+        )}
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <Button variant="dark" onClick={props.onConnect} disabled={busy}>
+          <Button
+            variant="dark"
+            onClick={props.onConnect}
+            disabled={busy || !signedIn}
+          >
             <Wallet aria-hidden="true" className="h-4 w-4" />
             {wallet ? "Cambiar / reconectar wallet" : "Conectar wallet"}
           </Button>
@@ -86,8 +93,8 @@ export function AcademicInvestment(props: AcademicPanelProps) {
           </div>
         ) : !snapshot ? (
           <p className="mt-5 text-sm">
-            Iniciá el nodo y desplegá la demo según la guía del repositorio.
-            Luego actualizá esta sección.
+            Ingresá a tu cuenta, completá tu perfil y verificá la configuración
+            del backend y la red según la guía. Luego actualizá esta sección.
           </p>
         ) : (
           <>
@@ -95,48 +102,21 @@ export function AcademicInvestment(props: AcademicPanelProps) {
               <div className="mt-4">
                 <ButtonLink href="/ingresar">Ingresar para comprar</ButtonLink>
                 <p className="mt-2 text-xs">
-                  El acceso demo no compra tokens. La wallet firma y acredita el
-                  control en cada operación.
+                  Completá el perfil y vinculá tu wallet para continuar.
                 </p>
               </div>
             )}
             {mode === "admin" && !admin && (
               <p className="mt-4 break-all text-sm">
-                Conectá la wallet administradora del despliegue:{" "}
-                {snapshot.admin}. El servidor verifica su firma para cada
-                acción.
+                Ingresá con una cuenta administradora. La cuenta técnica del
+                despliegue es: {snapshot.admin}. Express verifica el rol de tu
+                sesión para cada acción.
               </p>
             )}
             {mode === "admin" && admin && (
-              <form
-                className="mt-6 flex flex-wrap items-end gap-3"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  props.onOperation({
-                    action: "enroll",
-                    address: enrollAddress,
-                  });
-                }}
-              >
-                <label
-                  className="min-w-0 flex-1 text-sm"
-                  htmlFor="enable-wallet"
-                >
-                  Habilitar wallet de demostración
-                  <Input
-                    id="enable-wallet"
-                    className="mt-2 w-full"
-                    value={enrollAddress}
-                    onChange={(e) => setEnrollAddress(e.target.value)}
-                    required
-                    pattern="0x[0-9a-fA-F]{40}"
-                    placeholder="0x…"
-                  />
-                </label>
-                <Button type="submit" disabled={busy}>
-                  Habilitar
-                </Button>
-              </form>
+              <ButtonLink className="mt-4" href="#revisiones">
+                Revisar perfiles y solicitudes
+              </ButtonLink>
             )}
             <div className="mt-6 space-y-5">
               {projects.map((project) => (
@@ -218,6 +198,21 @@ export function AcademicInvestment(props: AcademicPanelProps) {
                       >
                         Confirmar pago simulado y comprar
                       </Button>
+                      {props.pendingByProject[project.id] && (
+                        <Button
+                          variant="chip"
+                          disabled={busy}
+                          onClick={() =>
+                            props.onBuy(
+                              project,
+                              props.pendingByProject[project.id],
+                            )
+                          }
+                        >
+                          Recuperar compra pendiente de{" "}
+                          {props.pendingByProject[project.id]} tokens
+                        </Button>
+                      )}
                       <p className="text-xs">
                         Si una compra queda pendiente, reintentá la misma
                         cantidad para recuperar su resultado.

@@ -1,48 +1,52 @@
-# Ejecutar el MVP académico local
+# Ejecutar el MVP integrado
 
-La rama `feat/academic-mvp` parte de `develop` e incorpora las definiciones aprobadas. El recorrido usa contratos reales en Hardhat con pago de compra simulado y token de pago de prueba. No requiere cambios en el repositorio backend: el coordinador local vive en las rutas de servidor Next.js, no en el navegador.
+Actualizado: 2026-11-02. Se necesitan **los tres repositorios hermanos**: `frantoken-frontend`, `FranToken-Backend` y `FranToken_Blockchain`, sus dependencias instaladas, una base MySQL/PostgreSQL y una wallet EVM. El coordinador es Express; Next no usa claves administrativas. Solo Hardhat local y activos de prueba.
 
 ## Preparación
 
-Se requieren los repositorios `frantoken-frontend` y `FranToken_Blockchain` como carpetas hermanas, Node compatible con sus manifiestos, las dependencias instaladas y una wallet EVM del navegador. El manifiesto generado solo contiene direcciones y referencias públicas; nunca contiene claves. El frontend agrega `ethers` 6.17.0 para comunicarse con la wallet y el nodo.
+1. Blockchain: `npm run node` en una terminal y `npm run deploy:academic` en otra. Genera `deployments/academic-local.json` (ignorado por Git), cuatro proyectos ilustrativos, C3 firmado, C4, registry, mUSDC y la fábrica para solicitudes nuevas. El manifiesto contiene direcciones públicas, no claves.
+2. Backend: copiar `.env.example` a `.env`, configurar SQL, `JWT_SECRET` y `CORS_ORIGIN=http://localhost:3000`. Mantener `DB_SYNC=false`; ejecutar `npm run db:migrate:mvp` para crear tablas/añadir campos sin borrar filas. Sobre una base existente, respaldarla antes. No se ejecutó esta migración contra tu base durante la implementación.
+3. En el entorno **local del backend**, definir:
 
-1. En blockchain, ejecutar `npm run node` y mantenerlo abierto. Escucha en `http://127.0.0.1:8545`; usar únicamente Hardhat local, chain ID **31337**.
-2. En otra terminal de blockchain, ejecutar `npm run deploy:academic`. Compila y despliega cuatro proyectos ilustrativos vinculados a los slugs del catálogo, C3 firmado, C4 como controlador exclusivo y un token de pago de prueba. Escribe `deployments/academic-local.json`, ignorado por Git.
-3. En frontend, copiar `.env.academic.example` a `.env.local` o definir `MVP_ENABLED=true` en el entorno. Ajustar `MVP_MANIFEST_PATH` si las carpetas no son hermanas. Ejecutar `pnpm dev`.
-4. Configurar la wallet en Hardhat local, chain ID 31337, RPC `http://127.0.0.1:8545`, moneda ETH de prueba. Usar exclusivamente cuentas desechables de Hardhat, nunca wallets con fondos reales.
+   ```dotenv
+   BLOCKCHAIN_ENABLED=true
+   BLOCKCHAIN_ALLOW_WRITES=true
+   BLOCKCHAIN_RPC_URL=http://127.0.0.1:8545
+   BLOCKCHAIN_CHAIN_ID=31337
+   BLOCKCHAIN_MANIFEST_PATH=../FranToken_Blockchain/deployments/academic-local.json
+   BLOCKCHAIN_USE_LOCAL_ACCOUNTS=true
+   ```
 
-El despliegue usa las cuentas locales por posición: **0 administra**, 1 representa el vehículo de prueba, 2 firma C3 como plataforma y **3 verifica pagos simulados**. El resto sirve como inversores de prueba. La consola de Hardhat provee sus cuentas públicas de demostración; no copiar esas claves a este repositorio ni reutilizarlas en otras redes. Todas las cuentas locales reciben habilitación demo; una wallet externa necesita ETH de prueba y habilitación manual por administrador.
+   Las cuentas desbloqueadas solo se aceptan con RPC loopback y opt-in explícito. Alternativamente, `BLOCKCHAIN_ADMIN_PRIVATE_KEY` y `BLOCKCHAIN_VERIFIER_PRIVATE_KEY` deben corresponder a las direcciones distintas del manifiesto; solo en servidor. No reutilizar claves de Hardhat en otras redes.
+4. Backend: `npm run mvp:import` vincula los cuatro proyectos de muestra con los contratos. No crea compras, ingresos ni tenencias; no reabre franquicias. Crea el administrador demo `demo@frantoken.test` / `demodemo8` si no existe, exclusivamente para esta presentación local. No se autoaprueba documentación. Ejecutar `npm run dev` en otra terminal; `GET http://localhost:4000/api/health` comprueba disponibilidad HTTP.
+5. Frontend: copiar `.env.example` a `.env.local` o configurar `NEXT_PUBLIC_API_URL=http://localhost:4000`, sin `/api` al final. Ejecutar `pnpm dev`. Si esa variable queda vacía solo hay vista previa con datos locales; compra/publicación requieren Express.
+6. Wallet: red local 31337, RPC `http://127.0.0.1:8545`, ETH de prueba. Importar solo una cuenta pública desechable del nodo. Las posiciones son: cuenta 0 admin técnico/fondeador; 1 vehículo C3; 2 plataforma C3; 3 verificador; 4+ usuarios. Las cuentas locales están preinscritas en registry como fixture; Express igualmente exige aprobación manual del perfil para comprar. No exponer el nodo desbloqueado a Internet.
 
-Cada proyecto se publica con 1.000 tokens enteros disponibles como dato ficticio del fixture, a USD 10 de referencia por unidad. El administrador recibe 1.000.000 mUSDC de prueba para fondear distribuciones. Son parámetros de la presentación en `scripts/deploy-academic.js`, sin representar condiciones comerciales. C3 conserva el cálculo ilustrativo del 0,5 % y no cobra dinero real.
+Cada fixture tiene 1000 tokens enteros a USD 10. El admin técnico recibe mUSDC de prueba para repartir. Son parámetros ilustrativos, sin alianza con marcas ni ofertas reales. Las claves nunca van al repositorio ni al navegador como configuración de servidor.
 
-## Demostración paso a paso
+## Presentación
 
-1. Ingresar desde `/ingresar` con email de prueba y una contraseña ficticia de ocho caracteres. Este acceso mantiene la navegación demo; la autorización de las operaciones depende de la firma de wallet, no de localStorage.
-2. Abrir una ficha desde `/marketplace`, conectar una wallet inversora, revisar precio/estado/disponibilidad y aceptar los términos en C4 mediante la wallet.
-3. Elegir cantidad y confirmar el pago simulado. La wallet firma la solicitud; el servidor comprueba origen, despliegue, vencimiento y payload y usa el verificador local para llamar C4. El principal es N × USD 10; no hay débito bancario ni cobro de mUSDC por la compra.
-4. Consultar saldo y compra confirmada en la ficha o `/mi-cuenta/tokens`. Conservar el hash visible como comprobante técnico de prueba.
-5. En `/administracion`, conectar la cuenta 0. Iniciar operación de la franquicia. Seleccionar un mes e importe positivo de mUSDC, con hasta seis decimales, y fondear/distribuir. Los meses pueden simularse; no hay cron ni cierre contable automático.
-6. Volver a la wallet inversora, reconectar y actualizar. Reclamar el saldo disponible; el inversor firma y recibe mUSDC de prueba. Puede agregar el contrato `paymentToken` del manifiesto a su wallet para verlo allí.
-7. Repetir con otro mes o con una segunda wallet. Una compra posterior no recibe ingresos ya asignados. El mismo mes no se acredita dos veces y las transferencias entre inversores revierten on-chain.
-8. Cerrar una franquicia desde administración: cesan compras/distribuciones nuevas, pero los ingresos anteriores siguen disponibles para reclamo. El cierre es irreversible en esa instancia y no liquida un fideicomiso real.
+1. `/registro`: crear una cuenta de usuario; `/mi-cuenta/configuracion`: completar documentación ficticia y domicilio. Si esa ruta cambia, usar el enlace «Mi perfil» en la cuenta.
+2. Desde una ficha en `/marketplace`, vincular la wallet: desafío de Express firmado por el usuario. En otra sesión de navegador, ingresar como admin en `/administracion`, revisar el perfil y aprobar la habilitación. No es necesario conectar la wallet 0 para que el admin web ordene operaciones; el backend firma con sus cuentas técnicas.
+3. Usuario: aceptar términos en la wallet, ingresar cantidad y confirmar pago simulado. El backend usa JWT y la wallet vinculada; C4 emite y devuelve hash. No hay débito USD ni transferencia de mUSDC al comprar.
+4. `/mi-cuenta/tokens` muestra balances e ingresos desde cadena. Ante respuesta perdida, usar «Recuperar compra pendiente»; no borrar referencias ni cambiar la cantidad para resolver un resultado incierto.
+5. Admin: iniciar operación y registrar mes `YYYY-MM` e importe mUSDC con hasta seis decimales. La cuenta técnica aprueba fondos y distribuye. Repetir el mismo mes/importe recupera el resultado; otro importe se rechaza.
+6. Usuario: actualizar y cobrar. La wallet del titular firma `claimRevenue`, recibe mUSDC y cambia disponible/cobrado. Aceptación y cobro consumen gas de esa wallet; emisión consume gas del verificador; fondeo/reparto, del admin técnico.
+7. El mismo usuario puede ir a «Abrir una franquicia», completar la solicitud básica sin tres ejercicios históricos y verla en `/mi-cuenta/solicitudes`. La confirmación muestra el ID real y el estado.
+8. Admin: aprobar/observar con nota; publicar una solicitud aprobada con símbolo y cupo entero. Se crea token+C4 y aparece automáticamente en el catálogo, comprable con el mismo flujo. La inversión estimada no calcula el cupo. Una publicación pendiente admite reintento con los mismos parámetros.
+9. Cerrar detiene nuevas compras/repartos; conserva cobro de ingresos anteriores. El cierre no se revierte ni liquida un vehículo real.
 
-El saldo y los movimientos se leen de contratos/eventos, sin mezclar tenencias fijas históricas de la cuenta demo. El gas se informa por separado en ETH de prueba: el usuario paga aceptación/reclamo con su cuenta local; la cuenta verificadora paga la emisión. El administrador paga fondeo/aprobación y distribución.
+## Reintentos, datos y reinicios
 
-## Fallas, reintentos y límites
-
-- Se persiste en el navegador la referencia de compra antes del envío. Si se pierde la respuesta, reintentar **la misma cantidad** recupera el evento C4 sin doble emisión. Un payload diferente con igual referencia se rechaza.
-- Si la wallet rechaza la firma o falta un requisito, corregirlo y reintentar la compra pendiente. No borrar su referencia para resolver un resultado incierto: consultar primero la cadena.
-- Una distribución usa franquicia/período único on-chain. Ante respuesta perdida, actualizar el historial; volver a enviarla no vuelve a acreditar ese mes.
-- La wallet solicita firma para cada acción. Cambiar cuenta o red obliga a reconectar. Las acciones de administración verifican la wallet 0 en el servidor y los roles del contrato.
-- Pausar el token académico bloquea emisión, distribución y reclamo. Transferir está siempre deshabilitado; pausar C4 bloquea suscripciones. Los controles heredados de congelamiento conservan ingresos, pero impiden reclamarlos hasta resolver la restricción. No hay UI de pausa/recuperación en este MVP.
-- Si se reinicia Hardhat sin persistencia, se pierde la cadena de prueba: volver a desplegar y actualizar la página. El nuevo `deploymentId` invalida firmas y referencias de la demo anterior. No reutilizar un manifiesto de otra red.
-- El API requiere `MVP_ENABLED=true`, RPC loopback y chain ID 31337. Las solicitudes de escritura requieren origen local coincidente y firma válida. No publicar este gateway ni exponer un nodo con cuentas desbloqueadas en Internet.
-- Los períodos admiten YYYY-MM entre 2000-01 y 9999-12 para simular meses. El importe se asigna según saldos al ejecutar, sin prorratear por días. El contrato puede retener residuales inferiores a la unidad mínima de cobro; el saldo exacto se calcula en unidades enteras, sin `number` monetario.
+- SQL guarda compras/repartos y cadena guarda balances/eventos. `pending` significa resultado no confirmado, no fracaso demostrado. No editar esas filas para aparentar una emisión/cobro.
+- Editar identidad/domicilio revoca aprobación para nuevas compras. El admin vuelve a revisar; tokens e ingresos existentes permanecen. No se permite cambiar la wallet cuando hay compras pendientes/confirmadas.
+- El seed conserva filas existentes y no reabre proyectos. Cambiar manifiesto importa los fixtures, no migra tokens, derechos, usuarios ni solicitudes de una cadena anterior.
+- **Reiniciar Hardhat pierde la cadena.** Para una presentación nueva, redesplegar y usar una base de prueba nueva, volver a migrar/importar y reiniciar backend/frontend. No mezclar compras/distribuciones de otro despliegue con los contratos nuevos ni borrar automáticamente datos existentes. El `deploymentId` cambia las referencias de compras del navegador; por sí solo no migra SQL.
+- No hay banco, scheduler ni índice histórico externo. Las consultas de eventos desde `fromBlock` son suficientes para la cadena pequeña de la demo. No ejecutar múltiples procesos escritores como configuración de este MVP.
+- Los endpoints antiguos de escritura `/api/blockchain/*` y `/api/mvp` están retirados (410). No usarlos para habilitar wallets, emitir o repartir.
 
 ## Verificación
 
-- Blockchain: `npm test` (suite previa y casos del token académico).
-- Frontend: `node node_modules/typescript/bin/tsc --noEmit`, `node scripts/check-architecture.mjs` y Biome sobre archivos modificados.
-- Integración: `node scripts/test-academic-integration.cjs` desde frontend, con las dependencias de ambos repositorios instaladas. Ejecuta cliente wallet → handler Next → contratos reales en Hardhat en memoria, sustituyendo únicamente transporte TCP y marcador server-only de Next para el runner. No necesita abrir puertos, no modifica un despliegue existente ni requiere claves reales.
+Backend: `npm run build` y `npm run test:mvp`. Blockchain: `npm test`. Frontend: `pnpm typecheck`, `node scripts/check-architecture.mjs`, `pnpm lint` sobre el alcance y `pnpm build`. Para el runner integrado se requiere **Node 24** por `node:sqlite`; llama los clientes reales de frontend, Express/JWT, Sequelize/SQL y contratos Hardhat en memoria, sin abrir puertos. El mismo test se invoca desde frontend con `node scripts/test-academic-integration.cjs`.
 
-La prueba integrada no reemplaza una revisión visual con extensión de wallet en navegador. Consultar [evidencia y límites](../testing/ACADEMIC-MVP.md) para los resultados de esta implementación.
+Ver evidencia y limitaciones en el documento de pruebas del frontend. Falta la comprobación manual con navegador y extensión real; la prueba en memoria no verifica render visual ni transporte TCP. No se usan fondos reales.

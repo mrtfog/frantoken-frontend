@@ -11,26 +11,46 @@ import { Profile } from "./Profile";
 export function ProfileContainer() {
   const { session, updateDisplayName } = useSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   useEffect(() => {
     if (!session) return;
     let active = true;
-    accountRepository.getProfile(session.userId).then((value) => {
-      if (active)
-        setProfile(
-          value ?? {
-            fullName: session.displayName,
-            phone: "",
-            country: "Argentina",
-            investorUpdates: false,
-          },
-        );
-    });
+    accountRepository
+      .getProfile(session.userId)
+      .then((value) => {
+        if (active)
+          setProfile(
+            value ?? {
+              dni: "",
+              cuil: "",
+              birthDate: "",
+              province: "",
+              city: "",
+              address: "",
+              postalCode: "",
+              fullName: session.displayName,
+              phone: "",
+              country: "Argentina",
+              investorUpdates: false,
+            },
+          );
+      })
+      .catch((e) => {
+        if (active)
+          setError(
+            e instanceof Error ? e.message : "No se pudo cargar el perfil.",
+          );
+      });
     return () => {
       active = false;
     };
   }, [session]);
   if (!session) return null;
+  if (error)
+    return (
+      <p role="alert">{error} Volvé a ingresar o recargá para reintentar.</p>
+    );
   if (!profile)
     return (
       <div aria-busy="true" className="space-y-5">

@@ -38,8 +38,9 @@ export function Profile({
         Configuración
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-[#527164]">
-        Editá tu perfil de prueba. Los cambios quedan en este navegador y
-        servirán como referencia para la futura integración de cuenta.
+        Completá datos ficticios de demostración. Se guardan en tu cuenta para
+        invertir o solicitar una franquicia; no se publican en blockchain.
+        Cambiar los datos requiere nueva revisión manual.
       </p>
       <form
         onSubmit={handleSubmit(async (value) => {
@@ -56,6 +57,35 @@ export function Profile({
       >
         <h2 className="text-xl font-bold">Perfil</h2>
         <div className="mt-7 grid gap-5 sm:grid-cols-2">
+          {(
+            [
+              ["dni", "DNI"],
+              ["cuil", "CUIL"],
+              ["birthDate", "Fecha de nacimiento"],
+              ["province", "Provincia"],
+              ["city", "Localidad"],
+              ["address", "Dirección"],
+              ["postalCode", "Código postal"],
+            ] as const
+          ).map(([field, label]) => (
+            <label
+              key={field}
+              className="block text-xs font-bold"
+              htmlFor={field}
+            >
+              {label}
+              <Input
+                id={field}
+                className="mt-2 w-full"
+                type={field === "birthDate" ? "date" : "text"}
+                {...register(field, { required: "Completá este dato." })}
+                aria-invalid={Boolean(errors[field])}
+              />
+              {errors[field] && (
+                <span className="text-red-800">{errors[field]?.message}</span>
+              )}
+            </label>
+          ))}
           <div className="sm:col-span-2">
             <label htmlFor="fullName" className="mb-2 block text-xs font-bold">
               Nombre completo
