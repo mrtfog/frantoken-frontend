@@ -6,7 +6,7 @@ Fecha: 2026-11-02. Frontend/blockchain conservan `feat/academic-mvp`. Backend `f
 |---|---|
 | Blockchain `npm test` | **58 pasan**: suite general, seis casos del token académico y uno de fábrica. Incluye prorrata entre dos titulares, emisión posterior sin ingresos anteriores, cobro único, cierre, permisos y transferencias bloqueadas. |
 | Backend `npm run test:mvp` | **14 escenarios pasan** con clientes frontend, Express/JWT, Sequelize/SQL real y contratos reales en Hardhat. Incluye creación/publicación de solicitud nueva, compra/reparto/cobro en sus contratos, referencias duplicadas simultáneas, respuesta perdida, escala seis decimales y migración repetida preservando filas. |
-| Backend `npm run build` | Pasa TypeScript estricto y compila servicios/controladores/modelos. |
+| Backend `npm run build` y `npm run typecheck:scripts` | Pasan tipos estrictos de servicios/controladores/modelos y scripts de migración/importación. |
 | Frontend `node node_modules/typescript/bin/tsc --noEmit` | Pasa. |
 | Frontend `node scripts/check-architecture.mjs` | Pasa; nombres, capas, tipos, controles reutilizados y skeletons. |
 | Biome sobre los archivos JS/TS/JSON modificados | Pasa. No se modifican primitivas de UI compartidas ni se reformatean fuentes ajenas al alcance. |
