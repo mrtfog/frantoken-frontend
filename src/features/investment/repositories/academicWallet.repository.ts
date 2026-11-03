@@ -20,6 +20,7 @@ import {
   pendingPurchaseSchema,
   snapshotSchema,
 } from "../types/investment.type";
+import { ensureAcademicNetwork } from "./academicNetwork.repository";
 
 async function browserSigner() {
   const injected = (window as Window & { ethereum?: Eip1193Provider }).ethereum;
@@ -27,9 +28,9 @@ async function browserSigner() {
     throw new Error(
       "Instalá una wallet EVM y conectala a Hardhat local (31337).",
     );
-  const provider = new BrowserProvider(injected);
-  if ((await provider.getNetwork()).chainId !== BigInt(31337))
-    throw new Error("Seleccioná Hardhat local (31337).");
+  await ensureAcademicNetwork(injected);
+  const provider = new BrowserProvider(injected, 31337);
+  await provider.getNetwork();
   return provider.getSigner();
 }
 function assertBackend() {

@@ -6,6 +6,7 @@ Actualizado: 2026-11-02. [Alcance aprobado](../business/MVP-ACADEMICO.md), [ejec
 |---|---|
 | `/registro`, `/ingresar` | SessionRepository → Express JWT; GET session valida la sesión guardada; 401 elimina token/caché. |
 | `/mi-cuenta/configuracion` | AccountRepository → SQL; documentación mínima y aviso de revisión manual. |
+| `/mi-cuenta` | Resumen de tenencias y solicitudes consultadas independientemente; un fallo de cadena no oculta las solicitudes ni se representa como saldo cero. |
 | `/marketplace`, `/marketplace/[slug]` | Proyectos de Express, incluido cada nuevo proyecto publicado. Precio/disponibilidad/estado y panel de compra. |
 | `/mi-cuenta/tokens` | GET account/investment; balances, ingresos y eventos de cadena. Wallet firma cobro. |
 | Abrir franquicia | Formulario básico de dos pasos, borrador y envío; sin historial obligatorio. ID/estado devueltos por Express. |

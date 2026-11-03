@@ -58,11 +58,16 @@ export function AcademicInvestment(props: AcademicPanelProps) {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <Button
             variant="dark"
+            className="disabled:cursor-not-allowed disabled:opacity-50"
             onClick={props.onConnect}
-            disabled={busy || !signedIn}
+            disabled={busy || loading || !signedIn || !snapshot}
           >
             <Wallet aria-hidden="true" className="h-4 w-4" />
-            {wallet ? "Cambiar / reconectar wallet" : "Conectar wallet"}
+            {busy
+              ? "Procesando…"
+              : wallet
+                ? "Cambiar / reconectar wallet"
+                : "Conectar wallet"}
           </Button>
           {wallet && (
             <p className="max-w-full break-all text-xs">
@@ -74,6 +79,18 @@ export function AcademicInvestment(props: AcademicPanelProps) {
             </p>
           )}
         </div>
+        {signedIn && !loading && !snapshot && (
+          <p className="mt-3 text-xs leading-5 text-[#4c685d]">
+            La conexión estará disponible cuando se restablezca la red de
+            tokens. Podés seguir usando tu perfil y tus solicitudes.
+          </p>
+        )}
+        {snapshot?.wallet && !wallet && (
+          <p className="mt-3 break-all text-xs leading-5 text-[#4c685d]">
+            Wallet vinculada a tu cuenta: {snapshot.wallet}. Conectala para
+            firmar operaciones.
+          </p>
+        )}
         {props.error && (
           <p
             role="alert"
@@ -93,8 +110,9 @@ export function AcademicInvestment(props: AcademicPanelProps) {
           </div>
         ) : !snapshot ? (
           <p className="mt-5 text-sm">
-            Ingresá a tu cuenta, completá tu perfil y verificá la configuración
-            del backend y la red según la guía. Luego actualizá esta sección.
+            {signedIn
+              ? "No pudimos consultar tus tokens. Reintentá con Actualizar cuando la red esté disponible."
+              : "Ingresá a tu cuenta para consultar tus tokens."}
           </p>
         ) : (
           <>

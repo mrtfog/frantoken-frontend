@@ -28,6 +28,8 @@ export function AcademicInvestmentContainer({
   projectId?: string;
 }) {
   const { session } = useSession();
+  const userId = session?.userId;
+  const kycApproved = session?.kycApproved;
   const [snapshot, setSnapshot] = useState<AcademicSnapshot | null>(null);
   const [wallet, setWallet] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,9 +55,8 @@ export function AcademicInvestmentContainer({
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchAcademicSnapshot(wallet);
+      const data = await fetchAcademicSnapshot(null);
       setSnapshot(data);
-      setWallet(data.wallet);
       setError("");
     } catch (e) {
       setSnapshot(null);
@@ -63,21 +64,21 @@ export function AcademicInvestmentContainer({
     } finally {
       setLoading(false);
     }
-  }, [wallet]);
+  }, []);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: actualizar la revisión debe refrescar los permisos del snapshot.
   useEffect(() => {
     let active = true;
-    if (!session) {
+    if (!userId) {
       setSnapshot(null);
       setWallet(null);
       setLoading(false);
       return;
     }
     setLoading(true);
-    fetchAcademicSnapshot(wallet)
+    fetchAcademicSnapshot(null)
       .then((data) => {
         if (active) {
           setSnapshot(data);
-          setWallet(data.wallet);
           setError("");
         }
       })
@@ -93,7 +94,7 @@ export function AcademicInvestmentContainer({
     return () => {
       active = false;
     };
-  }, [wallet, session]);
+  }, [userId, kycApproved]);
   useEffect(() => {
     const injected = (
       window as Window & {
@@ -153,12 +154,25 @@ export function AcademicInvestmentContainer({
       onUnits={setUnits}
       onRefresh={() => void refresh()}
       onConnect={() => {
+        if (busy || loading || !snapshot) return;
+        setBusy(true);
         setError("");
+        setNotice(
+          "Aceptá el cambio a Hardhat local y la conexión en tu wallet.",
+        );
         connectAcademicWallet()
-          .then(setWallet)
-          .catch((e) =>
-            setError(e instanceof Error ? e.message : "No se pudo conectar."),
-          );
+          .then(async (address) => {
+            setWallet(address);
+            setNotice(
+              "Wallet vinculada. La habilitación para comprar requiere revisión del administrador.",
+            );
+            await refresh();
+          })
+          .catch((e) => {
+            setNotice("");
+            setError(e instanceof Error ? e.message : "No se pudo conectar.");
+          })
+          .finally(() => setBusy(false));
       }}
       onAccept={(project) => {
         if (wallet) void run(() => acceptAcademicTerms(project, wallet));
