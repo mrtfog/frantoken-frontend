@@ -27,3 +27,9 @@ El test no certifica MySQL/PostgreSQL: enum, ALTER e índices deben comprobarse 
 Se conservan la versión ethers y las dependencias/lockfiles existentes. En este entorno ethers del frontend se resuelve mediante un enlace local no versionado al paquete instalado en blockchain. No se verificó instalación limpia desde el registro: `pnpm install --frozen-lockfile` debe comprobarse en un entorno con acceso antes de afirmar reproducibilidad de instalación. La configuración `experimental.useTypeScriptCli:false` ya presente evita la limitación de subprocess del sandbox y conserva la comprobación TypeScript del build.
 
 La guía de ejecución identifica cuentas de prueba y responsables del gas. mUSDC no acredita paridad USD ni retorno; no se probó cumplimiento jurídico ni operación de producción.
+
+## Actualización 2026-11-03 — Perfil y sesión
+
+`npm run test:mvp` del backend pasa **18 escenarios** con clientes de frontend, Express/JWT, SQL SQLite y Hardhat reales en memoria. Se amplía la cobertura anterior para verificar normalización y límites iguales entre frontend y backend, persistencia del nombre en `User`, devolución del perfil confirmado, caché y notificación de sesión, preservación de revisión al cambiar teléfono/preferencias y revocación al cambiar identidad. También se fuerza un error de guardado de usuario para comprobar rollback tanto de un perfil existente como de su creación inicial; el error no modifica la sesión cacheada.
+
+Se conservan los límites del runner: no valida transporte TCP, extensión de wallet, render visual ni un servidor MySQL/PostgreSQL. No se modificó la base de datos del usuario.

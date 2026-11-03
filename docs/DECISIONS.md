@@ -75,3 +75,17 @@ La publicación necesita token+C4 para que una solicitud aprobada pueda comprars
 La migración es aditiva; el seed no genera compras/repartos. Los endpoints alternativos de escritura quedan 410. Reintentos se concilian con eventos y claves únicas; no hay fallback que confirme derechos solo en base de datos. La cola del MVP presupone un proceso escritor. Reiniciar Hardhat exige una base de prueba nueva para una nueva presentación, sin borrado automático.
 
 Evidencia: 58 tests de contratos y 14 escenarios integrados con SQL y EVM reales en memoria. Límites: sin prueba visual/TCP ni ejecución contra servidor MySQL/PostgreSQL; no se prueba uso con valor real. [Flujo vigente](business/MVP-ACADEMICO.md).
+
+## WEB-2026-11-02 — Acceso y registro con contenido de producto
+
+Estado: implementado por pedido del usuario. `/ingresar` y `/registro` comparten la composición visual del anterior `AuthDemo.tsx`, con cabecera, banner, pie y controles existentes. Se reemplazan los textos de demostración de los formularios y sus metadatos por indicaciones de acceso y creación de cuenta, y se agregan enlaces entre ambos recorridos.
+
+El contenedor de autenticación coordina React Hook Form y la sesión existente. El registro valida nombre visible (2–120 caracteres), correo y contraseña (8–200 caracteres), conserva los errores del backend y redirige a completar el perfil tras la creación de cuenta. La integración usa `SessionRepository` y el endpoint Express `/api/auth/register` cuando `NEXT_PUBLIC_API_URL` está configurada, según el [flujo vigente](architecture/MVP-ACADEMICO.md). La actualización editorial no cambia el alcance académico ni las condiciones de inversión.
+
+## WEB-2026-11-03 — Persistencia conjunta de perfil y usuario
+
+Estado: implementado por pedido del usuario. `Profile.container.tsx` coordina carga, validación, guardado y errores; `Profile.tsx` presenta los controles y estados. La validación compartida entre formulario y servicio coincide con los límites del backend, normaliza CUIL y espacios, y rechaza fechas inexistentes o futuras con mensajes por campo.
+
+PUT `/api/account/profile` persiste perfil, nombre visible del usuario y revisión en una transacción Express/SQL y devuelve `{profile,session}`. El repositorio actualiza la caché y los suscriptores de sesión; el formulario usa los valores confirmados. Se elimina la segunda escritura desde esta pantalla a `/api/auth/display-name`, evitando guardados parciales. La carga depende del ID de usuario, por lo que actualizar la sesión no vuelve a cargar el formulario. En la vista previa sin API se conserva persistencia local, identificada explícitamente en pantalla.
+
+Fuentes: contrato implementado de Express y [flujo vigente del MVP](architecture/MVP-ACADEMICO.md). Evidencia: [verificación de perfil y sesión](testing/ACADEMIC-MVP.md#actualización-2026-11-03--perfil-y-sesión); no cambia el modelo de negocio ni la revisión manual.

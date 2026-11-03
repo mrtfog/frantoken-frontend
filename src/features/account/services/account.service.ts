@@ -1,24 +1,11 @@
 import { z } from "zod";
 import type { AccountRepository } from "../repositories/account.repository";
+import { profileSchema } from "../schemas/profile.schema";
 import type {
   FranchiseApplication,
   FranchiseFormValues,
   UserProfile,
 } from "../types/account.type";
-
-const profileSchema = z.object({
-  dni: z.string().regex(/^\d{7,9}$/),
-  cuil: z.string().regex(/^[\d -]{11,15}$/),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  province: z.string().min(2),
-  city: z.string().min(2),
-  address: z.string().min(5),
-  postalCode: z.string().min(3),
-  fullName: z.string().trim().min(2).max(100),
-  phone: z.string().trim().max(30),
-  country: z.string().trim().min(2).max(60),
-  investorUpdates: z.boolean(),
-});
 
 const applicationSchema = z.object({
   franchiseName: z.string().trim().min(2).max(100),
@@ -37,10 +24,13 @@ export async function saveProfile(
   userId: string,
   value: UserProfile,
   repository: AccountRepository,
-) {
+): Promise<UserProfile> {
   const parsed = profileSchema.safeParse(value);
-  if (!parsed.success) throw new Error("Revisá los datos del perfil.");
-  await repository.saveProfile(userId, parsed.data);
+  if (!parsed.success)
+    throw new Error(
+      parsed.error.issues[0]?.message ?? "Revisá los datos del perfil.",
+    );
+  return repository.saveProfile(userId, parsed.data);
 }
 
 export async function submitFranchise(

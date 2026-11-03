@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
-import { AnnouncementBanner } from "@/components/common/AnnouncementBanner";
-import { SiteFooter } from "@/components/common/SiteFooter";
-import { SiteHeader } from "@/components/common/SiteHeader";
-import { SignIn } from "@/features/account/components/SignIn";
+import { AuthFormContainer } from "@/features/auth/components/AuthForm.container";
 
 export const metadata: Metadata = {
-  title: "Ingresar · Demo | FranToken",
+  title: "Iniciar sesión | FranToken",
+  description:
+    "Ingresá a tu cuenta de FranToken para gestionar tu perfil, tus tokens y tus solicitudes.",
   robots: { index: false, follow: false },
 };
 export default function SignInPage() {
-  return (
-    <>
-      <AnnouncementBanner demo />
-      <SiteHeader />
-      <SignIn />
-      <SiteFooter />
-    </>
-  );
+  return <AuthFormContainer mode="login" />;
 }

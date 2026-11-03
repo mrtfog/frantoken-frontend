@@ -1,3 +1,6 @@
+import type { FormEventHandler } from "react";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+
 export type UserProfile = {
   fullName: string;
   dni: string;
@@ -10,6 +13,18 @@ export type UserProfile = {
   phone: string;
   country: string;
   investorUpdates: boolean;
+};
+
+export type ProfileProps = {
+  email: string;
+  register: UseFormRegister<UserProfile>;
+  errors: FieldErrors<UserProfile>;
+  isSubmitting: boolean;
+  saved: boolean;
+  error: string;
+  localOnly: boolean;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+  onEdit(): void;
 };
 
 export type TokenActivity = {

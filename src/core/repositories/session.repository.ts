@@ -5,6 +5,7 @@ import type {
 } from "../types/session.type";
 
 const KEY = "frantoken:demo-session:v1";
+const sessionListeners = new Set<(session: DemoSession | null) => void>();
 
 export interface SessionRepository {
   getSession(): Promise<DemoSession | null>;
@@ -61,13 +62,18 @@ export const demoSessionRepository: SessionRepository = {
   async updateDisplayName(session, name) {
     const next = { ...session, displayName: name };
     window.localStorage.setItem(KEY, JSON.stringify(next));
+    for (const listener of sessionListeners) listener(next);
     return next;
   },
   subscribe(listener) {
+    sessionListeners.add(listener);
     const onStorage = (event: StorageEvent) => {
       if (event.key === KEY) listener(readSession());
     };
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    return () => {
+      sessionListeners.delete(listener);
+      window.removeEventListener("storage", onStorage);
+    };
   },
 };

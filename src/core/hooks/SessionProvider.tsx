@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { sessionRepository } from "../repositories/activeSession.repository";
-import { signIn } from "../services/session.service";
+import { registerAccount, signIn } from "../services/session.service";
 import type {
   DemoSession,
   RegisterInput,
@@ -58,7 +58,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         session,
         ready,
         async register(input) {
-          setSession(await sessionRepository.register(input));
+          setSession(await registerAccount(input, sessionRepository));
         },
         async signIn(input) {
           setSession(await signIn(input, sessionRepository));
