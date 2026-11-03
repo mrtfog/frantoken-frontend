@@ -12,6 +12,7 @@ const SESSION_KEY = "frantoken:session:v1";
 
 type AuthResponse = { token: string; session: DemoSession };
 type SessionResponse = { session: DemoSession };
+const sessionListeners = new Set<(session: DemoSession | null) => void>();
 
 function writeSession(session: DemoSession): void {
   try {
@@ -19,6 +20,12 @@ function writeSession(session: DemoSession): void {
   } catch {
     // Se ignora.
   }
+}
+
+/** Sincroniza una sesión devuelta por la API y notifica a la pestaña actual. */
+export function syncApiSession(session: DemoSession): void {
+  writeSession(session);
+  for (const listener of sessionListeners) listener(session);
 }
 
 function removeSession(): void {
@@ -79,10 +86,14 @@ export const apiSessionRepository: SessionRepository = {
   },
 
   subscribe(listener) {
+    sessionListeners.add(listener);
     const onStorage = (event: StorageEvent) => {
       if (event.key === SESSION_KEY) void this.getSession().then(listener);
     };
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    return () => {
+      sessionListeners.delete(listener);
+      window.removeEventListener("storage", onStorage);
+    };
   },
 };

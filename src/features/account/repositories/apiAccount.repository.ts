@@ -1,4 +1,6 @@
 import { apiFetch } from "@/core/config/api.config";
+import { syncApiSession } from "@/core/repositories/apiSession.repository";
+import type { DemoSession } from "@/core/types/session.type";
 import type {
   FranchiseApplication,
   TokenHolding,
@@ -7,6 +9,7 @@ import type {
 import type { AccountRepository } from "./account.repository";
 
 type ProfileResponse = { profile: UserProfile | null };
+type SaveProfileResponse = { profile: UserProfile; session: DemoSession };
 type HoldingsResponse = { holdings: TokenHolding[] };
 type ApplicationsResponse = { applications: FranchiseApplication[] };
 type ApplicationResponse = { application: FranchiseApplication };
@@ -52,7 +55,12 @@ export const apiAccountRepository: AccountRepository = {
   },
 
   async saveProfile(_userId, profile) {
-    await apiFetch("/api/account/profile", { method: "PUT", body: profile });
+    const result = await apiFetch<SaveProfileResponse>("/api/account/profile", {
+      method: "PUT",
+      body: profile,
+    });
+    syncApiSession(result.session);
+    return result.profile;
   },
 
   async getHoldings(_userId) {
