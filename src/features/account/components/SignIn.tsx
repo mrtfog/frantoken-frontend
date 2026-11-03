@@ -9,9 +9,9 @@ import { Button, Input } from "@/components/ui";
 import { useSession } from "@/core/hooks/SessionProvider";
 import type { SignInInput } from "@/core/types/session.type";
 
-export function SignIn() {
+export function SignIn({ mode = "login" }: { mode?: "login" | "register" }) {
   const router = useRouter();
-  const { signIn } = useSession();
+  const { signIn, register: registerAccount } = useSession();
   const {
     register,
     handleSubmit,
@@ -21,12 +21,17 @@ export function SignIn() {
     mode: "onSubmit",
     reValidateMode: "onBlur",
   });
+  const [displayName, setDisplayName] = useState("");
   const [message, setMessage] = useState("");
   const onSubmit = handleSubmit(async (values) => {
     setMessage("");
     try {
-      await signIn(values);
-      router.push("/mi-cuenta");
+      if (mode === "register")
+        await registerAccount({ ...values, displayName });
+      else await signIn(values);
+      router.push(
+        mode === "register" ? "/mi-cuenta/configuracion" : "/mi-cuenta",
+      );
     } catch (error) {
       setMessage(
         error instanceof Error
@@ -52,15 +57,16 @@ export function SignIn() {
               Una vista clara de cada paso.
             </h1>
             <p className="mt-8 max-w-sm text-sm leading-7 text-[#c2d6ca]">
-              Probá el panel de cuenta, el historial ilustrativo de tokens y la
-              apertura de franquicias con datos de demostración.
+              Comprá tokens con pago simulado y consultá tus ingresos en la red
+              local. Vinculá tu wallet para comprar y cobrar.
             </p>
             <div className="mt-14 flex items-start gap-3 border-t border-white/20 pt-6 text-xs leading-5 text-[#c2d6ca]">
               <ShieldCheck
                 className="h-5 w-5 shrink-0 text-[#d5f36a]"
                 aria-hidden="true"
               />{" "}
-              No se realizan compras ni se envían datos a un servidor.
+              Sin dinero real. La API valida tu acceso y la wallet firma la
+              aceptación de términos y el cobro.
             </div>
           </div>
           <form
@@ -68,15 +74,29 @@ export function SignIn() {
             noValidate
             className="flex flex-col justify-center p-9 md:p-14"
           >
+            {mode === "register" && (
+              <label className="mb-5 block text-sm" htmlFor="register-name">
+                Nombre visible
+                <Input
+                  id="register-name"
+                  className="mt-2 w-full"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  minLength={2}
+                  maxLength={120}
+                  required
+                />
+              </label>
+            )}
             <span className="text-xs font-extrabold tracking-[.2em] uppercase text-[#557468]">
               Acceso demo
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight">
-              Ingresá a tu cuenta
+              {mode === "register" ? "Creá tu cuenta" : "Ingresá a tu cuenta"}
             </h2>
             <p className="mt-3 mb-9 text-sm leading-6 text-[#587166]">
-              Cualquier email válido y contraseña de ocho caracteres sirven para
-              esta prueba.
+              Usá una cuenta registrada. Para la demostración, completá datos
+              ficticios y una contraseña de al menos ocho caracteres.
             </p>
             <label htmlFor="email" className="mb-2 text-xs font-bold">
               Email
@@ -128,7 +148,11 @@ export function SignIn() {
               disabled={isSubmitting}
               className="mt-7 w-full justify-between"
             >
-              {isSubmitting ? "Ingresando…" : "Entrar al panel"}
+              {isSubmitting
+                ? "Procesando…"
+                : mode === "register"
+                  ? "Crear cuenta"
+                  : "Entrar al panel"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           </form>

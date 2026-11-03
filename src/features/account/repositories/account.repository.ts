@@ -13,7 +13,7 @@ export interface AccountRepository {
   saveApplication(
     userId: string,
     application: FranchiseApplication,
-  ): Promise<void>;
+  ): Promise<FranchiseApplication>;
   getDraft(userId: string): Promise<unknown>;
   saveDraft(userId: string, draft: unknown): Promise<void>;
   clearDraft(userId: string): Promise<void>;
@@ -58,6 +58,7 @@ export const demoAccountRepository: AccountRepository = {
       key(userId, "applications"),
       JSON.stringify([application, ...applications]),
     );
+    return application;
   },
   async getDraft(userId) {
     return read(key(userId, "draft"));

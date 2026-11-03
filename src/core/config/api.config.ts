@@ -77,6 +77,11 @@ export async function apiFetch<T>(
   if (response.status === 204) return undefined as T;
 
   const data: unknown = await response.json().catch(() => null);
+  if (response.status === 401 && typeof window !== "undefined") {
+    clearToken();
+    window.localStorage.removeItem("frantoken:session:v1");
+    window.dispatchEvent(new Event("frantoken:unauthorized"));
+  }
   if (!response.ok) throw new Error(extractErrorMessage(data, response.status));
   return data as T;
 }

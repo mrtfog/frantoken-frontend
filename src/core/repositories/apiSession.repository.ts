@@ -1,5 +1,9 @@
-import { apiFetch, clearToken, setToken } from "../config/api";
-import type { DemoSession, SignInInput } from "../types/session.type";
+import { apiFetch, clearToken, getToken, setToken } from "../config/api.config";
+import type {
+  DemoSession,
+  RegisterInput,
+  SignInInput,
+} from "../types/session.type";
 import type { SessionRepository } from "./session.repository";
 
 // Persistimos la sesión (sin el token) para rehidratar al recargar. El token
@@ -8,25 +12,6 @@ const SESSION_KEY = "frantoken:session:v1";
 
 type AuthResponse = { token: string; session: DemoSession };
 type SessionResponse = { session: DemoSession };
-
-function readSession(): DemoSession | null {
-  try {
-    const raw = window.localStorage.getItem(SESSION_KEY);
-    if (!raw) return null;
-    const value: unknown = JSON.parse(raw);
-    if (
-      typeof value === "object" &&
-      value !== null &&
-      "userId" in value &&
-      "email" in value &&
-      "displayName" in value
-    )
-      return value as DemoSession;
-  } catch {
-    return null;
-  }
-  return null;
-}
 
 function writeSession(session: DemoSession): void {
   try {
@@ -47,9 +32,26 @@ function removeSession(): void {
 /** Implementación de SessionRepository contra la API real (/api/auth). */
 export const apiSessionRepository: SessionRepository = {
   async getSession() {
-    return readSession();
+    if (!getToken()) return null;
+    try {
+      const { session } = await apiFetch<SessionResponse>("/api/auth/session");
+      writeSession(session);
+      return session;
+    } catch {
+      removeSession();
+      return null;
+    }
   },
 
+  async register(input: RegisterInput) {
+    const { token, session } = await apiFetch<AuthResponse>(
+      "/api/auth/register",
+      { method: "POST", body: input },
+    );
+    setToken(token);
+    writeSession(session);
+    return session;
+  },
   async signIn(input: SignInInput) {
     const { token, session } = await apiFetch<AuthResponse>("/api/auth/login", {
       method: "POST",
@@ -78,7 +80,7 @@ export const apiSessionRepository: SessionRepository = {
 
   subscribe(listener) {
     const onStorage = (event: StorageEvent) => {
-      if (event.key === SESSION_KEY) listener(readSession());
+      if (event.key === SESSION_KEY) void this.getSession().then(listener);
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);

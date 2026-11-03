@@ -1,5 +1,13 @@
 # Registro de decisiones web pendientes
 
+## WEB-MVP-02 — Implementación local autorizada
+
+- Estado: implementada en `feat/academic-mvp` desde `develop`, 2026-11-01.
+- Evidencia: instrucción posterior del usuario de implementar frontend y blockchain en ramas nuevas desde develop; no solicita cambios en el backend separado.
+- Decisión técnica: `/api/mvp` como coordinador local de compra simulada con firma de wallet, sin integrar bancos ni compartir claves de usuario. `/administracion` exige la wallet del owner para las acciones privilegiadas. El saldo y los movimientos se consultan en cadena.
+- El acceso por email conserva la navegación demo; no es credencial de autorización económica. La firma acredita el control de wallet para cada acción. El build mantiene chequeo de tipos por la API de TypeScript 5, mediante la opción documentada `experimental.useTypeScriptCli: false`.
+- Detalle y límites: [guía](architecture/ACADEMIC-MVP-RUNBOOK.md) y [evidencia](testing/ACADEMIC-MVP.md).
+
 ## WEB-MVP-01 — Alcance académico confirmado
 
 - Estado: **APROBADO para documentación y alcance del MVP; implementación pendiente**.
@@ -55,3 +63,15 @@ Las rutas `/ingresar`, `/mi-cuenta`, `/mi-cuenta/tokens`, `/mi-cuenta/configurac
 La implementación propone contratos de repositorio para reemplazar el almacenamiento local por Supabase, sin declarar aprobados el registro, la oferta, la compra, la apertura ni el tratamiento real de datos. WEB-02–WEB-11 y WEB-15, según correspondan, siguen pendientes. Antes de habilitar usuarios y operaciones reales hacen falta autenticación y autorización de servidor, reglas de acceso a datos, protección de rutas, política de datos, entidades y condiciones de producto aprobadas. La [nota de integración](architecture/ACCOUNT-DEMO.md) detalla los puntos de reemplazo.
 
 Para cada confirmación futura, registrar aquí la decisión concreta, su alcance, responsable, fecha, enlace a la fuente y documentos `spec/` afectados. Si una decisión cambia, conservar el enlace a la versión anterior y señalar qué contenido necesita revisión.
+
+## MVP-2026-11-02 — Integración única Express y publicación de solicitudes
+
+Estado: implementado dentro del alcance académico solicitado. Instrucción vigente del usuario: realizar los cambios necesarios en las ramas actuales; backend en rama nueva desde develop. Complementa el alcance aprobado y sustituye la decisión técnica anterior del gateway Next para esta demo.
+
+Express autentica JWT, comprueba perfil/aprobación y vincula wallets por desafío firmado. Admin y verificador usan firmantes distintos del manifiesto. La misma cuenta puede invertir y solicitar franquicias; no se agrega un rol excluyente. Perfil en SQL, sin documentación personal en cadena.
+
+La publicación necesita token+C4 para que una solicitud aprobada pueda comprarse y cobrar. Se elige una fábrica local con clave de proyecto idempotente y deployers separados por tamaño de bytecode. Se conserva C3 firmado de prueba. No se agrega cálculo de campañas, caja, ROI ni estructura jurídica real. Precio 1000 centavos USD; ingresos mUSDC seis decimales.
+
+La migración es aditiva; el seed no genera compras/repartos. Los endpoints alternativos de escritura quedan 410. Reintentos se concilian con eventos y claves únicas; no hay fallback que confirme derechos solo en base de datos. La cola del MVP presupone un proceso escritor. Reiniciar Hardhat exige una base de prueba nueva para una nueva presentación, sin borrado automático.
+
+Evidencia: 58 tests de contratos y 14 escenarios integrados con SQL y EVM reales en memoria. Límites: sin prueba visual/TCP ni ejecución contra servidor MySQL/PostgreSQL; no se prueba uso con valor real. [Flujo vigente](business/MVP-ACADEMICO.md).

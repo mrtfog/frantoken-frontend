@@ -1,8 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Ejecutar la implementación del MVP
+
+Ver [guía de ejecución local](docs/architecture/ACADEMIC-MVP-RUNBOOK.md) y [evidencia de pruebas](docs/testing/ACADEMIC-MVP.md). La rama `feat/academic-mvp` se creó desde `develop`; compra, emisión, reparto mensual y reclamo usan Hardhat local y mUSDC de prueba. Express es el coordinador único de JWT, compras, revisión de perfiles y publicación. El frontend firma vínculo, términos y cobro mediante la wallet. La guía incluye despliegue, variables de entorno, wallets, administración y recuperación de compras.
+
 ## Alcance vigente: MVP académico
 
-El usuario confirmó el [MVP académico](docs/business/MVP-ACADEMICO.md): compra a USD 10 con pago simulado y emisión C4; inicio de operación manual; distribuciones mensuales de importe manual, a prorrata al ejecutar; reclamo por inversor; transferencias deshabilitadas; Hardhat local y token de pago de prueba. Gas separado e identificado como de prueba. **Especificación aprobada, implementación pendiente.** Esta actualización modifica solo documentación.
+El usuario confirmó el [MVP académico](docs/business/MVP-ACADEMICO.md): compra a USD 10 con pago simulado y emisión C4; inicio de operación manual; distribuciones mensuales de importe manual, a prorrata al ejecutar; reclamo por inversor; transferencias deshabilitadas; Hardhat local y token de pago de prueba. Gas separado e identificado como de prueba. **Implementado e integrado con Express.** Cualquier usuario puede invertir y presentar una franquicia con documentación básica; el administrador revisa y publica.
 
 El modelo completo y los antecedentes técnicos siguientes se conservan como referencia; campaña, bancos, liquidación y cascada contable completa no son condiciones de entrega del MVP.
 

@@ -11,7 +11,7 @@ export function AnnouncementBanner({ demo = false }: AnnouncementBannerProps) {
       </span>
       <span>
         {demo
-          ? "Demo · Marcas reales, proyectos y datos financieros simulados · Sin ofertas activas"
+          ? "Demo · Marcas reales, proyectos y datos financieros simulados · Sin ofertas comerciales"
           : "Un nuevo modo de pensar proyectos de franquicia"}
       </span>
       {!demo && (

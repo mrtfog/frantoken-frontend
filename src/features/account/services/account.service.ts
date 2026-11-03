@@ -7,6 +7,13 @@ import type {
 } from "../types/account.type";
 
 const profileSchema = z.object({
+  dni: z.string().regex(/^\d{7,9}$/),
+  cuil: z.string().regex(/^[\d -]{11,15}$/),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  province: z.string().min(2),
+  city: z.string().min(2),
+  address: z.string().min(5),
+  postalCode: z.string().min(3),
   fullName: z.string().trim().min(2).max(100),
   phone: z.string().trim().max(30),
   country: z.string().trim().min(2).max(60),
@@ -20,19 +27,10 @@ const applicationSchema = z.object({
   country: z.string().trim().min(2),
   totalCost: z.number().positive(),
   currency: z.enum(["USD", "ARS"]),
-  description: z.string().trim().min(40),
+  description: z.string().trim().min(20),
   operatorName: z.string().trim().min(2),
   estimatedOpening: z.string().min(7),
-  performanceSource: z.string().trim().min(5),
-  year1: z.number().int().min(2000),
-  revenue1: z.number().nonnegative(),
-  margin1: z.number().min(-100).max(100),
-  year2: z.number().int().min(2000),
-  revenue2: z.number().nonnegative(),
-  margin2: z.number().min(-100).max(100),
-  year3: z.number().int().min(2000),
-  revenue3: z.number().nonnegative(),
-  margin3: z.number().min(-100).max(100),
+  performanceSource: z.string().default("No aplica: proyecto nuevo"),
 });
 
 export async function saveProfile(
@@ -54,13 +52,10 @@ export async function submitFranchise(
   if (!parsed.success)
     throw new Error("Revisá los campos de la solicitud antes de continuar.");
   const data = parsed.data;
-  if (!(data.year1 < data.year2 && data.year2 < data.year3)) {
-    throw new Error("Los años de rendimiento deben estar en orden ascendente.");
-  }
   const application: FranchiseApplication = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
-    status: "Borrador demo enviado",
+    status: "Enviada",
     franchiseName: data.franchiseName,
     sector: data.sector,
     city: data.city,
@@ -71,13 +66,7 @@ export async function submitFranchise(
     operatorName: data.operatorName,
     estimatedOpening: data.estimatedOpening,
     performanceSource: data.performanceSource,
-    performance: [
-      { year: data.year1, revenue: data.revenue1, marginPercent: data.margin1 },
-      { year: data.year2, revenue: data.revenue2, marginPercent: data.margin2 },
-      { year: data.year3, revenue: data.revenue3, marginPercent: data.margin3 },
-    ],
+    performance: [],
   };
-  await repository.saveApplication(userId, application);
-  await repository.clearDraft(userId);
-  return application;
+  return repository.saveApplication(userId, application);
 }
