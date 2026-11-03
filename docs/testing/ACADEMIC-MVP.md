@@ -33,3 +33,11 @@ La guía de ejecución identifica cuentas de prueba y responsables del gas. mUSD
 `npm run test:mvp` del backend pasa **18 escenarios** con clientes de frontend, Express/JWT, SQL SQLite y Hardhat reales en memoria. Se amplía la cobertura anterior para verificar normalización y límites iguales entre frontend y backend, persistencia del nombre en `User`, devolución del perfil confirmado, caché y notificación de sesión, preservación de revisión al cambiar teléfono/preferencias y revocación al cambiar identidad. También se fuerza un error de guardado de usuario para comprobar rollback tanto de un perfil existente como de su creación inicial; el error no modifica la sesión cacheada.
 
 Se conservan los límites del runner: no valida transporte TCP, extensión de wallet, render visual ni un servidor MySQL/PostgreSQL. No se modificó la base de datos del usuario.
+
+## Actualización 2026-11-03 — Conectividad blockchain y wallet
+
+`npm run test:mvp` pasa **21 escenarios**. La ampliación prueba red correcta, cambio de red, agregado seguido de cambio, rechazo 4001, solicitud pendiente -32002, método no soportado y wallet que no cambia realmente de red. Se comprueban 503 de módulo deshabilitado, manifiesto ausente y RPC caído, lectura disponible con escrituras deshabilitadas, y resumen que conserva solicitudes sin convertir saldos desconocidos en cero. Los casos de wallet usan un proveedor EIP-1193 de prueba; las operaciones del recorrido principal siguen ejecutándose con SQL y EVM reales en memoria.
+
+Tipos, arquitectura, Biome del alcance, build de backend y scripts, y build del frontend con Webpack pasan. La comprobación operativa local por TCP también respondió 200 en health, catálogo e inversión, con chain ID 31337 y cuatro proyectos. Se inició Hardhat local, se generó el manifiesto académico y se vinculó el catálogo a la base existente; antes se verificaron cero compras y cero proyectos con contratos. No se ejecutaron compras ni se editaron perfiles de usuarios en esa base. Esta comprobación no sustituye una prueba de compra contra el servidor SQL local.
+
+Pendiente: revisión visual y conexión mediante una extensión real. El nodo de desarrollo debe permanecer activo; se conserva la advertencia del runbook sobre pérdida de estado al reiniciar Hardhat.

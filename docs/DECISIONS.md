@@ -89,3 +89,13 @@ Estado: implementado por pedido del usuario. `Profile.container.tsx` coordina ca
 PUT `/api/account/profile` persiste perfil, nombre visible del usuario y revisión en una transacción Express/SQL y devuelve `{profile,session}`. El repositorio actualiza la caché y los suscriptores de sesión; el formulario usa los valores confirmados. Se elimina la segunda escritura desde esta pantalla a `/api/auth/display-name`, evitando guardados parciales. La carga depende del ID de usuario, por lo que actualizar la sesión no vuelve a cargar el formulario. En la vista previa sin API se conserva persistencia local, identificada explícitamente en pantalla.
 
 Fuentes: contrato implementado de Express y [flujo vigente del MVP](architecture/MVP-ACADEMICO.md). Evidencia: [verificación de perfil y sesión](testing/ACADEMIC-MVP.md#actualización-2026-11-03--perfil-y-sesión); no cambia el modelo de negocio ni la revisión manual.
+
+## WEB-2026-11-03 — Red local y separación del resumen de cuenta
+
+Estado: implementado a partir de los errores informados por el usuario. El entorno observado tenía blockchain deshabilitada, ningún nodo en 8545 y ningún manifiesto académico. Se inició el nodo Hardhat en loopback, se desplegaron los contratos y se importó el catálogo en SQL después de verificar que no había compras ni proyectos con contratos. La configuración operativa queda en `.env.local`, ignorado por Git. Las comprobaciones HTTP de catálogo e inversión respondieron 200 con cuatro proyectos y chain ID 31337.
+
+`/mi-cuenta` vuelve a usar el resumen de cuenta; consulta solicitudes y tenencias de manera independiente. Una caída de cadena deja saldos no disponibles y permite ver las solicitudes que sí pudieron consultarse. `/mi-cuenta/tokens` conserva el panel de tokens e ingresos.
+
+La conexión de wallet solicita cambio a Hardhat local y, ante red desconocida, agregado seguido de selección. Verifica la red antes de solicitar cuentas o firma, maneja rechazo y solicitud pendiente, e impide conectar mientras el snapshot no está disponible. Cambiar de cuenta o red elimina la conexión activa; una wallet vinculada en SQL no se presenta como conectada en el navegador. La consulta del snapshot no depende de esa conexión activa, evitando recargas que la restablezcan incorrectamente.
+
+Fuentes: [flujo del MVP](architecture/MVP-ACADEMICO.md), implementación y [gestión oficial de redes de MetaMask](https://docs.metamask.io/metamask-connect/evm/guides/manage-networks/). Evidencia y límites en [verificación de conectividad](testing/ACADEMIC-MVP.md#actualización-2026-11-03--conectividad-blockchain-y-wallet).

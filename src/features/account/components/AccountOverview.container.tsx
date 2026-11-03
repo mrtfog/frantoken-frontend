@@ -2,44 +2,45 @@
 
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui";
+import { apiEnabled } from "@/core/config/api.config";
 import { useSession } from "@/core/hooks/SessionProvider";
 import { accountRepository } from "../repositories/activeAccount.repository";
-import type { FranchiseApplication, TokenHolding } from "../types/account.type";
+import { getAccountOverview } from "../services/getAccountOverview.service";
+import type { AccountOverviewData } from "../types/accountOverview.type";
 import { AccountOverview } from "./AccountOverview";
 
 export function AccountOverviewContainer() {
   const { session } = useSession();
-  const [data, setData] = useState<{
-    holdings: TokenHolding[];
-    applications: FranchiseApplication[];
-  } | null>(null);
+  const userId = session?.userId;
+  const [data, setData] = useState<AccountOverviewData | null>(null);
+  const [retry, setRetry] = useState(0);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: retry permite reconsultar los servicios sin cambiar de usuario.
   useEffect(() => {
-    if (!session) return;
+    setData(null);
+    if (!userId) return;
     let active = true;
-    Promise.all([
-      accountRepository.getHoldings(session.userId),
-      accountRepository.getApplications(session.userId),
-    ]).then(([holdings, applications]) => {
-      if (active) setData({ holdings, applications });
+    getAccountOverview(userId, accountRepository).then((value) => {
+      if (active) setData(value);
     });
     return () => {
       active = false;
     };
-  }, [session]);
+  }, [userId, retry]);
   if (!session) return null;
   if (!data)
     return (
       <div aria-busy="true" className="space-y-5">
         <Skeleton className="h-16 w-2/3" />
         <Skeleton className="h-52 w-full" />
-        <output className="sr-only">Cargando resumen demo</output>
+        <output className="sr-only">Cargando resumen de cuenta</output>
       </div>
     );
   return (
     <AccountOverview
       name={session.displayName}
-      holdings={data.holdings}
-      applications={data.applications}
+      {...data}
+      localOnly={!apiEnabled}
+      onRetry={() => setRetry((value) => value + 1)}
     />
   );
 }
