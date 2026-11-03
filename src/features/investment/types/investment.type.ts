@@ -21,31 +21,14 @@ export const manifestSchema = z.object({
     .min(1),
 });
 export type AcademicManifest = z.infer<typeof manifestSchema>;
-export const operationSchema = z.discriminatedUnion("action", [
-  z
-    .object({
-      action: z.literal("buy"),
-      projectId: z.string(),
-      reference: z.uuid(),
-      units: z.string().regex(/^[1-9]\d{0,5}$/),
-    })
-    .strict(),
-  z
-    .object({
-      action: z.literal("state"),
-      projectId: z.string(),
-      status: z.union([z.literal(1), z.literal(2), z.literal(3)]),
-    })
-    .strict(),
-  z
-    .object({
-      action: z.literal("distribute"),
-      projectId: z.string(),
-      period: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
-      amount: z.string().regex(/^(0|[1-9]\d{0,11})(\.\d{1,6})?$/),
-    })
-    .strict(),
-]);
+export const operationSchema = z
+  .object({
+    action: z.literal("buy"),
+    projectId: z.string(),
+    reference: z.uuid(),
+    units: z.string().regex(/^[1-9]\d{0,5}$/),
+  })
+  .strict();
 export type AcademicOperation = z.infer<typeof operationSchema>;
 export const activitySchema = z.object({
   kind: z.string(),
@@ -95,7 +78,7 @@ export const pendingPurchaseSchema = z.object({
   units: z.string().regex(/^[1-9]\d{0,5}$/),
 });
 export type PendingPurchase = z.infer<typeof pendingPurchaseSchema>;
-export type AcademicMode = "buy" | "portfolio" | "admin";
+export type AcademicMode = "buy" | "portfolio";
 export type AcademicPanelProps = {
   mode: AcademicMode;
   snapshot: AcademicSnapshot | null;
@@ -114,5 +97,4 @@ export type AcademicPanelProps = {
   onAccept(project: AcademicProject): void;
   onBuy(project: AcademicProject, units?: string): void;
   onClaim(project: AcademicProject): void;
-  onOperation(operation: AcademicOperation): void;
 };

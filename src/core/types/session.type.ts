@@ -2,7 +2,7 @@ export type DemoSession = {
   userId: string;
   email: string;
   displayName: string;
-  role?: "investor" | "admin";
+  role?: "investor" | "admin" | "superadmin";
   walletAddress?: string | null;
   kycApproved?: boolean;
 };

@@ -63,44 +63,15 @@ export async function signAcademicOperation(
   operation: AcademicOperation,
 ) {
   assertBackend();
-  if (operation.action === "buy")
-    return operationResultSchema.parse(
-      await apiFetch("/api/account/purchases", {
-        method: "POST",
-        body: {
-          projectId: operation.projectId,
-          units: operation.units,
-          requestId: operation.reference,
-        },
-      }),
-    );
-  if (operation.action === "state")
-    return operationResultSchema.parse(
-      await apiFetch(
-        `/api/admin/projects/${encodeURIComponent(operation.projectId)}`,
-        {
-          method: "PATCH",
-          body: {
-            status: (
-              { 1: "publicada", 2: "en_operacion", 3: "cerrada" } as const
-            )[operation.status],
-          },
-        },
-      ),
-    );
-  if (operation.action === "distribute")
-    return operationResultSchema.parse(
-      await apiFetch("/api/admin/distributions", {
-        method: "POST",
-        body: {
-          projectId: operation.projectId,
-          periodId: operation.period,
-          amount: operation.amount,
-        },
-      }),
-    );
-  throw new Error(
-    "La habilitación se realiza sobre el usuario y su documentación desde administración.",
+  return operationResultSchema.parse(
+    await apiFetch("/api/account/purchases", {
+      method: "POST",
+      body: {
+        projectId: operation.projectId,
+        units: operation.units,
+        requestId: operation.reference,
+      },
+    }),
   );
 }
 export async function acceptAcademicTerms(

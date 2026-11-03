@@ -99,3 +99,9 @@ Estado: implementado a partir de los errores informados por el usuario. El entor
 La conexión de wallet solicita cambio a Hardhat local y, ante red desconocida, agregado seguido de selección. Verifica la red antes de solicitar cuentas o firma, maneja rechazo y solicitud pendiente, e impide conectar mientras el snapshot no está disponible. Cambiar de cuenta o red elimina la conexión activa; una wallet vinculada en SQL no se presenta como conectada en el navegador. La consulta del snapshot no depende de esa conexión activa, evitando recargas que la restablezcan incorrectamente.
 
 Fuentes: [flujo del MVP](architecture/MVP-ACADEMICO.md), implementación y [gestión oficial de redes de MetaMask](https://docs.metamask.io/metamask-connect/evm/guides/manage-networks/). Evidencia y límites en [verificación de conectividad](testing/ACADEMIC-MVP.md#actualización-2026-11-03--conectividad-blockchain-y-wallet).
+
+## WEB-2026-11-03 — Panel de franquicias con permisos de creador y superadmin
+
+Estado: implementado por pedido del usuario. La feature `franchises` reúne revisión, gestión y repositorios propios; el panel de inversión queda centrado en compra y cobro. `/mi-cuenta/solicitudes/[id]` permite corregir/reenviar y consultar historial. `/mi-cuenta/franquicias` y su detalle presentan gestión operativa y propuestas de reparto. `/administracion` y `/administracion/franquicias` solo se ofrecen a superadmin; Express verifica permisos en todas las operaciones.
+
+Se reutilizan cabecera, pie, banner, controles y skeletons. La navegación filtra accesos por sesión; las cantidades desconocidas se muestran como no disponibles. El cierre definitivo requiere confirmación. Se conserva la gestión SQL si falla blockchain; no se confirma una operación hasta recibir el resultado del backend. La publicación pendiente reintenta con símbolo/cupo reservados. Ver [arquitectura de gestión](architecture/FRANCHISE-MANAGEMENT.md) y [pruebas](testing/ACADEMIC-MVP.md).

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { apiEnabled } from "@/core/config/api.config";
 import { useSession } from "@/core/hooks/SessionProvider";
 import { accountRepository } from "../repositories/activeAccount.repository";
 import type { FranchiseApplication } from "../types/account.type";
@@ -23,6 +24,11 @@ export function ApplicationsContainer() {
     void load();
   }, [load]);
   return (
-    <Applications rows={rows} error={error} onRefresh={() => void load()} />
+    <Applications
+      rows={rows}
+      error={error}
+      canManage={apiEnabled}
+      onRefresh={() => void load()}
+    />
   );
 }

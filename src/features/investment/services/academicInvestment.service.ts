@@ -3,10 +3,7 @@ import {
   pendingPurchase,
   signAcademicOperation,
 } from "../repositories/academicWallet.repository";
-import type {
-  AcademicOperation,
-  AcademicSnapshot,
-} from "../types/investment.type";
+import type { AcademicSnapshot } from "../types/investment.type";
 import { operationSchema } from "../types/investment.type";
 
 export async function buyAcademicTokens(
@@ -28,10 +25,4 @@ export async function buyAcademicTokens(
   });
   completePurchase(pending.key);
   return result;
-}
-export function submitAcademicOperation(
-  snapshot: AcademicSnapshot,
-  operation: AcademicOperation,
-) {
-  return signAcademicOperation(snapshot, operationSchema.parse(operation));
 }

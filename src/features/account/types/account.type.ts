@@ -49,6 +49,7 @@ export type TokenHolding = {
 };
 
 export type FranchiseApplication = {
+  version: number;
   id: string;
   createdAt: string;
   status: string;
@@ -69,7 +70,7 @@ export type FranchiseApplication = {
 
 export type FranchiseFormValues = Omit<
   FranchiseApplication,
-  "id" | "createdAt" | "status" | "performance" | "totalCost"
+  "id" | "createdAt" | "status" | "performance" | "totalCost" | "version"
 > & {
   totalCost: number | undefined;
   year1: number;

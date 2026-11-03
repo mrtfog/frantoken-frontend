@@ -9,7 +9,11 @@ import {
 } from "../repositories/adminReview.repository";
 import type { ReviewApplication, ReviewUser } from "../types/admin.type";
 import { AdminReview } from "./AdminReview";
-export function AdminReviewContainer() {
+export function AdminReviewContainer({
+  section = "applications",
+}: {
+  section?: "users" | "applications";
+}) {
   const { session } = useSession();
   const [users, setUsers] = useState<ReviewUser[]>([]);
   const [applications, setApplications] = useState<ReviewApplication[]>([]);
@@ -31,7 +35,7 @@ export function AdminReviewContainer() {
     }
   }, []);
   useEffect(() => {
-    if (session?.role === "admin") void load();
+    if (session?.role === "superadmin") void load();
     else setLoading(false);
   }, [session, load]);
   async function run(fn: () => Promise<unknown>) {
@@ -48,9 +52,10 @@ export function AdminReviewContainer() {
       setBusy(false);
     }
   }
-  if (session?.role !== "admin") return null;
+  if (session?.role !== "superadmin") return null;
   return (
     <AdminReview
+      section={section}
       users={users}
       applications={applications}
       error={error}
@@ -59,8 +64,8 @@ export function AdminReviewContainer() {
       loading={loading}
       onRefresh={() => void load()}
       onKyc={(id, approved) => void run(() => approveReviewUser(id, approved))}
-      onReview={(id, status, note) =>
-        void run(() => reviewFranchise(id, status, note))
+      onReview={(id, status, note, version) =>
+        void run(() => reviewFranchise(id, status, note, version))
       }
       onPublish={(id, symbol, units) =>
         void run(() => publishFranchise(id, symbol, units))

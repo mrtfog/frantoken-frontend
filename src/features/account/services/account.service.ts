@@ -43,6 +43,7 @@ export async function submitFranchise(
     throw new Error("Revisá los campos de la solicitud antes de continuar.");
   const data = parsed.data;
   const application: FranchiseApplication = {
+    version: 1,
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     status: "Enviada",

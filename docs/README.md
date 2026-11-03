@@ -6,7 +6,7 @@ La implementación se ejecuta con la [guía local](architecture/ACADEMIC-MVP-RUN
 
 ## Prioridad actual: MVP académico
 
-Consultar primero el [alcance aprobado](business/MVP-ACADEMICO.md) y el [recorrido de frontend](architecture/MVP-ACADEMICO.md). Describen compra con pago simulado, emisión C4, publicación de solicitudes y cobro mensual implementados en Hardhat local. Prevalecen para la demo sobre los bloqueos de operación real y las especificaciones inmobiliarias anteriores. Cualquier usuario puede invertir y presentar franquicias con perfil completo; la revisión/publicación es administrativa.
+Consultar primero el [alcance aprobado](business/MVP-ACADEMICO.md) y el [recorrido de frontend](architecture/MVP-ACADEMICO.md). Describen compra con pago simulado, emisión C4, publicación de solicitudes y cobro mensual implementados en Hardhat local. Prevalecen para la demo sobre los bloqueos de operación real y las especificaciones inmobiliarias anteriores. Cualquier usuario puede invertir y presentar franquicias con perfil completo; el creador gestiona las propias y el superadmin admite/publica y ejecuta repartos. Consultar [gestión de franquicias](architecture/FRANCHISE-MANAGEMENT.md).
 
 Este índice orienta el trabajo sobre la web propia. [Business Logic](business/BUSINESS-LOGIC.md) describe el modelo de FranToken aportado para el proyecto y sus [decisiones pendientes](business/DECISIONS.md). Los documentos de `spec/` son propuestas anteriores basadas en inmuebles; deben adaptarse a franquicias antes de implementarse. Los de `research/` registran referencias externas y sus límites. La home actual es una implementación en prueba; no convierte propuestas en ofertas aprobadas.
 
