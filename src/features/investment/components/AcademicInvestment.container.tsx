@@ -9,10 +9,7 @@ import {
   fetchAcademicSnapshot,
   readPendingPurchase,
 } from "../repositories/academicWallet.repository";
-import {
-  buyAcademicTokens,
-  submitAcademicOperation,
-} from "../services/academicInvestment.service";
+import { buyAcademicTokens } from "../services/academicInvestment.service";
 import type {
   AcademicMode,
   AcademicSnapshot,
@@ -185,10 +182,6 @@ export function AcademicInvestmentContainer({
       }}
       onClaim={(project) => {
         if (wallet) void run(() => claimAcademicRevenue(project, wallet));
-      }}
-      onOperation={(operation) => {
-        if (snapshot)
-          void run(() => submitAcademicOperation(snapshot, operation));
       }}
     />
   );

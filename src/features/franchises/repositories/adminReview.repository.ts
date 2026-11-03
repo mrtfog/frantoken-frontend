@@ -17,10 +17,11 @@ export function reviewFranchise(
   id: string,
   status: "Aprobada" | "Observada",
   note: string,
+  version: number,
 ) {
   return apiFetch(`/api/admin/applications/${encodeURIComponent(id)}/review`, {
     method: "PATCH",
-    body: { status, note },
+    body: { status, note, version },
   });
 }
 export function publishFranchise(
@@ -31,5 +32,17 @@ export function publishFranchise(
   return apiFetch(`/api/admin/applications/${encodeURIComponent(id)}/publish`, {
     method: "POST",
     body: { symbol, totalUnits },
+  });
+}
+
+/** Compatibilidad para las operaciones internas existentes, siempre protegidas por superadmin. */
+export function distributeDirect(
+  projectId: string,
+  periodId: string,
+  amount: string,
+) {
+  return apiFetch("/api/admin/distributions", {
+    method: "POST",
+    body: { projectId, periodId, amount },
   });
 }

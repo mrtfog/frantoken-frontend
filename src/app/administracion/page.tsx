@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
-import { AnnouncementBanner } from "@/components/common/AnnouncementBanner";
-import { SiteFooter } from "@/components/common/SiteFooter";
-import { SiteHeader } from "@/components/common/SiteHeader";
-import { AcademicInvestmentContainer } from "@/features/investment/components/AcademicInvestment.container";
-import { AdminReviewContainer } from "@/features/investment/components/AdminReview.container";
+import { ButtonLink } from "@/components/ui";
+import { AdminReviewContainer } from "@/features/franchises/components/AdminReview.container";
 
 export const metadata: Metadata = {
-  title: "Administración académica | FranToken",
+  title: "Administración interna | FranToken",
   robots: { index: false, follow: false },
 };
 export default function AdministrationPage() {
   return (
-    <div className="min-h-screen bg-[#f3f2e9] text-[#11382e]">
-      <AnnouncementBanner demo />
-      <SiteHeader />
-      <main className="mx-auto max-w-[1100px] px-5 py-12">
-        <h1 className="mb-7 text-4xl font-bold">Administración del MVP</h1>
-        <AcademicInvestmentContainer mode="admin" />
-        <AdminReviewContainer />
-      </main>
-      <SiteFooter />
-    </div>
+    <>
+      <h1 className="text-4xl font-bold">Administración interna</h1>
+      <p className="mt-4 max-w-2xl text-sm leading-6 text-[#527164]">
+        Gestioná perfiles, admisión de franquicias y propuestas de reparto desde
+        tu cuenta de superadmin.
+      </p>
+      <ButtonLink
+        className="mt-6"
+        variant="dark"
+        href="/administracion/franquicias"
+      >
+        Admisión y gestión de franquicias
+      </ButtonLink>
+      <AdminReviewContainer section="users" />
+    </>
   );
 }

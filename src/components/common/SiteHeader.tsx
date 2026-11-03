@@ -7,8 +7,8 @@ import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/ui";
 import { siteNavigation } from "@/core/constants";
-import { accountNavigation } from "@/core/constants/accountNavigation.constants";
 import { useSession } from "@/core/hooks/SessionProvider";
+import { visibleAccountNavigation } from "@/core/utils/accountNavigation.util";
 import { SiteBrand } from "./SiteBrand";
 
 export function SiteHeader() {
@@ -70,7 +70,7 @@ export function SiteHeader() {
                 <p className="truncate px-3 py-2 text-[11px] text-[#567166]">
                   Demo · {session.email}
                 </p>
-                {accountNavigation.map((link) => (
+                {visibleAccountNavigation(session.role).map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -146,7 +146,7 @@ export function SiteHeader() {
                 <p className="py-2 text-xs text-[#b5cabe]">
                   Cuenta demo · {session.email}
                 </p>
-                {accountNavigation.map((link) => (
+                {visibleAccountNavigation(session.role).map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}

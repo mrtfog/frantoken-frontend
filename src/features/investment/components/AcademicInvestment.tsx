@@ -2,7 +2,6 @@
 
 import { Coins, RefreshCw, Wallet } from "lucide-react";
 import { MotionConfig, motion } from "motion/react";
-import { useState } from "react";
 import { Button, ButtonLink, Input } from "@/components/ui";
 import { projectStatusLabels } from "../constants/investment.constants";
 import type { AcademicPanelProps } from "../types/investment.type";
@@ -11,15 +10,12 @@ import { AcademicSkeleton } from "./AcademicSkeleton";
 
 export function AcademicInvestment(props: AcademicPanelProps) {
   const { mode, snapshot, wallet, busy, loading, units, signedIn } = props;
-  const [period, setPeriod] = useState("");
-  const [amount, setAmount] = useState("");
 
   const projects =
     snapshot?.projects.filter(
       (p) => !props.projectId || p.id === props.projectId,
     ) || [];
   const Heading = mode === "portfolio" ? "h1" : "h2";
-  const admin = snapshot?.isAdmin ?? false;
   return (
     <MotionConfig reducedMotion="user">
       <motion.section
@@ -31,11 +27,9 @@ export function AcademicInvestment(props: AcademicPanelProps) {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Heading className="flex items-center gap-2 text-xl font-bold">
             <Coins aria-hidden="true" className="h-5 w-5" />
-            {mode === "admin"
-              ? "Administrar franquicias"
-              : mode === "portfolio"
-                ? "Mis tokens e ingresos"
-                : "Comprar tokens · MVP"}
+            {mode === "portfolio"
+              ? "Mis tokens e ingresos"
+              : "Comprar tokens · MVP"}
           </Heading>
           <Button
             variant="chip"
@@ -123,18 +117,6 @@ export function AcademicInvestment(props: AcademicPanelProps) {
                   Completá el perfil y vinculá tu wallet para continuar.
                 </p>
               </div>
-            )}
-            {mode === "admin" && !admin && (
-              <p className="mt-4 break-all text-sm">
-                Ingresá con una cuenta administradora. La cuenta técnica del
-                despliegue es: {snapshot.admin}. Express verifica el rol de tu
-                sesión para cada acción.
-              </p>
-            )}
-            {mode === "admin" && admin && (
-              <ButtonLink className="mt-4" href="#revisiones">
-                Revisar perfiles y solicitudes
-              </ButtonLink>
             )}
             <div className="mt-6 space-y-5">
               {projects.map((project) => (
@@ -263,108 +245,6 @@ export function AcademicInvestment(props: AcademicPanelProps) {
                       >
                         Cobrar ingresos en mi wallet
                       </Button>
-                    </div>
-                  )}
-                  {mode === "admin" && admin && (
-                    <div className="mt-5 space-y-4 border-t border-[#173d34]/15 pt-4">
-                      <div className="flex flex-wrap gap-2">
-                        {project.status === 0 && (
-                          <Button
-                            disabled={busy}
-                            onClick={() =>
-                              props.onOperation({
-                                action: "state",
-                                projectId: project.id,
-                                status: 1,
-                              })
-                            }
-                          >
-                            Publicar
-                          </Button>
-                        )}
-                        {project.status === 1 && (
-                          <Button
-                            disabled={busy}
-                            onClick={() =>
-                              props.onOperation({
-                                action: "state",
-                                projectId: project.id,
-                                status: 2,
-                              })
-                            }
-                          >
-                            Iniciar operación
-                          </Button>
-                        )}
-                        {[1, 2].includes(project.status) && (
-                          <Button
-                            variant="chip"
-                            disabled={busy}
-                            onClick={() =>
-                              props.onOperation({
-                                action: "state",
-                                projectId: project.id,
-                                status: 3,
-                              })
-                            }
-                          >
-                            Cerrar franquicia demo
-                          </Button>
-                        )}
-                      </div>
-                      {project.status === 2 && (
-                        <form
-                          className="space-y-3"
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            props.onOperation({
-                              action: "distribute",
-                              projectId: project.id,
-                              period,
-                              amount,
-                            });
-                          }}
-                        >
-                          <label
-                            className="block text-sm"
-                            htmlFor={`period-${project.id}`}
-                          >
-                            Mes a simular
-                            <Input
-                              id={`period-${project.id}`}
-                              className="mt-2 w-full"
-                              type="month"
-                              min="2000-01"
-                              max="9999-12"
-                              required
-                              value={period}
-                              onChange={(e) => setPeriod(e.target.value)}
-                            />
-                          </label>
-                          <label
-                            className="block text-sm"
-                            htmlFor={`amount-${project.id}`}
-                          >
-                            Importe distribuible en mUSDC de prueba
-                            <Input
-                              id={`amount-${project.id}`}
-                              className="mt-2 w-full"
-                              inputMode="decimal"
-                              required
-                              pattern="[0-9]+(\.[0-9]{1,6})?"
-                              value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
-                            />
-                          </label>
-                          <Button type="submit" disabled={busy}>
-                            Fondear y distribuir este mes
-                          </Button>
-                          <p className="text-xs">
-                            No vuelve a acreditar un mes ya distribuido. La
-                            asignación usa los saldos al ejecutar.
-                          </p>
-                        </form>
-                      )}
                     </div>
                   )}
                   <details className="mt-5 text-xs">

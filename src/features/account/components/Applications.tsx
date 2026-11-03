@@ -6,10 +6,12 @@ export function Applications({
   rows,
   error,
   onRefresh,
+  canManage,
 }: {
   rows: FranchiseApplication[] | null;
   error: string;
   onRefresh(): void;
+  canManage: boolean;
 }) {
   return (
     <MotionConfig reducedMotion="user">
@@ -42,6 +44,24 @@ export function Applications({
                 <p className="mt-2 break-all text-xs">Referencia: {row.id}</p>
                 {row.reviewNote && (
                   <p className="mt-3">Observación: {row.reviewNote}</p>
+                )}
+                {canManage && (
+                  <ButtonLink
+                    className="mt-4 mr-3"
+                    variant="chip"
+                    href={`/mi-cuenta/solicitudes/${row.id}`}
+                  >
+                    Ver y gestionar solicitud
+                  </ButtonLink>
+                )}
+                {canManage && row.status === "Publicada" && row.projectId && (
+                  <ButtonLink
+                    className="mt-4 mr-3"
+                    variant="dark"
+                    href={`/mi-cuenta/franquicias/${row.projectId}`}
+                  >
+                    Gestionar franquicia
+                  </ButtonLink>
                 )}
                 {row.status === "Publicada" && row.projectId && (
                   <ButtonLink
