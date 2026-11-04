@@ -1,3 +1,4 @@
+import { demoSessionRepository } from "@/core/repositories/session.repository";
 import { demoHoldings } from "../constants/account.constants";
 import type {
   FranchiseApplication,
@@ -7,13 +8,13 @@ import type {
 
 export interface AccountRepository {
   getProfile(userId: string): Promise<UserProfile | null>;
-  saveProfile(userId: string, profile: UserProfile): Promise<void>;
+  saveProfile(userId: string, profile: UserProfile): Promise<UserProfile>;
   getHoldings(userId: string): Promise<TokenHolding[]>;
   getApplications(userId: string): Promise<FranchiseApplication[]>;
   saveApplication(
     userId: string,
     application: FranchiseApplication,
-  ): Promise<void>;
+  ): Promise<FranchiseApplication>;
   getDraft(userId: string): Promise<unknown>;
   saveDraft(userId: string, draft: unknown): Promise<void>;
   clearDraft(userId: string): Promise<void>;
@@ -38,10 +39,15 @@ export const demoAccountRepository: AccountRepository = {
     return read(key(userId, "profile")) as UserProfile | null;
   },
   async saveProfile(userId, profile) {
+    const session = await demoSessionRepository.getSession();
+    if (!session || session.userId !== userId)
+      throw new Error("Volvé a iniciar sesión para guardar tu perfil.");
     window.localStorage.setItem(
       key(userId, "profile"),
       JSON.stringify(profile),
     );
+    await demoSessionRepository.updateDisplayName(session, profile.fullName);
+    return profile;
   },
   async getHoldings(_userId) {
     await pause();
@@ -58,6 +64,7 @@ export const demoAccountRepository: AccountRepository = {
       key(userId, "applications"),
       JSON.stringify([application, ...applications]),
     );
+    return application;
   },
   async getDraft(userId) {
     return read(key(userId, "draft"));

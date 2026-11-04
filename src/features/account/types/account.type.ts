@@ -1,8 +1,30 @@
+import type { FormEventHandler } from "react";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+
 export type UserProfile = {
   fullName: string;
+  dni: string;
+  cuil: string;
+  birthDate: string;
+  province: string;
+  city: string;
+  address: string;
+  postalCode: string;
   phone: string;
   country: string;
   investorUpdates: boolean;
+};
+
+export type ProfileProps = {
+  email: string;
+  register: UseFormRegister<UserProfile>;
+  errors: FieldErrors<UserProfile>;
+  isSubmitting: boolean;
+  saved: boolean;
+  error: string;
+  localOnly: boolean;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+  onEdit(): void;
 };
 
 export type TokenActivity = {
@@ -27,9 +49,12 @@ export type TokenHolding = {
 };
 
 export type FranchiseApplication = {
+  version: number;
   id: string;
   createdAt: string;
-  status: "Borrador demo enviado";
+  status: string;
+  reviewNote?: string | null;
+  projectId?: string | null;
   franchiseName: string;
   sector: string;
   city: string;
@@ -45,7 +70,7 @@ export type FranchiseApplication = {
 
 export type FranchiseFormValues = Omit<
   FranchiseApplication,
-  "id" | "createdAt" | "status" | "performance" | "totalCost"
+  "id" | "createdAt" | "status" | "performance" | "totalCost" | "version"
 > & {
   totalCost: number | undefined;
   year1: number;

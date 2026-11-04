@@ -6,8 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { ButtonLink, Skeleton } from "@/components/ui";
-import { accountNavigation } from "@/core/constants/accountNavigation.constants";
 import { useSession } from "@/core/hooks/SessionProvider";
+import { visibleAccountNavigation } from "@/core/utils/accountNavigation.util";
 
 export function AccountShell({ children }: { children: ReactNode }) {
   const { session, ready } = useSession();
@@ -35,8 +35,8 @@ export function AccountShell({ children }: { children: ReactNode }) {
             Ingresá para ver tu panel
           </h1>
           <p className="mt-5 max-w-lg text-sm leading-7 text-[#4c685d]">
-            Usá cualquier email válido y una contraseña de al menos ocho
-            caracteres. Este acceso solo guarda una sesión local de prueba.
+            Ingresá con tu cuenta de FranToken para gestionar tu perfil, tus
+            solicitudes y tus franquicias.
           </p>
           <ButtonLink href="/ingresar" className="mt-8">
             Ingresar <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -48,15 +48,15 @@ export function AccountShell({ children }: { children: ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
       <div className="mx-auto grid max-w-[1380px] gap-9 px-5 py-10 lg:grid-cols-[230px_minmax(0,1fr)] lg:py-16">
-        <aside className="lg:sticky lg:top-6 lg:self-start">
+        <aside className="min-w-0 lg:sticky lg:top-6 lg:self-start">
           <p className="mb-4 text-[11px] font-extrabold tracking-[.2em] uppercase text-[#557468]">
-            Mi espacio / demo
+            Mi cuenta
           </p>
           <nav
             aria-label="Opciones de cuenta"
             className="flex gap-2 overflow-x-auto pb-2 lg:flex-col"
           >
-            {accountNavigation.map((item) => (
+            {visibleAccountNavigation(session.role).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -68,8 +68,8 @@ export function AccountShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <p className="mt-6 hidden text-xs leading-5 text-[#597367] lg:block">
-            Datos ficticios para probar el recorrido. No hay compra, emisión ni
-            solicitud real.
+            Compras con pago simulado y tokens en Hardhat local. Los ingresos se
+            cobran con un activo de prueba.
           </p>
         </aside>
         <motion.div

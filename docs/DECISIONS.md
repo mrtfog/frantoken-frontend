@@ -1,5 +1,23 @@
 # Registro de decisiones web pendientes
 
+## WEB-MVP-02 — Implementación local autorizada
+
+- Estado: implementada en `feat/academic-mvp` desde `develop`, 2026-11-01.
+- Evidencia: instrucción posterior del usuario de implementar frontend y blockchain en ramas nuevas desde develop; no solicita cambios en el backend separado.
+- Decisión técnica: `/api/mvp` como coordinador local de compra simulada con firma de wallet, sin integrar bancos ni compartir claves de usuario. `/administracion` exige la wallet del owner para las acciones privilegiadas. El saldo y los movimientos se consultan en cadena.
+- El acceso por email conserva la navegación demo; no es credencial de autorización económica. La firma acredita el control de wallet para cada acción. El build mantiene chequeo de tipos por la API de TypeScript 5, mediante la opción documentada `experimental.useTypeScriptCli: false`.
+- Detalle y límites: [guía](architecture/ACADEMIC-MVP-RUNBOOK.md) y [evidencia](testing/ACADEMIC-MVP.md).
+
+## WEB-MVP-01 — Alcance académico confirmado
+
+- Estado: **APROBADO para documentación y alcance del MVP; implementación pendiente**.
+- Responsable de la definición: usuario del proyecto. Fecha: 2026-11-01.
+- Evidencia: confirmación explícita transcrita en [MVP académico](business/MVP-ACADEMICO.md#fuente-autoridad-y-límites).
+- Decisión: recorrido catálogo → compra simulada a USD 10 → emisión C4 → operación manual → distribución mensual manual → reclamo, sin transferencias, en Hardhat local y con activo de pago de prueba.
+- Aplicación web: [recorrido y criterios de frontend](architecture/MVP-ACADEMICO.md).
+
+WEB-04, WEB-05, WEB-06 y WEB-10 tienen las definiciones anteriores aprobadas para la demostración. Sus datos y aprobaciones para oferta real siguen pendientes. Las descripciones de prototipos que siguen son antecedentes de implementación, no restricciones que reabran esta confirmación ni afirmaciones de compra ya funcional.
+
 Este registro sigue los bloqueos de publicación enumerados en [Information Architecture](spec/INFORMATION-ARCHITECTURE.md#información-del-negocio-pendiente--bloqueo-de-publicación). Esos bloqueos fueron redactados para una web de inmuebles; el [modelo de negocio vigente](business/BUSINESS-LOGIC.md) exige adaptarlos a franquicias. Los IDs `WEB-*` son distintos de los `BUS-*` de [decisiones de negocio](business/DECISIONS.md). No concede aprobaciones. Una decisión se marca **confirmada** solo con responsable, fecha y enlace a evidencia o aprobación; las condiciones sensibles requieren la revisión competente definida por el negocio.
 
 | ID | Decisión a confirmar | Estado | Responsable / evidencia |
@@ -45,3 +63,45 @@ Las rutas `/ingresar`, `/mi-cuenta`, `/mi-cuenta/tokens`, `/mi-cuenta/configurac
 La implementación propone contratos de repositorio para reemplazar el almacenamiento local por Supabase, sin declarar aprobados el registro, la oferta, la compra, la apertura ni el tratamiento real de datos. WEB-02–WEB-11 y WEB-15, según correspondan, siguen pendientes. Antes de habilitar usuarios y operaciones reales hacen falta autenticación y autorización de servidor, reglas de acceso a datos, protección de rutas, política de datos, entidades y condiciones de producto aprobadas. La [nota de integración](architecture/ACCOUNT-DEMO.md) detalla los puntos de reemplazo.
 
 Para cada confirmación futura, registrar aquí la decisión concreta, su alcance, responsable, fecha, enlace a la fuente y documentos `spec/` afectados. Si una decisión cambia, conservar el enlace a la versión anterior y señalar qué contenido necesita revisión.
+
+## MVP-2026-11-02 — Integración única Express y publicación de solicitudes
+
+Estado: implementado dentro del alcance académico solicitado. Instrucción vigente del usuario: realizar los cambios necesarios en las ramas actuales; backend en rama nueva desde develop. Complementa el alcance aprobado y sustituye la decisión técnica anterior del gateway Next para esta demo.
+
+Express autentica JWT, comprueba perfil/aprobación y vincula wallets por desafío firmado. Admin y verificador usan firmantes distintos del manifiesto. La misma cuenta puede invertir y solicitar franquicias; no se agrega un rol excluyente. Perfil en SQL, sin documentación personal en cadena.
+
+La publicación necesita token+C4 para que una solicitud aprobada pueda comprarse y cobrar. Se elige una fábrica local con clave de proyecto idempotente y deployers separados por tamaño de bytecode. Se conserva C3 firmado de prueba. No se agrega cálculo de campañas, caja, ROI ni estructura jurídica real. Precio 1000 centavos USD; ingresos mUSDC seis decimales.
+
+La migración es aditiva; el seed no genera compras/repartos. Los endpoints alternativos de escritura quedan 410. Reintentos se concilian con eventos y claves únicas; no hay fallback que confirme derechos solo en base de datos. La cola del MVP presupone un proceso escritor. Reiniciar Hardhat exige una base de prueba nueva para una nueva presentación, sin borrado automático.
+
+Evidencia: 58 tests de contratos y 14 escenarios integrados con SQL y EVM reales en memoria. Límites: sin prueba visual/TCP ni ejecución contra servidor MySQL/PostgreSQL; no se prueba uso con valor real. [Flujo vigente](business/MVP-ACADEMICO.md).
+
+## WEB-2026-11-02 — Acceso y registro con contenido de producto
+
+Estado: implementado por pedido del usuario. `/ingresar` y `/registro` comparten la composición visual del anterior `AuthDemo.tsx`, con cabecera, banner, pie y controles existentes. Se reemplazan los textos de demostración de los formularios y sus metadatos por indicaciones de acceso y creación de cuenta, y se agregan enlaces entre ambos recorridos.
+
+El contenedor de autenticación coordina React Hook Form y la sesión existente. El registro valida nombre visible (2–120 caracteres), correo y contraseña (8–200 caracteres), conserva los errores del backend y redirige a completar el perfil tras la creación de cuenta. La integración usa `SessionRepository` y el endpoint Express `/api/auth/register` cuando `NEXT_PUBLIC_API_URL` está configurada, según el [flujo vigente](architecture/MVP-ACADEMICO.md). La actualización editorial no cambia el alcance académico ni las condiciones de inversión.
+
+## WEB-2026-11-03 — Persistencia conjunta de perfil y usuario
+
+Estado: implementado por pedido del usuario. `Profile.container.tsx` coordina carga, validación, guardado y errores; `Profile.tsx` presenta los controles y estados. La validación compartida entre formulario y servicio coincide con los límites del backend, normaliza CUIL y espacios, y rechaza fechas inexistentes o futuras con mensajes por campo.
+
+PUT `/api/account/profile` persiste perfil, nombre visible del usuario y revisión en una transacción Express/SQL y devuelve `{profile,session}`. El repositorio actualiza la caché y los suscriptores de sesión; el formulario usa los valores confirmados. Se elimina la segunda escritura desde esta pantalla a `/api/auth/display-name`, evitando guardados parciales. La carga depende del ID de usuario, por lo que actualizar la sesión no vuelve a cargar el formulario. En la vista previa sin API se conserva persistencia local, identificada explícitamente en pantalla.
+
+Fuentes: contrato implementado de Express y [flujo vigente del MVP](architecture/MVP-ACADEMICO.md). Evidencia: [verificación de perfil y sesión](testing/ACADEMIC-MVP.md#actualización-2026-11-03--perfil-y-sesión); no cambia el modelo de negocio ni la revisión manual.
+
+## WEB-2026-11-03 — Red local y separación del resumen de cuenta
+
+Estado: implementado a partir de los errores informados por el usuario. El entorno observado tenía blockchain deshabilitada, ningún nodo en 8545 y ningún manifiesto académico. Se inició el nodo Hardhat en loopback, se desplegaron los contratos y se importó el catálogo en SQL después de verificar que no había compras ni proyectos con contratos. La configuración operativa queda en `.env.local`, ignorado por Git. Las comprobaciones HTTP de catálogo e inversión respondieron 200 con cuatro proyectos y chain ID 31337.
+
+`/mi-cuenta` vuelve a usar el resumen de cuenta; consulta solicitudes y tenencias de manera independiente. Una caída de cadena deja saldos no disponibles y permite ver las solicitudes que sí pudieron consultarse. `/mi-cuenta/tokens` conserva el panel de tokens e ingresos.
+
+La conexión de wallet solicita cambio a Hardhat local y, ante red desconocida, agregado seguido de selección. Verifica la red antes de solicitar cuentas o firma, maneja rechazo y solicitud pendiente, e impide conectar mientras el snapshot no está disponible. Cambiar de cuenta o red elimina la conexión activa; una wallet vinculada en SQL no se presenta como conectada en el navegador. La consulta del snapshot no depende de esa conexión activa, evitando recargas que la restablezcan incorrectamente.
+
+Fuentes: [flujo del MVP](architecture/MVP-ACADEMICO.md), implementación y [gestión oficial de redes de MetaMask](https://docs.metamask.io/metamask-connect/evm/guides/manage-networks/). Evidencia y límites en [verificación de conectividad](testing/ACADEMIC-MVP.md#actualización-2026-11-03--conectividad-blockchain-y-wallet).
+
+## WEB-2026-11-03 — Panel de franquicias con permisos de creador y superadmin
+
+Estado: implementado por pedido del usuario. La feature `franchises` reúne revisión, gestión y repositorios propios; el panel de inversión queda centrado en compra y cobro. `/mi-cuenta/solicitudes/[id]` permite corregir/reenviar y consultar historial. `/mi-cuenta/franquicias` y su detalle presentan gestión operativa y propuestas de reparto. `/administracion` y `/administracion/franquicias` solo se ofrecen a superadmin; Express verifica permisos en todas las operaciones.
+
+Se reutilizan cabecera, pie, banner, controles y skeletons. La navegación filtra accesos por sesión; las cantidades desconocidas se muestran como no disponibles. El cierre definitivo requiere confirmación. Se conserva la gestión SQL si falla blockchain; no se confirma una operación hasta recibir el resultado del backend. La publicación pendiente reintenta con símbolo/cupo reservados. Ver [arquitectura de gestión](architecture/FRANCHISE-MANAGEMENT.md) y [pruebas](testing/ACADEMIC-MVP.md).

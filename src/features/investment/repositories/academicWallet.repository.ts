@@ -1,0 +1,142 @@
+import {
+  BrowserProvider,
+  Contract,
+  type Eip1193Provider,
+  formatEther,
+  getAddress,
+} from "ethers";
+import { apiEnabled, apiFetch } from "@/core/config/api.config";
+import {
+  academicTokenAbi,
+  investmentAbi,
+} from "../constants/investment.constants";
+import type {
+  AcademicOperation,
+  AcademicProject,
+  AcademicSnapshot,
+} from "../types/investment.type";
+import {
+  operationResultSchema,
+  pendingPurchaseSchema,
+  snapshotSchema,
+} from "../types/investment.type";
+import { ensureAcademicNetwork } from "./academicNetwork.repository";
+
+async function browserSigner() {
+  const injected = (window as Window & { ethereum?: Eip1193Provider }).ethereum;
+  if (!injected)
+    throw new Error(
+      "Instalá una wallet EVM y conectala a Hardhat local (31337).",
+    );
+  await ensureAcademicNetwork(injected);
+  const provider = new BrowserProvider(injected, 31337);
+  await provider.getNetwork();
+  return provider.getSigner();
+}
+function assertBackend() {
+  if (!apiEnabled)
+    throw new Error(
+      "Configurá NEXT_PUBLIC_API_URL para usar el MVP integrado con Express.",
+    );
+}
+export async function connectAcademicWallet() {
+  assertBackend();
+  const signer = await browserSigner();
+  const walletAddress = getAddress(await signer.getAddress());
+  const { message } = await apiFetch<{ message: string }>(
+    "/api/account/wallet/challenge",
+    { method: "POST", body: { walletAddress } },
+  );
+  const signature = await signer.signMessage(message);
+  await apiFetch("/api/account/wallet", {
+    method: "PUT",
+    body: { walletAddress, signature },
+  });
+  return walletAddress;
+}
+export async function fetchAcademicSnapshot(_wallet: string | null) {
+  assertBackend();
+  return snapshotSchema.parse(await apiFetch("/api/account/investment"));
+}
+export async function signAcademicOperation(
+  _snapshot: AcademicSnapshot,
+  operation: AcademicOperation,
+) {
+  assertBackend();
+  return operationResultSchema.parse(
+    await apiFetch("/api/account/purchases", {
+      method: "POST",
+      body: {
+        projectId: operation.projectId,
+        units: operation.units,
+        requestId: operation.reference,
+      },
+    }),
+  );
+}
+export async function acceptAcademicTerms(
+  project: AcademicProject,
+  wallet: string,
+) {
+  const signer = await browserSigner();
+  if (getAddress(await signer.getAddress()) !== wallet)
+    throw new Error("Reconectá la wallet vinculada a tu cuenta.");
+  const tx = await new Contract(
+    project.investment,
+    investmentAbi,
+    signer,
+  ).acceptTerms();
+  const receipt = await tx.wait();
+  return { txHash: tx.hash, gasFeeEth: formatEther(receipt.fee) };
+}
+export async function claimAcademicRevenue(
+  project: AcademicProject,
+  wallet: string,
+) {
+  const signer = await browserSigner();
+  if (getAddress(await signer.getAddress()) !== wallet)
+    throw new Error("Reconectá la wallet vinculada a tu cuenta.");
+  const tx = await new Contract(
+    project.token,
+    academicTokenAbi,
+    signer,
+  ).claimRevenue();
+  window.localStorage.setItem(
+    `frantoken:claim:${project.token}:${wallet}`,
+    tx.hash,
+  );
+  const receipt = await tx.wait();
+  return { txHash: tx.hash, gasFeeEth: formatEther(receipt.fee) };
+}
+export function pendingPurchase(
+  snapshot: AcademicSnapshot,
+  projectId: string,
+  units: string,
+) {
+  const key = `frantoken:purchase:${snapshot.deploymentId}:${projectId}:${snapshot.wallet}`;
+  const previous = window.localStorage.getItem(key);
+  if (previous) {
+    const parsed = pendingPurchaseSchema.parse(JSON.parse(previous));
+    if (parsed.units !== units)
+      throw new Error(
+        `Hay una compra pendiente de ${parsed.units} tokens. Reintentá esa cantidad.`,
+      );
+    return { key, purchase: parsed };
+  }
+  const purchase = { reference: crypto.randomUUID(), units };
+  window.localStorage.setItem(key, JSON.stringify(purchase));
+  return { key, purchase };
+}
+export function completePurchase(key: string) {
+  window.localStorage.removeItem(key);
+}
+
+export function readPendingPurchase(
+  snapshot: AcademicSnapshot,
+  projectId: string,
+) {
+  const value = window.localStorage.getItem(
+    `frantoken:purchase:${snapshot.deploymentId}:${projectId}:${snapshot.wallet}`,
+  );
+  return value ? pendingPurchaseSchema.parse(JSON.parse(value)) : null;
+}

@@ -1,7 +1,7 @@
 export type DemoProject = {
   id: string;
   name: string;
-  sector: "Comida rápida" | "Cafetería" | "Restaurantes";
+  sector: string;
   format: string;
   descriptor: string;
   company: string;
@@ -10,6 +10,24 @@ export type DemoProject = {
   logoUrl?: string;
   palette: "lime" | "peach" | "lavender" | "mint";
   annualizedRoiScenario: readonly number[];
+  status?: string;
+  price?: {
+    minor: string;
+    currency: string;
+    decimals: number;
+    display: string;
+  };
+  token?: {
+    symbol: string | null;
+    address: string | null;
+    investmentAgreement: string | null;
+    onChain: boolean;
+  };
+  availability?: {
+    totalUnits: string | null;
+    unitsSold: string;
+    unitsAvailable: string | null;
+  };
 };
 
 export type SectorFilter = DemoProject["sector"] | "Todos";

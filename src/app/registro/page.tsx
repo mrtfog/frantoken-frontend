@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { AuthDemo } from "@/features/auth/components/AuthDemo";
+import { AuthFormContainer } from "@/features/auth/components/AuthForm.container";
 
 export const metadata: Metadata = {
-  title: "Registrarse · Demo | FranToken",
+  title: "Crear cuenta | FranToken",
+  description:
+    "Creá tu cuenta de FranToken para explorar proyectos de franquicia y gestionar tus solicitudes.",
   robots: { index: false, follow: false },
 };
 
 export default function RegisterPage() {
-  return <AuthDemo mode="register" />;
+  return <AuthFormContainer mode="register" />;
 }

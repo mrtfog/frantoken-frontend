@@ -1,5 +1,28 @@
 # Decisiones del modelo de negocio
 
+## Implementación autorizada desde develop
+
+El 2026-11-01 el usuario pidió implementar frontend y blockchain desde `develop` en ramas nuevas. Se crearon ramas `feat/academic-mvp` y se incorporaron las definiciones documentales aprobadas como prerrequisito. Esta autorización posterior sustituye la limitación anterior de «solo documentación» para el MVP; no modifica las condiciones de una operación real. La integración local usa rutas de servidor Next sin alterar el repositorio backend separado.
+
+## Decisiones aprobadas exclusivamente para el MVP
+
+**Confirmación del usuario, 2026-11-01:** [MVP académico y evidencia de aprobación](MVP-ACADEMICO.md#fuente-autoridad-y-límites). MVP-01–MVP-06 están aprobadas para esta demostración: pago simulado, inicio manual de operación, períodos mensuales con importe manual, prorrata al ejecutar y reclamo individual, transferencias deshabilitadas, Hardhat local y token de pago de prueba. Implementación pendiente; el encargo actual autoriza solo documentación y ramas.
+
+| Pendiente del modelo completo | Resolución para la demostración |
+|---|---|
+| BUS-03 / D03, BUS-04 / D04 y BUS-06 / D06 | Derecho académico a ingresos variables: prorrata de tokens en circulación al ejecutar cada distribución mensual, con importe manual; no retorno fijo ni snapshot previo. |
+| BUS-05 / D05 | Campaña, meta, devolución y cierre financiero fuera del MVP. |
+| BUS-07 / D07 | El administrador marca el inicio de operación; no se requiere probar apertura física. |
+| BUS-08 / D08 | Pago de compra simulado; fondeo y reclamo de ingresos con token de prueba, sin conversión real USD/activo. |
+| BUS-09 / D09 | Transferencias entre inversores deshabilitadas; sin rescate ni liquidación automática. |
+| BUS-10 / D10 | Hardhat local, roles usuario/admin y permisos técnicos del prototipo. Una red pública o Besu no reemplazan esta elección sin decisión posterior. |
+| BUS-12 / D12 | No se confirma comisión comercial definitiva; el 0,5 % permanece como ejemplo C3. |
+| BUS-13 y BUS-14 | Ingreso distribuible cargado manualmente; operación y contabilidad reales fuera de alcance. |
+
+Los IDs BUS y D mantienen su correspondencia histórica entre repositorios. Las filas posteriores siguen abiertas **para una operación con valor real**, no para bloquear las definiciones académicas aquí aprobadas. La evidencia y los documentos fuente originales se conservan.
+
+## Registro del modelo completo y antecedentes
+
 Este registro adapta los pendientes de la [sección 1.6 del manual recibido](source/FranToken-manual-consulta-v2.md#16-decisiones-pendientes). Los IDs `BUS-*` evitan confundirlos con las decisiones `WEB-*` del [harness web](../DECISIONS.md). **Pendiente** no niega el modelo declarado en [Business Logic](BUSINESS-LOGIC.md); indica que faltan parámetros, sujetos, documentos o validación para una operación concreta. Cambiar el estado solo con decisión explícita, responsable, fecha y evidencia enlazada.
 
 | ID | Definición pendiente | Estado | Responsable / evidencia |
@@ -61,3 +84,25 @@ Los IDs `BUS-*` siguen el registro del frontend. Los D01–D12 de blockchain se 
 | BUS-14 | Operadora administra y FranToken monitorea; C2 contiene reportes/KPIs. | Indicadores concretos, verificación, auditoría, intervención, sustitución y desvíos de presupuesto. |
 
 Ninguna fila queda completamente cerrada para operar con valor real. Registrar decisión, responsable, fecha, términos y evidencia antes de habilitar la operación afectada; conservar el historial de decisiones sustituidas.
+
+## MVP-2026-11-02 — Integración única Express y publicación de solicitudes
+
+Estado: implementado dentro del alcance académico solicitado. Instrucción vigente del usuario: realizar los cambios necesarios en las ramas actuales; backend en rama nueva desde develop. Complementa el alcance aprobado y sustituye la decisión técnica anterior del gateway Next para esta demo.
+
+Express autentica JWT, comprueba perfil/aprobación y vincula wallets por desafío firmado. Admin y verificador usan firmantes distintos del manifiesto. La misma cuenta puede invertir y solicitar franquicias; no se agrega un rol excluyente. Perfil en SQL, sin documentación personal en cadena.
+
+La publicación necesita token+C4 para que una solicitud aprobada pueda comprarse y cobrar. Se elige una fábrica local con clave de proyecto idempotente y deployers separados por tamaño de bytecode. Se conserva C3 firmado de prueba. No se agrega cálculo de campañas, caja, ROI ni estructura jurídica real. Precio 1000 centavos USD; ingresos mUSDC seis decimales.
+
+La migración es aditiva; el seed no genera compras/repartos. Los endpoints alternativos de escritura quedan 410. Reintentos se concilian con eventos y claves únicas; no hay fallback que confirme derechos solo en base de datos. La cola del MVP presupone un proceso escritor. Reiniciar Hardhat exige una base de prueba nueva para una nueva presentación, sin borrado automático.
+
+Evidencia: 58 tests de contratos y 14 escenarios integrados con SQL y EVM reales en memoria. Límites: sin prueba visual/TCP ni ejecución contra servidor MySQL/PostgreSQL; no se prueba uso con valor real. [Flujo vigente](MVP-ACADEMICO.md).
+
+## MVP-2026-11-03 — Gestión del creador y acceso interno de superadmin
+
+Estado: implementado por autorización del usuario de proceder con el plan, partiendo de `develop` en ramas `feat/franchise-management`. El creador administra su propia solicitud y franquicia; el superadmin tiene acceso global. Observar, aprobar y publicar emisiones, habilitar perfiles y ejecutar repartos exige superadmin. El rol `admin` anterior se conserva sin permisos internos y no se promueve automáticamente.
+
+La corrección previa a publicar vuelve la solicitud a `Enviada` e invalida aprobaciones. Versiones y bloqueos SQL rechazan revisiones obsoletas. La reserva de publicación congela los datos, aun si falla la cadena. El creador inicia operación/cierra su franquicia y propone importes mensuales; el superadmin observa o ejecuta exclusivamente el contenido almacenado. Un reintento concilia la ejecución sin duplicarla. El cierre es definitivo y conserva ingresos ya asignados.
+
+El alta interna es un comando explícito con correo y contraseña configurados fuera del código; no modifica cuentas ocupadas ni restablece contraseñas. Se incorpora auditoría privada y migración aditiva. No cambian contratos Solidity, precio, C3/C4, derechos económicos ni la exclusión de reventa. La autorización web se valida en Express con el usuario vigente de SQL, separada de los firmantes técnicos blockchain.
+
+Evidencia: 31 escenarios integrados (clientes frontend, Express/JWT, SQLite y Hardhat), builds/tipos y navegador escritorio/móvil. Migración local en MariaDB con recuentos preservados y acceso real por HTTP. PostgreSQL y extensión real de wallet siguen sin probarse en esta entrega. Ver el alcance vigente en [MVP académico](MVP-ACADEMICO.md).
